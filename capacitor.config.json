@@ -1,0 +1,8 @@
+{
+  "appId": "com.invertedforest.courses",
+  "appName": "Inverted Forest",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https"
+  }
+}

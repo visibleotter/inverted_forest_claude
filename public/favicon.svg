@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="12" fill="#1B2A4A"/>
+  <!-- Inverted tree shape -->
+  <polygon points="32,8 48,28 40,28 52,46 20,46 32,28 24,28" fill="#C8922A" transform="rotate(180, 32, 36)"/>
+  <rect x="29" y="46" width="6" height="10" fill="#C8922A"/>
+</svg>

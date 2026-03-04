@@ -1,0 +1,92 @@
+{
+  "nav": {
+    "home": "Home",
+    "courses": "Courses",
+    "samples": "Samples",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "home": {
+    "hero_headline": "Explore History & Philosophy",
+    "hero_subline": "Engaging courses for adults and children — from Ancient Greece to the Medieval world. Learn to think deeper, question more, and see the past anew.",
+    "cta_courses": "View Courses",
+    "cta_contact": "Get in Touch",
+    "value1_title": "Expert-Led",
+    "value1_desc": "Each course is crafted and taught by a passionate historian and philosopher with years of teaching experience.",
+    "value2_title": "For All Ages",
+    "value2_desc": "Courses designed for adults, teenagers, and children — everyone can explore history and ideas at their own level.",
+    "value3_title": "Live & Recorded",
+    "value3_desc": "Join live interactive sessions or watch recordings at your own pace — flexible learning that fits your schedule.",
+    "courses_teaser_title": "Our Courses",
+    "courses_teaser_more": "See All Courses",
+    "about_teaser_title": "About the Instructor",
+    "about_teaser_text": "A historian and philosopher dedicated to making the past come alive. With an approachable style and deep expertise, these courses open doors to ideas that shaped our world.",
+    "about_teaser_link": "Learn More"
+  },
+  "courses": {
+    "page_title": "Our Courses",
+    "page_intro": "Explore five thoughtfully designed courses spanning ancient civilisations, medieval history, philosophical traditions, and contemporary literature. Each course is available for individual or group sessions.",
+    "tag_adults_teens": "Adults & Teens",
+    "tag_adults_kids": "Adults & Kids",
+    "tag_adults": "Adults",
+    "tag_book_club": "Book Club",
+    "learn_more": "Learn More",
+    "close": "Close",
+    "course1_title": "Medieval Russia",
+    "course1_desc": "Journey through the dramatic centuries of Kievan Rus and the Muscovite state — from Viking founders and Byzantine Christianity to the Mongol yoke and Ivan the Terrible. Discover how a medieval civilisation forged an identity that still echoes today.",
+    "course1_detail": "This course covers the political, cultural, and religious development of Russia from the 9th to the 16th century. Topics include the founding of Rus, the Christianisation of the Slavs, the Mongol invasion and its long shadow, the rise of Moscow, and the reign of Ivan III and Ivan IV. Students will engage with primary sources and vivid historical narratives.",
+    "course2_title": "Ancient Greece",
+    "course2_desc": "Travel back to the world of city-states, democracy, and myth. From the Bronze Age Minoans to the conquests of Alexander the Great, explore the civilisation that gave us theatre, the Olympics, and the foundations of Western thought.",
+    "course2_detail": "A broad survey of ancient Greek history and culture covering the Minoan and Mycenaean worlds, the Dark Ages, the Archaic and Classical periods, and the Hellenistic era. Special attention is given to Athens and Sparta, the Persian Wars, the Peloponnesian War, and the cultural achievements that continue to inspire humanity.",
+    "course3_title": "Greek Philosophy",
+    "course3_desc": "Engage with the greatest minds of antiquity. From the pre-Socratics who first asked 'What is everything made of?' to Plato's cave, Aristotle's virtue ethics, and the Stoic quest for peace of mind — philosophy as a living practice.",
+    "course3_detail": "This course explores the major schools and thinkers of ancient Greek philosophy. We begin with the pre-Socratics (Heraclitus, Parmenides, Democritus), move through Socrates, Plato, and Aristotle, and conclude with the Hellenistic schools: Stoicism, Epicureanism, and Skepticism. Each session connects ancient arguments to contemporary relevance.",
+    "course4_title": "Prehistoric Mindset",
+    "course4_desc": "What did the first humans think, feel, and believe? This course takes you deep into the cognitive and spiritual world of our prehistoric ancestors — cave paintings, ritual, shamanism, and the birth of symbolic thought.",
+    "course4_detail": "Drawing on archaeology, cognitive science, and anthropology, this course investigates how Homo sapiens developed consciousness, language, art, and religion. We examine major sites such as Lascaux, Göbekli Tepe, and Stonehenge, and ask what they tell us about the origins of the human mind and the deepest roots of culture.",
+    "course5_title": "Reading Short American Stories",
+    "course5_desc": "A book club for adults who want to read great American short fiction in a lively group setting. From Hemingway and Carver to Flannery O'Connor and contemporary voices — close reading, discussion, and literary discovery.",
+    "course5_detail": "Each session focuses on one or two short stories chosen for their craft, themes, and cultural significance. Participants discuss character, style, imagery, and meaning in a relaxed and intellectually stimulating environment. A reading list is provided. No prior literary study required — only curiosity and a love of stories."
+  },
+  "samples": {
+    "page_title": "Sample Lectures",
+    "page_intro": "Listen and watch sample lectures to get a feel for the teaching style and course content. New videos added regularly.",
+    "watch_on_youtube": "Watch on YouTube",
+    "watch_on_vimeo": "Watch on Vimeo",
+    "tag_en": "EN",
+    "tag_ru": "RU",
+    "sample1_title": "Introduction to Medieval Russia",
+    "sample2_title": "The Polis: Democracy in Ancient Greece",
+    "sample3_title": "Socrates on Trial",
+    "sample4_title": "Cave Paintings & the Birth of Art",
+    "sample5_title": "Hemingway's Iceberg Theory",
+    "sample6_title": "Средневековая Русь — Введение"
+  },
+  "about": {
+    "page_title": "About the Instructor",
+    "bio_p1": "I am a historian and philosopher passionate about bringing the past to life for curious minds of all ages. My teaching journey began with a deep love of ancient texts and an equally strong belief that history is not merely something that happened — it is something we can feel, understand, and learn from.",
+    "bio_p2": "With a background in classical studies and medieval history, I have designed each course to balance scholarly rigour with accessibility. Whether you are a seasoned history enthusiast or joining your very first lecture, my goal is to create a space where questions are welcomed and ideas are explored with honesty and depth.",
+    "bio_p3": "I teach in both English and Russian, and I work with adults, teenagers, and children. Each course is shaped by years of research, reading, and a genuine love of the subject. I believe that philosophy and history are not luxuries — they are essential tools for understanding ourselves and our world.",
+    "my_courses_title": "My Courses",
+    "highlights_title": "Experience & Approach",
+    "highlight1": "Bilingual instruction (English & Russian)",
+    "highlight2": "Individual and group sessions available",
+    "highlight3": "Courses for adults, teens, and children",
+    "highlight4": "Live sessions with Q&A, recordings provided",
+    "highlight5": "Rooted in primary sources and original texts",
+    "photo_alt": "Instructor portrait"
+  },
+  "contact": {
+    "page_title": "Get in Touch",
+    "intro": "I would love to hear from you. Whether you have a question about a course, want to book a session, or simply wish to say hello — reach out via WhatsApp or Telegram and I will reply as soon as possible.",
+    "whatsapp_btn": "Message on WhatsApp",
+    "telegram_btn": "Message on Telegram",
+    "email_label": "Or email:",
+    "email_placeholder": "hello@invertedforest.com",
+    "note": "I teach in English and Russian. Sessions are available online worldwide."
+  },
+  "footer": {
+    "tagline": "History & Philosophy for curious minds",
+    "copyright": "© 2025 Inverted Forest. All rights reserved."
+  }
+}
