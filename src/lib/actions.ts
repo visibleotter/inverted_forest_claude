@@ -1,0 +1,124 @@
+'use server';
+
+import { z } from 'zod';
+import { getData } from './data';
+import type { Locale } from './types';
+import { seatsRemaining } from './types';
+
+const registrationSchema = z.object({
+  groupId: z.string().min(1),
+  firstName: z.string().trim().min(1).max(100),
+  lastName: z.string().trim().min(1).max(100),
+  email: z.string().trim().email(),
+  phone: z.string().trim().max(30).optional().or(z.literal('')),
+  locale: z.enum(['ru', 'en'])
+});
+
+export type RegistrationState =
+  | { status: 'idle' }
+  | { status: 'error'; code: 'validation' | 'group_full' | 'unknown' }
+  | { status: 'success'; paymentUrl: string | null; enrollmentId: string };
+
+/**
+ * Registration flow: validate → persist enrollment → notify the
+ * Make.com pipeline → hand the payment URL back to the client for redirect.
+ * The site never processes payments itself.
+ */
+export async function submitRegistration(
+  _prev: RegistrationState,
+  formData: FormData
+): Promise<RegistrationState> {
+  const parsed = registrationSchema.safeParse({
+    groupId: formData.get('groupId'),
+    firstName: formData.get('firstName'),
+    lastName: formData.get('lastName'),
+    email: formData.get('email'),
+    phone: formData.get('phone'),
+    locale: formData.get('locale')
+  });
+
+  if (!parsed.success) return { status: 'error', code: 'validation' };
+  const input = parsed.data;
+
+  try {
+    const data = getData();
+    const group = await data.getGroupById(input.groupId);
+    if (!group) return { status: 'error', code: 'unknown' };
+    if (group.status !== 'enrolling' || seatsRemaining(group) === 0) {
+      return { status: 'error', code: 'group_full' };
+    }
+
+    const result = await data.createRegistration({
+      groupId: input.groupId,
+      firstName: input.firstName,
+      lastName: input.lastName,
+      email: input.email,
+      phone: input.phone || undefined,
+      locale: input.locale as Locale
+    });
+
+    await notifyMake('registration.created', {
+      enrollment_id: result.enrollmentId,
+      group_id: group.id,
+      course_id: group.courseId,
+      first_name: input.firstName,
+      last_name: input.lastName,
+      email: input.email,
+      phone: input.phone || null,
+      locale: input.locale
+    });
+
+    return {
+      status: 'success',
+      paymentUrl: result.paymentUrl,
+      enrollmentId: result.enrollmentId
+    };
+  } catch (error) {
+    console.error('[registration] failed', error);
+    return { status: 'error', code: 'unknown' };
+  }
+}
+
+const newsletterSchema = z.object({
+  email: z.string().trim().email(),
+  locale: z.enum(['ru', 'en'])
+});
+
+export async function subscribeNewsletter(
+  _prev: { status: 'idle' | 'success' | 'error' },
+  formData: FormData
+): Promise<{ status: 'idle' | 'success' | 'error' }> {
+  const parsed = newsletterSchema.safeParse({
+    email: formData.get('email'),
+    locale: formData.get('locale')
+  });
+  if (!parsed.success) return { status: 'error' };
+
+  try {
+    await getData().subscribeToNewsletter(
+      parsed.data.email,
+      parsed.data.locale
+    );
+    await notifyMake('newsletter.subscribed', parsed.data);
+    return { status: 'success' };
+  } catch (error) {
+    console.error('[newsletter] failed', error);
+    return { status: 'error' };
+  }
+}
+
+/** Fire-and-forget notification into the existing Make.com automation. */
+async function notifyMake(event: string, payload: Record<string, unknown>) {
+  const url = process.env.MAKE_REGISTRATION_WEBHOOK_URL;
+  if (!url) return;
+  try {
+    await fetch(url, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ event, ...payload }),
+      signal: AbortSignal.timeout(5000)
+    });
+  } catch (error) {
+    console.error(`[make] webhook failed for ${event}`, error);
+  }
+}

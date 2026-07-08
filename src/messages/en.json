@@ -1,0 +1,369 @@
+{
+  "meta": {
+    "siteName": "Inverted Forest",
+    "home": {
+      "title": "Inverted Forest — School of History & Philosophy",
+      "description": "Live online courses in history, philosophy and literature, in Russian and English. From Ancient Greece to Medieval Russia."
+    },
+    "courses": {
+      "title": "Courses",
+      "description": "All Inverted Forest courses: history, philosophy, literature and anthropology. Live classes in small groups."
+    },
+    "teachers": {
+      "title": "Teachers",
+      "description": "The teachers of Inverted Forest."
+    },
+    "about": {
+      "title": "About",
+      "description": "Inverted Forest is an online school of history and philosophy for curious minds of all ages."
+    },
+    "faq": {
+      "title": "FAQ",
+      "description": "Answers to common questions about courses, payment and class format."
+    },
+    "contacts": {
+      "title": "Contacts",
+      "description": "Get in touch with Inverted Forest — WhatsApp, Telegram or email."
+    },
+    "privacy": { "title": "Privacy Policy" },
+    "terms": { "title": "Terms of Service" },
+    "register": { "title": "Course Registration" }
+  },
+  "nav": {
+    "home": "Home",
+    "courses": "Courses",
+    "teachers": "Teachers",
+    "about": "About",
+    "faq": "FAQ",
+    "contacts": "Contacts",
+    "explore": "Explore Courses",
+    "consultation": "Request Consultation",
+    "menu": "Menu",
+    "closeMenu": "Close menu",
+    "switchLocale": "Русский",
+    "toggleTheme": "Toggle theme"
+  },
+  "home": {
+    "heroEyebrow": "Online school of history & philosophy",
+    "heroTitle": "Explore History & Philosophy",
+    "heroSubtitle": "Live courses for adults and children — from Ancient Greece to Medieval Russia. Learn to think deeper, question more, and see the past anew.",
+    "heroCtaPrimary": "Explore Courses",
+    "heroCtaSecondary": "Request Consultation",
+    "manifestoTitle": "A quiet library in the middle of a forest",
+    "manifesto": "We believe history and philosophy are not luxuries but essential tools for understanding ourselves and the world. Our classes are a slow, attentive reading of the past among kindred spirits: no rush, no shallowness, with respect for the sources and for your questions.",
+    "featuredTitle": "Featured Courses",
+    "featuredSubtitle": "Enrollment is open — join the next cohorts",
+    "allCourses": "All Courses",
+    "whyTitle": "Why study with us",
+    "why1Title": "Expert-Led",
+    "why1Text": "Each course is crafted and taught by a passionate historian and philosopher with years of teaching experience.",
+    "why2Title": "For All Ages",
+    "why2Text": "Separate groups for adults, teens and children — everyone explores history and ideas at their own level.",
+    "why3Title": "Live & Interactive",
+    "why3Text": "Classes happen live on Zoom, with questions and discussion. Recordings are yours to keep.",
+    "why4Title": "Community",
+    "why4Text": "Every group has its own private Telegram channel with materials, recordings and lively discussion between classes.",
+    "howTitle": "How learning works",
+    "how1Title": "Choose a course and a group",
+    "how1Text": "Each course runs 2–3 months in several groups — pick the day and time that suit you.",
+    "how2Title": "Register and pay",
+    "how2Text": "Monthly billing through a secure payment page. No hidden fees.",
+    "how3Title": "Get Telegram access",
+    "how3Text": "Right after payment you automatically receive a personal invite to your group's private channel.",
+    "how4Title": "Learn live",
+    "how4Text": "We meet on Zoom every week. Missed a class? The recording is already waiting in the channel.",
+    "testimonialsTitle": "What our students say",
+    "testimonial1": "These aren't lectures — they're journeys. After the Ancient Greece course I went to Athens and saw the city with completely different eyes.",
+    "testimonial1Author": "Anna, “Ancient Greece”",
+    "testimonial2": "My son looks forward to class all week. I've never seen a child so absorbed in history.",
+    "testimonial2Author": "Dmitry, student's father",
+    "testimonial3": "Philosophy turned out to be a practice, not an abstraction. The Stoics are with me every day now.",
+    "testimonial3Author": "Elena, “Greek Philosophy”",
+    "faqTitle": "Frequently asked questions",
+    "faqMore": "All questions & answers",
+    "newsletterTitle": "Letters from the Forest",
+    "newsletterText": "Once a month — new courses, open lectures and the best books. No spam.",
+    "newsletterPlaceholder": "Your email",
+    "newsletterButton": "Subscribe",
+    "newsletterSuccess": "Thank you! You're subscribed.",
+    "newsletterError": "Subscription failed. Please try again."
+  },
+  "courses": {
+    "title": "Our Courses",
+    "intro": "Thoughtfully designed courses in history, philosophy, literature and anthropology. Live classes in small groups, monthly billing, recordings for all participants.",
+    "viewCourse": "View Course",
+    "perMonth": "per month",
+    "months": "{count, plural, one {# month} other {# months}}",
+    "nextCohort": "Next cohort",
+    "seatsLeft": "{count, plural, one {# seat} other {# seats}} left",
+    "noSeats": "No seats left",
+    "category": {
+      "history": "History",
+      "philosophy": "Philosophy",
+      "literature": "Literature",
+      "anthropology": "Anthropology"
+    },
+    "difficulty": {
+      "intro": "Beginner-friendly",
+      "intermediate": "Intermediate",
+      "deep_dive": "Deep dive"
+    },
+    "ageGroup": {
+      "children": "Children",
+      "teens": "Teens",
+      "adults": "Adults"
+    },
+    "empty": "Courses are coming soon. Check back later!"
+  },
+  "course": {
+    "aboutTitle": "About the course",
+    "outcomesTitle": "What you will learn",
+    "audienceTitle": "Who this course is for",
+    "curriculumTitle": "Curriculum",
+    "moduleLabel": "Module {number}",
+    "teacherTitle": "Your teacher",
+    "formatTitle": "Teaching format",
+    "format1": "Live Zoom sessions once a week, 60–90 minutes",
+    "format2": "Private group Telegram channel: recordings, materials, discussion",
+    "format3": "Small groups — up to 15 people, everyone has a voice",
+    "format4": "Monthly billing, cancel at the end of any month",
+    "scheduleTitle": "Schedule & groups",
+    "scheduleSubtitle": "Pick a group — registration takes two minutes",
+    "pricingTitle": "Pricing",
+    "pricingNote": "Billed per month of study. The course runs {months}.",
+    "faqTitle": "Course FAQ",
+    "registerCta": "Join",
+    "backToCourses": "All courses",
+    "telegramPublic": "Public course channel"
+  },
+  "schedule": {
+    "group": "Group",
+    "day": "Day",
+    "time": "Time",
+    "starts": "Starts",
+    "seats": "Seats",
+    "action": "",
+    "join": "Join",
+    "full": "Group is full",
+    "seatsLeft": "{count, plural, one {# seat left} other {# seats left}}",
+    "timezoneNote": "Times shown in Israel time (GMT+3)."
+  },
+  "register": {
+    "title": "Registration",
+    "subtitle": "Check the details and fill in the form — payment is the next step.",
+    "summaryTitle": "Your selection",
+    "course": "Course",
+    "group": "Group",
+    "schedule": "Schedule",
+    "start": "Classes start",
+    "duration": "Duration",
+    "price": "Price",
+    "priceNote": "billed monthly",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email",
+    "phone": "Phone (optional)",
+    "phonePlaceholder": "+972 …",
+    "agreement": "I accept the <terms>terms of service</terms> and the <privacy>privacy policy</privacy>",
+    "submit": "Continue to Payment",
+    "submitting": "One moment…",
+    "errors": {
+      "firstName": "Please enter your first name",
+      "lastName": "Please enter your last name",
+      "email": "Please enter a valid email",
+      "agreement": "You need to accept the terms",
+      "generic": "Something went wrong. Please try again or contact us."
+    },
+    "groupFull": "Unfortunately this group is already full. Please choose another group.",
+    "backToCourse": "Back to the course",
+    "successTitle": "You're almost in the forest!",
+    "successText": "We've received your registration. You will now be redirected to the payment page. Right after payment, a personal Telegram invite will arrive in your inbox.",
+    "successManual": "If the redirect didn't work, use the button below.",
+    "goToPayment": "Go to payment",
+    "afterPayment": "What happens after payment?",
+    "afterPayment1": "Payment confirmation by email",
+    "afterPayment2": "A personal one-time invite link to your group's private Telegram channel",
+    "afterPayment3": "Zoom link and all materials — inside the channel"
+  },
+  "teachers": {
+    "title": "Teachers",
+    "intro": "The people who bring the past to life.",
+    "coursesBy": "Courses by this teacher",
+    "highlightsTitle": "Experience & Approach"
+  },
+  "about": {
+    "title": "About the school",
+    "intro": "Inverted Forest is an online school of history and philosophy for Russian-speaking students around the world.",
+    "storyTitle": "Our story",
+    "story1": "Inverted Forest began with a simple idea: serious humanities education can be alive, accessible and engaging — without dumbing down and without academic dryness.",
+    "story2": "Today it is a school offering courses in history, philosophy, literature and anthropology, where adults, teens and children study in small groups, read primary sources and learn to ask questions.",
+    "story3": "The name refers to an inverted forest — a literary image of trees whose roots reach for the sky: knowledge grows from the depths of the past and nourishes the present.",
+    "valuesTitle": "Our principles",
+    "value1Title": "Depth without snobbery",
+    "value1Text": "We read primary sources and serious literature, but we speak a human language.",
+    "value2Title": "Small groups",
+    "value2Text": "Up to 15 people per group — so everyone has a voice and every question is heard.",
+    "value3Title": "A living community",
+    "value3Text": "Learning doesn't end with the bell: discussions continue in the groups' Telegram channels.",
+    "ctaTitle": "Join us",
+    "ctaText": "Choose a course and become part of our forest.",
+    "ctaButton": "Explore Courses"
+  },
+  "faq": {
+    "title": "Questions & Answers",
+    "intro": "Everything people usually ask before joining a course.",
+    "items": [
+      {
+        "q": "How are classes held?",
+        "a": "Classes are held live on Zoom or Google Meet, once a week, 60–90 minutes. These are not pre-recorded lectures: you can ask questions and join the discussion."
+      },
+      {
+        "q": "What if I miss a class?",
+        "a": "All sessions are recorded. Recordings are posted in your group's private Telegram channel within 24 hours and stay available until the end of the course."
+      },
+      {
+        "q": "How does payment work?",
+        "a": "Billing is monthly: you pay for a month of study, not for the whole course upfront. Payment is by card through a secure payment page. You can cancel at the end of any month."
+      },
+      {
+        "q": "How do I get access to the group's Telegram channel?",
+        "a": "Automatically: right after payment, a personal one-time invite link arrives by email. The link is valid for 7 days and works only once."
+      },
+      {
+        "q": "What language are classes taught in?",
+        "a": "The main language of instruction is Russian. Selected groups and materials are available in English — this is indicated on the course page."
+      },
+      {
+        "q": "Is the course suitable for my child?",
+        "a": "We run separate children's and teens' groups with an adapted programme. Age groups are listed on each course page."
+      },
+      {
+        "q": "Do I need any prior knowledge?",
+        "a": "No. Every course is designed to be engaging both for newcomers and for those already familiar with the subject. All you need is curiosity and a willingness to read."
+      },
+      {
+        "q": "Can I get a refund?",
+        "a": "If after the first class you feel the course isn't for you, we will refund the first month in full. Just write to us — we'll sort it out like humans."
+      }
+    ]
+  },
+  "contacts": {
+    "title": "Contacts",
+    "intro": "Have a question about a course, need help choosing a group, or simply want to say hello — write to us, we reply quickly.",
+    "whatsapp": "Message on WhatsApp",
+    "telegram": "Message on Telegram",
+    "emailLabel": "Or by email:",
+    "consultTitle": "Free consultation",
+    "consultText": "Not sure which course to choose? Leave a request — we'll get in touch and help you pick a course and a group.",
+    "note": "We teach in Russian and English. Classes are online, from anywhere in the world."
+  },
+  "legal": {
+    "privacyTitle": "Privacy Policy",
+    "privacyUpdated": "Last updated: January 2026",
+    "privacyIntro": "We collect only the data necessary to organise your studies: your name, email and phone number when you register for a course.",
+    "privacyBody": "Your data is used to contact you, provide access to learning materials and process payments. We do not sell or share your data with third parties, except for services required to run the school (payment providers, email delivery, Telegram). You can request deletion of your data at any time by writing to us.",
+    "termsTitle": "Terms of Service",
+    "termsUpdated": "Last updated: January 2026",
+    "termsIntro": "By registering for an Inverted Forest course you agree to the following terms.",
+    "termsBody": "Payment is monthly and grants access to live classes, recordings and group materials for the paid month. Cancellation is possible at the end of any paid month. Course materials are for personal use only and may not be redistributed. If the course isn't right for you after the first class, we will refund the first month in full."
+  },
+  "footer": {
+    "tagline": "History & Philosophy for curious minds",
+    "coursesTitle": "Courses",
+    "schoolTitle": "School",
+    "legalTitle": "Legal",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "copyright": "© {year} Inverted Forest. All rights reserved."
+  },
+  "portal": {
+    "title": "Student Portal",
+    "comingSoon": "The student portal is coming soon",
+    "comingSoonText": "Your courses, payments, Zoom and Telegram links, homework and certificates will live here. For now, everything you need is in your group's Telegram channel.",
+    "backHome": "Back home"
+  },
+  "admin": {
+    "title": "Admin Dashboard",
+    "demoBanner": "Demo mode: no database connected, showing demonstration data. Configure Supabase in the environment settings.",
+    "nav": {
+      "dashboard": "Dashboard",
+      "courses": "Courses",
+      "groups": "Study Groups",
+      "teachers": "Teachers",
+      "students": "Students",
+      "payments": "Payments",
+      "telegram": "Telegram",
+      "settings": "Settings",
+      "backToSite": "← Back to site"
+    },
+    "dashboard": {
+      "activeStudents": "Active students",
+      "monthlyRevenue": "Monthly revenue",
+      "upcomingCohorts": "Open cohorts",
+      "failedPayments": "Failed payments",
+      "recentRegistrations": "Recent registrations",
+      "automationLogs": "Automation log"
+    },
+    "table": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "course": "Course",
+      "group": "Group",
+      "status": "Status",
+      "date": "Date",
+      "amount": "Amount",
+      "provider": "Provider",
+      "student": "Student",
+      "title": "Title",
+      "teacher": "Teacher",
+      "price": "Price",
+      "duration": "Duration",
+      "groups": "Groups",
+      "seats": "Seats",
+      "start": "Start",
+      "schedule": "Schedule",
+      "capacity": "Capacity",
+      "paymentUrl": "Payment URL",
+      "channel": "Channel",
+      "botStatus": "Bot",
+      "members": "Members",
+      "lastInvite": "Last invite",
+      "empty": "Nothing here yet"
+    },
+    "status": {
+      "active": "Active",
+      "pending_payment": "Pending payment",
+      "past_due": "Past due",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "succeeded": "Succeeded",
+      "pending": "Pending",
+      "failed": "Failed",
+      "refunded": "Refunded",
+      "enrolling": "Enrolling",
+      "full": "Full",
+      "in_progress": "In progress",
+      "published": "Published",
+      "draft": "Draft",
+      "archived": "Archived",
+      "botAdmin": "Administrator",
+      "botMissing": "Not connected"
+    },
+    "settings": {
+      "title": "Settings",
+      "intro": "Integrations are configured via environment variables. Current state:",
+      "configured": "Configured",
+      "notConfigured": "Not configured",
+      "supabase": "Supabase (database)",
+      "make": "Make.com (registration webhook)",
+      "webhookSecret": "Payment webhook secret",
+      "docsNote": "The full list of variables is documented in .env.example and docs/ARCHITECTURE.md."
+    }
+  },
+  "notFound": {
+    "title": "Page not found",
+    "text": "It seems you've wandered into a part of the forest that doesn't exist.",
+    "backHome": "Back home"
+  }
+}

@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Light — cream parchment, deep navy ink, amber accents */
+    --background: 248 245 239; /* #F8F5EF cream */
+    --foreground: 27 42 74; /* #1B2A4A navy */
+    --card: 255 255 255;
+    --card-foreground: 27 42 74;
+    --muted: 238 233 223;
+    --muted-foreground: 90 104 134;
+    --border: 224 217 203;
+    --primary: 27 42 74;
+    --primary-foreground: 248 245 239;
+    --accent: 200 146 42; /* #C8922A amber */
+    --accent-foreground: 27 42 74;
+  }
+
+  .dark {
+    /* Dark — the forest at night: deep navy, warm lamplight */
+    --background: 15 23 41; /* deeper than navy for contrast */
+    --foreground: 240 236 227;
+    --card: 27 42 74;
+    --card-foreground: 240 236 227;
+    --muted: 34 50 84;
+    --muted-foreground: 156 168 194;
+    --border: 45 66 114;
+    --primary: 229 169 58; /* amber-light becomes the primary in the dark */
+    --primary-foreground: 18 32 59;
+    --accent: 229 169 58;
+    --accent-foreground: 18 32 59;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-display;
+  }
+
+  ::selection {
+    @apply bg-amber/30;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .container-content {
+    @apply mx-auto w-full max-w-content px-5 sm:px-8;
+  }
+}

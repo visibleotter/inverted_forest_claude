@@ -1,0 +1,418 @@
+import type {
+  Course,
+  DashboardStats,
+  Locale,
+  LocalizedList,
+  LocalizedString,
+  PaymentRow,
+  RegistrationInput,
+  RegistrationResult,
+  StudentRow,
+  StudyGroup,
+  Teacher,
+  TelegramGroupStatus
+} from '../types';
+import type { DataProvider } from './provider';
+import { createSupabaseAdminClient } from '../supabase/server';
+
+/* Row shapes as returned by PostgREST (snake_case). */
+type TranslationRow = { locale: Locale } & Record<string, unknown>;
+
+function collectString(
+  rows: TranslationRow[],
+  field: string
+): LocalizedString {
+  const out = { ru: '', en: '' } as LocalizedString;
+  for (const row of rows) out[row.locale] = (row[field] as string) ?? '';
+  return out;
+}
+
+function collectList(rows: TranslationRow[], field: string): LocalizedList {
+  const out = { ru: [], en: [] } as LocalizedList;
+  for (const row of rows) out[row.locale] = (row[field] as string[]) ?? [];
+  return out;
+}
+
+type LocalizedBlock = { title: string; items: string[] };
+
+function collectBlocks(rows: TranslationRow[], field: string) {
+  // Per-locale arrays of {title, items} → merged bilingual structures.
+  const byLocale: Partial<Record<Locale, LocalizedBlock[]>> = {};
+  for (const row of rows) {
+    byLocale[row.locale] = ((row[field] as LocalizedBlock[]) ?? []).map(
+      (b) => ({ title: b.title ?? '', items: b.items ?? [] })
+    );
+  }
+  const length = Math.max(byLocale.ru?.length ?? 0, byLocale.en?.length ?? 0);
+  return Array.from({ length }, (_, i) => ({
+    title: {
+      ru: byLocale.ru?.[i]?.title ?? '',
+      en: byLocale.en?.[i]?.title ?? ''
+    },
+    topics: {
+      ru: byLocale.ru?.[i]?.items ?? [],
+      en: byLocale.en?.[i]?.items ?? []
+    }
+  }));
+}
+
+function collectFaq(rows: TranslationRow[]) {
+  const byLocale: Partial<
+    Record<Locale, { question: string; answer: string }[]>
+  > = {};
+  for (const row of rows) {
+    byLocale[row.locale] =
+      (row.faq as { question: string; answer: string }[]) ?? [];
+  }
+  const length = Math.max(byLocale.ru?.length ?? 0, byLocale.en?.length ?? 0);
+  return Array.from({ length }, (_, i) => ({
+    question: {
+      ru: byLocale.ru?.[i]?.question ?? '',
+      en: byLocale.en?.[i]?.question ?? ''
+    },
+    answer: {
+      ru: byLocale.ru?.[i]?.answer ?? '',
+      en: byLocale.en?.[i]?.answer ?? ''
+    }
+  }));
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function mapCourse(row: any): Course {
+  const tr: TranslationRow[] = row.course_translations ?? [];
+  return {
+    id: row.id,
+    slug: row.slug,
+    teacherId: row.teacher_id,
+    category: row.category,
+    difficulty: row.difficulty,
+    ageGroups: row.age_groups ?? [],
+    durationMonths: row.duration_months,
+    monthlyPrice: Number(row.monthly_price),
+    currency: row.currency,
+    imageUrl: row.image_url,
+    publicTelegramUrl: row.public_telegram_url,
+    status: row.status,
+    featured: row.featured,
+    title: collectString(tr, 'title'),
+    shortDescription: collectString(tr, 'short_description'),
+    description: collectString(tr, 'description'),
+    outcomes: collectList(tr, 'outcomes'),
+    audience: collectList(tr, 'audience'),
+    curriculum: collectBlocks(tr, 'curriculum'),
+    faq: collectFaq(tr)
+  };
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function mapTeacher(row: any): Teacher {
+  const tr: TranslationRow[] = row.teacher_translations ?? [];
+  return {
+    id: row.id,
+    slug: row.slug,
+    photoUrl: row.photo_url,
+    name: collectString(tr, 'name'),
+    title: collectString(tr, 'title'),
+    bio: collectString(tr, 'bio'),
+    highlights: collectList(tr, 'highlights')
+  };
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function mapGroup(row: any): StudyGroup {
+  return {
+    id: row.id,
+    courseId: row.course_id,
+    slug: row.slug,
+    audience: row.audience,
+    weekday: row.weekday,
+    time: row.start_time,
+    timezone: row.timezone,
+    startDate: row.start_date,
+    endDate: row.end_date,
+    capacity: row.capacity,
+    seatsTaken: row.seats_taken,
+    paymentUrl: row.payment_url,
+    telegramChannelId: row.telegram_channel_id,
+    status: row.status
+  };
+}
+
+const COURSE_SELECT = '*, course_translations(*)';
+
+export class SupabaseProvider implements DataProvider {
+  private get db() {
+    return createSupabaseAdminClient();
+  }
+
+  async getCourses(): Promise<Course[]> {
+    const { data, error } = await this.db
+      .from('courses')
+      .select(COURSE_SELECT)
+      .eq('status', 'published')
+      .order('created_at');
+    if (error) throw error;
+    return (data ?? []).map(mapCourse);
+  }
+
+  async getFeaturedCourses(): Promise<Course[]> {
+    const { data, error } = await this.db
+      .from('courses')
+      .select(COURSE_SELECT)
+      .eq('status', 'published')
+      .eq('featured', true);
+    if (error) throw error;
+    return (data ?? []).map(mapCourse);
+  }
+
+  async getCourseBySlug(slug: string): Promise<Course | null> {
+    const { data, error } = await this.db
+      .from('courses')
+      .select(COURSE_SELECT)
+      .eq('slug', slug)
+      .maybeSingle();
+    if (error) throw error;
+    return data ? mapCourse(data) : null;
+  }
+
+  async getCourseById(id: string): Promise<Course | null> {
+    const { data, error } = await this.db
+      .from('courses')
+      .select(COURSE_SELECT)
+      .eq('id', id)
+      .maybeSingle();
+    if (error) throw error;
+    return data ? mapCourse(data) : null;
+  }
+
+  async getTeachers(): Promise<Teacher[]> {
+    const { data, error } = await this.db
+      .from('teachers')
+      .select('*, teacher_translations(*)');
+    if (error) throw error;
+    return (data ?? []).map(mapTeacher);
+  }
+
+  async getTeacherById(id: string): Promise<Teacher | null> {
+    const { data, error } = await this.db
+      .from('teachers')
+      .select('*, teacher_translations(*)')
+      .eq('id', id)
+      .maybeSingle();
+    if (error) throw error;
+    return data ? mapTeacher(data) : null;
+  }
+
+  async getGroupsForCourse(courseId: string): Promise<StudyGroup[]> {
+    const { data, error } = await this.db
+      .from('study_groups')
+      .select('*')
+      .eq('course_id', courseId)
+      .order('start_date');
+    if (error) throw error;
+    return (data ?? []).map(mapGroup);
+  }
+
+  async getGroupById(id: string): Promise<StudyGroup | null> {
+    const { data, error } = await this.db
+      .from('study_groups')
+      .select('*')
+      .eq('id', id)
+      .maybeSingle();
+    if (error) throw error;
+    return data ? mapGroup(data) : null;
+  }
+
+  async createRegistration(
+    input: RegistrationInput
+  ): Promise<RegistrationResult> {
+    const db = this.db;
+    const group = await this.getGroupById(input.groupId);
+    if (!group) throw new Error(`Unknown study group: ${input.groupId}`);
+
+    // Upsert the student by email.
+    const { data: student, error: studentError } = await db
+      .from('students')
+      .upsert(
+        {
+          first_name: input.firstName,
+          last_name: input.lastName,
+          email: input.email.toLowerCase(),
+          phone: input.phone ?? null,
+          locale: input.locale
+        },
+        { onConflict: 'email' }
+      )
+      .select('id')
+      .single();
+    if (studentError) throw studentError;
+
+    const { data: enrollment, error: enrollmentError } = await db
+      .from('enrollments')
+      .insert({
+        student_id: student.id,
+        group_id: group.id,
+        course_id: group.courseId,
+        status: 'pending_payment'
+      })
+      .select('id')
+      .single();
+    if (enrollmentError) throw enrollmentError;
+
+    await db.from('automation_logs').insert({
+      source: 'site',
+      event: 'registration.created',
+      status: 'ok',
+      detail: `${group.id} · ${input.email}`
+    });
+
+    return { enrollmentId: enrollment.id, paymentUrl: group.paymentUrl };
+  }
+
+  async subscribeToNewsletter(email: string, locale: string): Promise<void> {
+    const { error } = await this.db
+      .from('newsletter_subscribers')
+      .upsert({ email: email.toLowerCase(), locale }, { onConflict: 'email' });
+    if (error) throw error;
+  }
+
+  async getDashboardStats(): Promise<DashboardStats> {
+    const db = this.db;
+    const [active, failed, upcoming, revenue, students, logs] =
+      await Promise.all([
+        db
+          .from('enrollments')
+          .select('id', { count: 'exact', head: true })
+          .eq('status', 'active'),
+        db
+          .from('payments')
+          .select('id', { count: 'exact', head: true })
+          .eq('status', 'failed'),
+        db
+          .from('study_groups')
+          .select('id', { count: 'exact', head: true })
+          .eq('status', 'enrolling'),
+        db
+          .from('payments')
+          .select('amount')
+          .eq('status', 'succeeded')
+          .gte(
+            'created_at',
+            new Date(new Date().setDate(1)).toISOString().slice(0, 10)
+          ),
+        this.getStudents(),
+        db
+          .from('automation_logs')
+          .select('*')
+          .order('created_at', { ascending: false })
+          .limit(10)
+      ]);
+
+    return {
+      activeStudents: active.count ?? 0,
+      monthlyRevenue: (revenue.data ?? []).reduce(
+        (sum, p) => sum + Number(p.amount),
+        0
+      ),
+      revenueCurrency: 'ILS',
+      upcomingCohorts: upcoming.count ?? 0,
+      failedPayments: failed.count ?? 0,
+      recentRegistrations: students.slice(0, 5),
+      logs: (logs.data ?? []).map((row) => ({
+        id: row.id,
+        source: row.source,
+        event: row.event,
+        status: row.status,
+        detail: row.detail,
+        createdAt: row.created_at
+      }))
+    };
+  }
+
+  async getStudents(): Promise<StudentRow[]> {
+    const { data, error } = await this.db
+      .from('enrollments')
+      .select(
+        '*, students(*), courses(id, course_translations(locale, title))'
+      )
+      .order('created_at', { ascending: false });
+    if (error) throw error;
+    return (data ?? [])
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .filter((row: any) => row.students)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .map((row: any) => ({
+        id: row.students.id,
+        firstName: row.students.first_name,
+        lastName: row.students.last_name,
+        email: row.students.email,
+        phone: row.students.phone,
+        locale: row.students.locale,
+        createdAt: row.created_at,
+        courseTitle: collectString(
+          row.courses?.course_translations ?? [],
+          'title'
+        ),
+        groupId: row.group_id,
+        enrollmentStatus: row.status
+      }));
+  }
+
+  async getPayments(): Promise<PaymentRow[]> {
+    const { data, error } = await this.db
+      .from('payments')
+      .select(
+        '*, enrollments(group_id, students(first_name, last_name), courses(course_translations(locale, title)))'
+      )
+      .order('created_at', { ascending: false });
+    if (error) throw error;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return (data ?? []).map((row: any) => ({
+      id: row.id,
+      enrollmentId: row.enrollment_id,
+      provider: row.provider,
+      amount: Number(row.amount),
+      currency: row.currency,
+      status: row.status,
+      externalId: row.external_id,
+      createdAt: row.created_at,
+      studentName: row.enrollments?.students
+        ? `${row.enrollments.students.first_name} ${row.enrollments.students.last_name}`
+        : '—',
+      courseTitle: collectString(
+        row.enrollments?.courses?.course_translations ?? [],
+        'title'
+      )
+    }));
+  }
+
+  async getAllGroups(): Promise<StudyGroup[]> {
+    const { data, error } = await this.db
+      .from('study_groups')
+      .select('*')
+      .order('start_date');
+    if (error) throw error;
+    return (data ?? []).map(mapGroup);
+  }
+
+  async getTelegramStatuses(): Promise<TelegramGroupStatus[]> {
+    const { data, error } = await this.db
+      .from('study_groups')
+      .select(
+        '*, courses(course_translations(locale, title)), telegram_channels(*)'
+      )
+      .order('start_date');
+    if (error) throw error;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return (data ?? []).map((row: any) => ({
+      group: mapGroup(row),
+      courseTitle: collectString(
+        row.courses?.course_translations ?? [],
+        'title'
+      ),
+      botIsAdmin: row.telegram_channels?.[0]?.bot_is_admin ?? false,
+      membersCount: row.telegram_channels?.[0]?.members_count ?? null,
+      lastInviteAt: row.telegram_channels?.[0]?.last_invite_at ?? null
+    }));
+  }
+}
