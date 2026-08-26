@@ -4,25 +4,44 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import { useEffect, useId, useRef, useState } from 'react';
 import { Link, usePathname } from '@/i18n/navigation';
-import { buttonVariants } from '@/components/ui/button';
 import { Portal } from '@/components/ui/portal';
 import { cn } from '@/lib/utils';
 
 /**
- * Full-height navigation drawer with a MENU/CLOSE text-roll trigger.
+ * Full-height navigation drawer.
  *
- * Used at every breakpoint rather than only on mobile, so the header stays
- * to logo + controls + trigger. Nav items are numbered to give the short
- * list some structure at large type.
+ * Motion follows the VM Robotics navbar the brief pointed at:
+ *  - three background panels wipe in from the edge on a 0.1s stagger, so the
+ *    surface arrives in layers rather than as one slab;
+ *  - the trigger label is two stacked elements sliding on a shared axis, with
+ *    an invisible copy of the wider word holding the button's width steady;
+ *  - the hamburger's middle rule collapses horizontally while the outer two
+ *    rotate into a cross;
+ *  - each link's number and label rise out of an overflow-hidden box on a
+ *    per-item stagger, and on hover the label slides up by exactly 1em into
+ *    a text-shadow ghost of itself.
+ *
+ * Palette is ours, not the reference's: amber flash, then navy, then the
+ * deep navy the drawer rests on.
+ *
+ * Added on top of the reference: a focus trap, focus restore, aria wiring,
+ * a portal (the header's backdrop-blur would otherwise trap the fixed
+ * overlay inside it), and a reduced-motion path.
  */
 
-const items = [
-  { href: '/', key: 'home' },
-  { href: '/courses', key: 'courses' },
-  { href: '/teachers', key: 'teachers' },
-  { href: '/about', key: 'about' },
-  { href: '/faq', key: 'faq' },
-  { href: '/contacts', key: 'contacts' }
+const MAIN_EASE = [0.65, 0.01, 0.05, 0.99] as const;
+const TEXT_EASE = [0.22, 1, 0.36, 1] as const;
+
+/** Amber flash, then navy, then the deep navy the drawer rests on. */
+const WIPE_PANELS = ['#C8922A', '#1B2A4A', '#0F1729'];
+
+const navLinks = [
+  { href: '/', num: '01', key: 'home' },
+  { href: '/courses', num: '02', key: 'courses' },
+  { href: '/teachers', num: '03', key: 'teachers' },
+  { href: '/about', num: '04', key: 'about' },
+  { href: '/faq', num: '05', key: 'faq' },
+  { href: '/contacts', num: '06', key: 'contacts' }
 ] as const;
 
 const FOCUSABLE =
@@ -38,7 +57,6 @@ export function NavDrawer() {
   const id = useId();
   const panelId = `nav-drawer-${id}`;
 
-  // Close on route change so a link tap doesn't leave the drawer hanging.
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
@@ -71,7 +89,6 @@ export function NavDrawer() {
     window.addEventListener('keydown', onKeyDown);
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
-    panelRef.current?.querySelector<HTMLElement>(FOCUSABLE)?.focus();
 
     return () => {
       window.removeEventListener('keydown', onKeyDown);
@@ -80,7 +97,9 @@ export function NavDrawer() {
     };
   }, [open]);
 
-  const label = open ? t('close') : t('menu');
+  const menuLabel = t('menu');
+  const closeLabel = t('close');
+  const widest = closeLabel.length > menuLabel.length ? closeLabel : menuLabel;
 
   return (
     <>
@@ -91,50 +110,61 @@ export function NavDrawer() {
         aria-expanded={open}
         aria-controls={panelId}
         aria-label={open ? t('closeMenu') : t('menu')}
-        className="group flex items-center gap-2.5 rounded-btn border border-border px-3 py-2 text-xs font-medium uppercase tracking-widest transition-colors hover:border-amber hover:text-amber focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+        className={cn(
+          'group flex select-none items-center gap-3 rounded-btn border px-3 py-2 text-xs font-medium uppercase tracking-widest transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent',
+          open
+            ? 'border-amber/60 bg-amber/10 text-amber'
+            : 'border-border hover:border-amber/50 hover:text-amber'
+        )}
       >
-        {/* Text roll: an invisible copy of the longer word reserves the width
-            so the button never changes size as the label swaps. */}
-        <span className="relative block overflow-hidden leading-none">
+        {/* Two stacked labels sliding on one axis. The invisible copy of the
+            wider word keeps the button from resizing as they swap. */}
+        <span
+          className="relative block overflow-hidden leading-none"
+          style={{ height: '1em' }}
+        >
           <span className="invisible block leading-none" aria-hidden>
-            {t('close').length > t('menu').length ? t('close') : t('menu')}
+            {widest}
           </span>
-          <AnimatePresence initial={false} mode="popLayout">
-            <motion.span
-              key={label}
-              initial={reduce ? false : { y: '100%', opacity: 0 }}
-              animate={{ y: '0%', opacity: 1 }}
-              exit={reduce ? { opacity: 0 } : { y: '-100%', opacity: 0 }}
-              transition={{ duration: reduce ? 0 : 0.28, ease: 'easeOut' }}
-              className="absolute inset-x-0 top-0 block leading-none"
-            >
-              {label}
-            </motion.span>
-          </AnimatePresence>
+          <motion.span
+            aria-hidden
+            animate={{ y: open ? '-100%' : '0%' }}
+            transition={{ duration: reduce ? 0 : 0.4, ease: TEXT_EASE }}
+            className="absolute left-0 top-0 block leading-none"
+          >
+            {menuLabel}
+          </motion.span>
+          <motion.span
+            aria-hidden
+            animate={{ y: open ? '0%' : '100%' }}
+            transition={{ duration: reduce ? 0 : 0.4, ease: TEXT_EASE }}
+            className="absolute left-0 top-0 block leading-none"
+          >
+            {closeLabel}
+          </motion.span>
         </span>
 
+        {/* Three rules: the outer two rotate into a cross, the middle one
+            collapses to the right. */}
         <span
           aria-hidden
-          className="relative flex h-3 w-4 flex-col justify-between"
+          className="relative flex h-[13px] w-5 flex-col justify-between"
         >
           <motion.span
-            animate={
-              reduce ? undefined : { rotate: open ? 45 : 0, y: open ? 5 : 0 }
-            }
-            transition={{ duration: reduce ? 0 : 0.28 }}
-            className="block h-px w-full bg-current"
+            className="block h-px origin-center bg-current"
+            animate={open ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
+            transition={{ duration: reduce ? 0 : 0.4, ease: MAIN_EASE }}
           />
           <motion.span
-            animate={reduce ? undefined : { opacity: open ? 0 : 1 }}
-            transition={{ duration: reduce ? 0 : 0.2 }}
-            className="block h-px w-full bg-current"
+            className="block h-px bg-current"
+            style={{ width: '70%', transformOrigin: 'right' }}
+            animate={open ? { scaleX: 0, opacity: 0 } : { scaleX: 1, opacity: 1 }}
+            transition={{ duration: reduce ? 0 : 0.3, ease: MAIN_EASE }}
           />
           <motion.span
-            animate={
-              reduce ? undefined : { rotate: open ? -45 : 0, y: open ? -5 : 0 }
-            }
-            transition={{ duration: reduce ? 0 : 0.28 }}
-            className="block h-px w-full bg-current"
+            className="block h-px origin-center bg-current"
+            animate={open ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }}
+            transition={{ duration: reduce ? 0 : 0.4, ease: MAIN_EASE }}
           />
         </span>
       </button>
@@ -142,79 +172,150 @@ export function NavDrawer() {
       <Portal>
         <AnimatePresence>
           {open && (
-            <motion.div
-              key={`backdrop-${id}`}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: reduce ? 0 : 0.3 }}
-              onClick={() => setOpen(false)}
-              className="fixed inset-0 z-40 bg-navy-deep/70 backdrop-blur-sm"
-            />
-          )}
-        </AnimatePresence>
+            <>
+              <motion.div
+                key="nav-backdrop"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{
+                  opacity: 0,
+                  transition: { duration: reduce ? 0 : 0.45, ease: 'easeIn' }
+                }}
+                transition={{ duration: reduce ? 0 : 0.5, ease: MAIN_EASE }}
+                onClick={() => setOpen(false)}
+                className="fixed inset-0 z-[41] bg-navy-deep/70"
+              />
 
-        <AnimatePresence>
-          {open && (
-            <motion.div
-              key={`drawer-${id}`}
-              id={panelId}
-              ref={panelRef}
-              role="dialog"
-              aria-modal="true"
-              aria-label={t('menu')}
-              initial={reduce ? { opacity: 0 } : { x: '100%' }}
-              animate={reduce ? { opacity: 1 } : { x: 0 }}
-              exit={reduce ? { opacity: 0 } : { x: '100%' }}
-              transition={{ duration: reduce ? 0 : 0.42, ease: [0.4, 0, 0.2, 1] }}
-              className="fixed bottom-0 right-0 top-0 z-50 flex w-full flex-col justify-between overflow-y-auto bg-navy px-8 pb-8 pt-24 text-cream dark:bg-navy-deep sm:w-[26rem] sm:px-12"
-            >
-              <nav aria-label={t('menu')}>
-                <ul className="space-y-1">
-                  {items.map((item, i) => {
-                    const isActive =
-                      item.href === '/'
-                        ? pathname === '/'
-                        : pathname.startsWith(item.href);
-                    return (
-                      <li key={item.href}>
-                        <Link
-                          href={item.href}
-                          onClick={() => setOpen(false)}
-                          aria-current={isActive ? 'page' : undefined}
-                          className="group flex items-baseline gap-4 py-2 focus-visible:outline-none"
+              {/* Staggered wipe: the surface arrives in three layers. */}
+              {(reduce ? WIPE_PANELS.slice(-1) : WIPE_PANELS).map((color, i) => (
+                <motion.div
+                  key={`wipe-${i}`}
+                  aria-hidden
+                  initial={{ x: reduce ? 0 : '101%' }}
+                  animate={{ x: 0 }}
+                  exit={{
+                    x: reduce ? 0 : '101%',
+                    transition: {
+                      duration: reduce ? 0 : 0.52,
+                      delay: reduce ? 0 : 0.14 + i * 0.1,
+                      ease: MAIN_EASE
+                    }
+                  }}
+                  transition={{
+                    duration: reduce ? 0 : 0.6,
+                    delay: reduce ? 0 : i * 0.1,
+                    ease: MAIN_EASE
+                  }}
+                  className="fixed bottom-0 right-0 top-0 z-[42] w-full rounded-l-2xl sm:w-[32em]"
+                  style={{ backgroundColor: color }}
+                />
+              ))}
+
+              <motion.div
+                key="nav-inner"
+                id={panelId}
+                ref={panelRef}
+                role="dialog"
+                aria-modal="true"
+                aria-label={t('menu')}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{
+                  opacity: 0,
+                  transition: { duration: reduce ? 0 : 0.12, ease: 'easeIn' }
+                }}
+                transition={{ duration: reduce ? 0 : 0.15, ease: 'easeOut' }}
+                className="pointer-events-none fixed bottom-0 right-0 top-0 z-[43] flex w-full flex-col justify-between overflow-y-auto px-8 pb-8 pt-24 sm:w-[32em] sm:px-12"
+              >
+                <nav className="pointer-events-auto" aria-label={t('menu')}>
+                  <ul>
+                    {navLinks.map((link, i) => {
+                      const isActive =
+                        link.href === '/'
+                          ? pathname === '/'
+                          : pathname.startsWith(link.href);
+                      const delay = reduce ? 0 : 0.28 + i * 0.055;
+                      return (
+                        <li
+                          key={link.href}
+                          className="overflow-hidden border-b border-cream/10"
                         >
-                          <span className="font-sans text-xs tabular-nums text-amber/70">
-                            {String(i + 1).padStart(2, '0')}
-                          </span>
-                          <span
-                            className={cn(
-                              'font-display text-2xl transition-transform duration-300 group-hover:translate-x-1.5 group-focus-visible:translate-x-1.5',
-                              isActive ? 'text-amber' : 'text-cream/90'
-                            )}
+                          <Link
+                            href={link.href}
+                            onClick={() => setOpen(false)}
+                            aria-current={isActive ? 'page' : undefined}
+                            className="group relative flex items-baseline gap-4 py-4 focus-visible:outline-none md:py-5"
                           >
-                            {t(item.key)}
-                          </span>
-                        </Link>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </nav>
+                            {/* Hover wash, growing from the bottom edge. */}
+                            <span
+                              aria-hidden
+                              className="absolute inset-0 origin-bottom scale-y-0 bg-cream/[0.06] transition-transform duration-[550ms] ease-[cubic-bezier(.65,.05,0,1)] group-hover:scale-y-100 group-focus-visible:scale-y-100"
+                            />
 
-              <div className="pt-10">
-                <Link
-                  href="/courses"
-                  onClick={() => setOpen(false)}
-                  className={cn(
-                    buttonVariants({ variant: 'accent', size: 'lg' }),
-                    'w-full'
-                  )}
-                >
-                  {t('explore')}
-                </Link>
-              </div>
-            </motion.div>
+                            <span className="relative z-10 block shrink-0 overflow-hidden">
+                              <motion.span
+                                initial={{ y: '100%' }}
+                                animate={{ y: '0%' }}
+                                transition={{
+                                  duration: reduce ? 0 : 0.55,
+                                  delay,
+                                  ease: 'linear'
+                                }}
+                                className="block font-sans text-xs tabular-nums tracking-wider text-amber-light"
+                              >
+                                {link.num}
+                              </motion.span>
+                            </span>
+
+                            <span className="relative z-10 block overflow-hidden">
+                              <motion.span
+                                initial={{ y: '100%' }}
+                                animate={{ y: '0%' }}
+                                transition={{
+                                  duration: reduce ? 0 : 0.55,
+                                  delay,
+                                  ease: 'linear'
+                                }}
+                                className={cn(
+                                  'block font-display text-3xl font-semibold tracking-tight transition-transform duration-[550ms] ease-[cubic-bezier(.65,.05,0,1)] group-hover:-translate-y-[1em] group-focus-visible:-translate-y-[1em] md:text-4xl',
+                                  isActive ? 'text-amber-light' : 'text-cream'
+                                )}
+                                style={{
+                                  textShadow: '0px 1em 0px rgba(200,146,42,0.35)'
+                                }}
+                              >
+                                {t(link.key)}
+                              </motion.span>
+                            </span>
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </nav>
+
+                <div className="pointer-events-auto space-y-4 pt-10">
+                  <div className="h-px bg-cream/10" />
+                  <motion.div
+                    initial={{ opacity: 0, y: 24 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      duration: reduce ? 0 : 0.45,
+                      delay: reduce ? 0 : 0.56,
+                      ease: TEXT_EASE
+                    }}
+                  >
+                    <Link
+                      href="/courses"
+                      onClick={() => setOpen(false)}
+                      className="flex w-full items-center justify-center rounded-btn bg-amber px-4 py-3 text-sm font-semibold text-navy-deep transition-all duration-300 hover:bg-amber-light hover:shadow-[0_0_20px_rgba(200,146,42,0.3)]"
+                    >
+                      {t('explore')}
+                    </Link>
+                  </motion.div>
+                </div>
+              </motion.div>
+            </>
           )}
         </AnimatePresence>
       </Portal>
