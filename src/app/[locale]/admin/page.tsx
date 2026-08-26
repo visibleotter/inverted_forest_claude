@@ -6,11 +6,12 @@ import {
 } from 'lucide-react';
 import { getLocale, getTranslations, setRequestLocale } from 'next-intl/server';
 import { Card, CardContent } from '@/components/ui/card';
+import { NumberTicker } from '@/components/magicui/number-ticker';
 import { AdminTable } from '@/components/admin/admin-table';
 import { StatusBadge } from '@/components/admin/status-badge';
 import { getData } from '@/lib/data';
 import type { Locale } from '@/lib/types';
-import { formatPrice, lt } from '@/lib/utils';
+import { lt } from '@/lib/utils';
 
 export default async function AdminDashboardPage({
   params: { locale }
@@ -23,26 +24,24 @@ export default async function AdminDashboardPage({
   const tTable = await getTranslations('admin.table');
   const stats = await getData().getDashboardStats();
 
+  const intlLocale = l === 'ru' ? 'ru-RU' : 'en-US';
   const cards = [
-    {
-      icon: Users,
-      label: t('activeStudents'),
-      value: String(stats.activeStudents)
-    },
+    { icon: Users, label: t('activeStudents'), value: stats.activeStudents },
     {
       icon: CircleDollarSign,
       label: t('monthlyRevenue'),
-      value: formatPrice(stats.monthlyRevenue, stats.revenueCurrency, l)
+      value: stats.monthlyRevenue,
+      currency: stats.revenueCurrency
     },
     {
       icon: CalendarRange,
       label: t('upcomingCohorts'),
-      value: String(stats.upcomingCohorts)
+      value: stats.upcomingCohorts
     },
     {
       icon: AlertTriangle,
       label: t('failedPayments'),
-      value: String(stats.failedPayments)
+      value: stats.failedPayments
     }
   ];
 
@@ -58,7 +57,11 @@ export default async function AdminDashboardPage({
               <div>
                 <p className="text-sm text-muted-foreground">{card.label}</p>
                 <p className="font-display text-2xl font-semibold">
-                  {card.value}
+                  <NumberTicker
+                    value={card.value}
+                    locale={intlLocale}
+                    currency={card.currency}
+                  />
                 </p>
               </div>
             </CardContent>
