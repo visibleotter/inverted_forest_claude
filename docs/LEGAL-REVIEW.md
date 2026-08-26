@@ -124,6 +124,24 @@ policy's own definition ("cookies required to provide a feature you
 explicitly requested"). The preferences, analytics and marketing categories
 are declared but load nothing yet.
 
+**The banner is currently switched off, deliberately.** Measured on a fresh
+visit, the site sets one cookie (`NEXT_LOCALE`) and makes zero third-party
+requests — `next/font` self-hosts the fonts and Unsplash images are proxied
+server-side through Next's optimiser, so a visitor's browser contacts nobody
+but us. With nothing optional to consent to, interrupting every visitor
+would be friction with no protection behind it, and it would overstate what
+the site does.
+
+This does not breach the policy, which promises we will set non-essential
+cookies only *after* consent; setting none at all satisfies that. The
+"Manage cookies" control stays in the footer, so the withdrawal route the
+policy names still exists, and the panel says plainly that no optional
+cookies are in use.
+
+`ACTIVE_OPTIONAL_CATEGORIES` in `src/lib/consent.ts` is the switch. Add
+`'analytics'` to it the day an analytics script goes in and the banner turns
+itself back on — no other change needed.
+
 **Still needs a decision:** the policy also mentions privacy-enhanced
 embedding for third-party video. No embeds exist yet; wire them through
 `hasConsent('marketing')` when they do.

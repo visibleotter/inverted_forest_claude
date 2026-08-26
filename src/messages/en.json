@@ -283,6 +283,7 @@
     "alwaysOn": "Always on",
     "panelTitle": "Cookie settings",
     "panelBody": "Choose the categories you allow. You can change your mind at any time through the “Manage cookies” link in the site footer.",
+    "noOptionalInUse": "The site currently uses no optional cookies: no analytics, no advertising pixels and no embedded third-party content. Your choice is saved and will apply if any of that is ever added.",
     "categories": {
       "essentials": {
         "name": "Essential",

@@ -37,6 +37,25 @@ export const OPTIONAL_CATEGORIES: ConsentCategory[] = [
   'marketing'
 ];
 
+/**
+ * Categories the site actually loads something for.
+ *
+ * Empty today: there is no analytics, no advertising pixel and no
+ * third-party embed anywhere on the site, and fonts and images are served
+ * from our own origin, so a visitor's browser contacts nobody else.
+ *
+ * Asking consent for things we do not do is friction with no protection
+ * behind it, so the banner stays down while this list is empty. Add
+ * 'analytics' here the day an analytics script goes in and the banner
+ * turns itself back on — nothing else needs changing.
+ */
+export const ACTIVE_OPTIONAL_CATEGORIES: ConsentCategory[] = [];
+
+/** Whether a visitor must be asked before we set anything. */
+export function isBannerRequired(): boolean {
+  return ACTIVE_OPTIONAL_CATEGORIES.length > 0;
+}
+
 export type ConsentChoices = Record<ConsentCategory, boolean>;
 
 export interface ConsentRecord {

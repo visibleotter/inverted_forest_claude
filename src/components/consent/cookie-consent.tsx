@@ -9,6 +9,7 @@ import { Portal } from '@/components/ui/portal';
 import {
   ACCEPT_ALL,
   DENY_ALL,
+  isBannerRequired,
   OPEN_COOKIE_SETTINGS_EVENT,
   OPTIONAL_CATEGORIES,
   readConsent,
@@ -51,7 +52,9 @@ export function CookieConsent() {
     const existing = readConsent();
     if (existing) {
       setDraft(existing.choices);
-    } else {
+    } else if (isBannerRequired()) {
+      // Nothing optional is loaded yet, so there is nothing to interrupt
+      // anyone for. The panel stays reachable from the footer regardless.
       setBannerOpen(true);
     }
   }, []);
@@ -199,6 +202,11 @@ export function CookieConsent() {
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                 {t('panelBody')}
               </p>
+              {!isBannerRequired() && (
+                <p className="mt-3 rounded-btn bg-muted/60 p-3 text-sm leading-relaxed text-muted-foreground">
+                  {t('noOptionalInUse')}
+                </p>
+              )}
 
               <ul className="mt-6 space-y-4">
                 <li className="rounded-btn border border-border p-4">
