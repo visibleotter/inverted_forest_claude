@@ -23,7 +23,7 @@ export default async function PortalPage({
 
   return (
     <div className="container-content flex min-h-[50vh] flex-col items-center justify-center gap-5 py-20 text-center">
-      <GraduationCap className="h-10 w-10 text-amber" aria-hidden />
+      <GraduationCap className="h-10 w-10 text-accent" aria-hidden />
       <h1 className="text-balance text-3xl font-semibold sm:text-4xl">
         {t('comingSoon')}
       </h1>

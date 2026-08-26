@@ -91,7 +91,7 @@ export async function CourseCard({ course }: { course: Course }) {
             </div>
           </dl>
 
-          <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-amber">
+          <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-accent">
             {t('viewCourse')}
             <ArrowRight
               className="h-4 w-4 transition-transform group-hover:translate-x-1"

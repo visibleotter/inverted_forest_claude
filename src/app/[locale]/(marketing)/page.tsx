@@ -72,15 +72,36 @@ export default async function HomePage({
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-navy text-cream dark:bg-navy-deep">
+      <section className="relative overflow-hidden surface-dark bg-deep text-mist">
+        {/*
+          Painting layer, then a scrim. The scrim is not decoration: the
+          artwork is mid-tone teal and green, so text laid straight on it
+          would fail contrast. It stays heavy on the side the copy sits and
+          thins out across, letting the image read while keeping the words
+          on a guaranteed dark ground. Using a CSS background rather than
+          next/image means a missing file degrades to the deep base instead
+          of throwing.
+        */}
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-[url('/images/hero.jpg')] bg-cover bg-center"
+        />
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-gradient-to-r from-deep via-deep/90 to-deep/55"
+        />
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-gradient-to-t from-deep via-transparent to-deep/60"
+        />
         <DotPattern
           spacing={22}
           radius={1}
-          className="text-cream/[0.07] [mask-image:radial-gradient(70%_60%_at_30%_40%,white,transparent)]"
+          className="text-mist/[0.05] [mask-image:radial-gradient(70%_60%_at_30%_40%,white,transparent)]"
         />
         <div className="container-content relative flex flex-col items-start gap-6 py-20 sm:py-24">
           <FadeIn>
-            <p className="text-sm font-semibold uppercase tracking-widest text-amber">
+            <p className="text-sm font-semibold uppercase tracking-widest text-accent">
               {t('heroEyebrow')}
             </p>
           </FadeIn>
@@ -90,7 +111,7 @@ export default async function HomePage({
             </h1>
           </FadeIn>
           <FadeIn delay={0.2}>
-            <p className="max-w-2xl text-lg leading-relaxed text-cream/80">
+            <p className="max-w-2xl text-lg leading-relaxed text-mist/80">
               {t('heroSubtitle')}
             </p>
           </FadeIn>
@@ -105,7 +126,7 @@ export default async function HomePage({
               href="/contacts"
               className={cn(
                 buttonVariants({ variant: 'outline', size: 'lg' }),
-                'border-cream/30 text-cream hover:bg-cream/10'
+                'border-mist/30 text-mist hover:bg-mist/10'
               )}
             >
               {t('heroCtaSecondary')}
@@ -113,7 +134,7 @@ export default async function HomePage({
           </FadeIn>
 
           <FadeIn delay={0.4} className="mt-6 w-full">
-            <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-cream/60">
+            <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-mist/60">
               {t('heroCoursesLabel')}
             </p>
             <CourseExpandableCards courses={courses} />
@@ -125,7 +146,7 @@ export default async function HomePage({
       <Section>
         <FadeIn className="mx-auto max-w-3xl text-center">
           <BookOpenText
-            className="mx-auto mb-6 h-8 w-8 text-amber"
+            className="mx-auto mb-6 h-8 w-8 text-accent"
             aria-hidden
           />
           <h2 className="text-balance text-3xl font-semibold sm:text-4xl">
@@ -164,7 +185,7 @@ export default async function HomePage({
             <FadeIn key={item.title} delay={i * 0.08}>
               <Card className="h-full">
                 <CardContent>
-                  <item.icon className="mb-4 h-6 w-6 text-amber" aria-hidden />
+                  <item.icon className="mb-4 h-6 w-6 text-accent" aria-hidden />
                   <h3 className="font-sans text-base font-semibold">
                     {item.title}
                   </h3>
@@ -179,21 +200,21 @@ export default async function HomePage({
       </Section>
 
       {/* How learning works */}
-      <Section className="bg-navy text-cream dark:bg-navy-deep" title={t('howTitle')}>
+      <Section className="surface-dark bg-deep text-mist" title={t('howTitle')}>
         <ol className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {how.map((step, i) => (
             <FadeIn key={step.title} delay={i * 0.08}>
               <li className="relative">
                 <span
-                  className="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-amber font-display text-lg font-semibold text-navy-deep"
+                  className="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-accent font-display text-lg font-semibold text-deep"
                   aria-hidden
                 >
                   {i + 1}
                 </span>
-                <h3 className="font-sans text-base font-semibold text-cream">
+                <h3 className="font-sans text-base font-semibold text-mist">
                   {step.title}
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-cream/70">
+                <p className="mt-2 text-sm leading-relaxed text-mist/70">
                   {step.text}
                 </p>
               </li>
@@ -209,7 +230,7 @@ export default async function HomePage({
             <FadeIn key={item.author} delay={i * 0.08}>
               <Card className="h-full">
                 <CardContent className="flex h-full flex-col">
-                  <Quote className="mb-4 h-6 w-6 text-amber" aria-hidden />
+                  <Quote className="mb-4 h-6 w-6 text-accent" aria-hidden />
                   <blockquote className="flex-1 text-base leading-relaxed">
                     {item.text}
                   </blockquote>

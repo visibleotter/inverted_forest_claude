@@ -71,7 +71,7 @@ export default async function AdminLayout({
 
       <div className="min-w-0 flex-1">
         {'demo' in access && access.demo && (
-          <div className="border-b border-amber/30 bg-amber/10 px-6 py-2.5 text-sm text-foreground">
+          <div className="border-b border-accent/30 bg-accent/10 px-6 py-2.5 text-sm text-foreground">
             {t('demoBanner')}
           </div>
         )}

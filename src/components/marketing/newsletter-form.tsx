@@ -23,7 +23,7 @@ export function NewsletterForm() {
   });
 
   if (state.status === 'success') {
-    return <p className="font-medium text-amber">{t('newsletterSuccess')}</p>;
+    return <p className="font-medium text-accent">{t('newsletterSuccess')}</p>;
   }
 
   return (

@@ -54,7 +54,7 @@ export default async function TeachersPage({
                     <h2 className="text-3xl font-semibold">
                       {lt(teacher.name, l)}
                     </h2>
-                    <p className="mt-1 font-medium text-amber">
+                    <p className="mt-1 font-medium text-accent">
                       {lt(teacher.title, l)}
                     </p>
                     <p className="mt-5 leading-relaxed text-muted-foreground">
@@ -71,7 +71,7 @@ export default async function TeachersPage({
                             <li key={course.id}>
                               <Link
                                 href={`/courses/${course.slug}`}
-                                className="inline-block rounded-full border border-border px-4 py-1.5 text-sm transition-colors hover:border-amber hover:text-amber"
+                                className="inline-block rounded-full border border-border px-4 py-1.5 text-sm transition-colors hover:border-accent hover:text-accent"
                               >
                                 {lt(course.title, l)}
                               </Link>
@@ -88,7 +88,7 @@ export default async function TeachersPage({
                       {teacher.highlights[l].map((item) => (
                         <li key={item} className="flex items-start gap-3">
                           <Check
-                            className="mt-0.5 h-4 w-4 shrink-0 text-amber"
+                            className="mt-0.5 h-4 w-4 shrink-0 text-accent"
                             aria-hidden
                           />
                           {item}

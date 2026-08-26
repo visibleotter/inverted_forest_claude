@@ -4,33 +4,33 @@
 
 @layer base {
   :root {
-    /* Light — cream parchment, deep navy ink, amber accents */
-    --background: 248 245 239; /* #F8F5EF cream */
-    --foreground: 27 42 74; /* #1B2A4A navy */
+    /* Light — mist page, deep ink, teal as the accent */
+    --background: 247 249 251;   /* mist  #F7F9FB */
+    --foreground: 18 37 47;      /* deep  #12252F  14.9:1 on mist */
     --card: 255 255 255;
-    --card-foreground: 27 42 74;
-    --muted: 238 233 223;
-    --muted-foreground: 90 104 134;
-    --border: 224 217 203;
-    --primary: 27 42 74;
-    --primary-foreground: 248 245 239;
-    --accent: 200 146 42; /* #C8922A amber */
-    --accent-foreground: 27 42 74;
+    --card-foreground: 18 37 47;
+    --muted: 233 240 246;        /* mist shaded toward sky */
+    --muted-foreground: 49 112 142; /* teal  #31708E  5.2:1 on mist */
+    --border: 214 227 237;
+    --primary: 49 112 142;       /* teal */
+    --primary-foreground: 247 249 251;
+    --accent: 49 112 142;        /* teal — sky would be 1.8:1 here */
+    --accent-foreground: 247 249 251;
   }
 
   .dark {
-    /* Dark — the forest at night: deep navy, warm lamplight */
-    --background: 15 23 41; /* deeper than navy for contrast */
-    --foreground: 240 236 227;
-    --card: 27 42 74;
-    --card-foreground: 240 236 227;
-    --muted: 34 50 84;
-    --muted-foreground: 156 168 194;
-    --border: 45 66 114;
-    --primary: 229 169 58; /* amber-light becomes the primary in the dark */
-    --primary-foreground: 18 32 59;
-    --accent: 229 169 58;
-    --accent-foreground: 18 32 59;
+    /* Dark — deep ground, mist ink, sky as the accent */
+    --background: 18 37 47;      /* deep  #12252F */
+    --foreground: 247 249 251;   /* mist          14.9:1 on deep */
+    --card: 27 55 69;            /* deep, lifted one step */
+    --card-foreground: 247 249 251;
+    --muted: 35 68 84;
+    --muted-foreground: 143 193 227; /* sky  #8FC1E3  8.2:1 on deep */
+    --border: 46 84 102;
+    --primary: 143 193 227;      /* sky */
+    --primary-foreground: 18 37 47;
+    --accent: 143 193 227;       /* sky */
+    --accent-foreground: 18 37 47;
   }
 
   html {
@@ -48,7 +48,7 @@
   }
 
   ::selection {
-    @apply bg-amber/30;
+    @apply bg-sky/40;
   }
 }
 
@@ -58,5 +58,53 @@
   }
   .container-content {
     @apply mx-auto w-full max-w-content px-5 sm:px-8;
+  }
+}
+
+@layer components {
+  /*
+   * A section that is dark in BOTH themes (hero, footer, drawer). Semantic
+   * tokens are redefined here so anything nested inside stays readable —
+   * without this, `text-accent` resolves to teal on deep (2.9:1) in light
+   * mode.
+   */
+  .surface-dark {
+    --card: 18 37 47;
+    --card-foreground: 247 249 251;
+    --muted: 27 55 69;
+    --muted-foreground: 199 217 231;
+    --border: 74 106 126;
+    --primary: 143 193 227;
+    --primary-foreground: 18 37 47;
+    --accent: 143 193 227;
+    --accent-foreground: 18 37 47;
+  }
+
+  /*
+   * A light card nested inside a dark section restores the theme values.
+   * Declared before .surface-dark so an element carrying both stays dark.
+   */
+  .surface-card {
+    --card: 255 255 255;
+    --card-foreground: 18 37 47;
+    --muted: 233 240 246;
+    --muted-foreground: 49 112 142;
+    --border: 214 227 237;
+    --primary: 49 112 142;
+    --primary-foreground: 247 249 251;
+    --accent: 49 112 142;
+    --accent-foreground: 247 249 251;
+  }
+
+  .dark .surface-card {
+    --card: 27 55 69;
+    --card-foreground: 247 249 251;
+    --muted: 35 68 84;
+    --muted-foreground: 143 193 227;
+    --border: 46 84 102;
+    --primary: 143 193 227;
+    --primary-foreground: 18 37 47;
+    --accent: 143 193 227;
+    --accent-foreground: 18 37 47;
   }
 }

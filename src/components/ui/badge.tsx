@@ -7,7 +7,7 @@ const badgeVariants = cva(
     variants: {
       variant: {
         default: 'bg-muted text-muted-foreground',
-        accent: 'bg-amber/15 text-amber dark:bg-amber/20 dark:text-amber-light',
+        accent: 'bg-accent/10 text-accent dark:bg-accent/[0.12]',
         outline: 'border border-border text-muted-foreground',
         success:
           'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300',

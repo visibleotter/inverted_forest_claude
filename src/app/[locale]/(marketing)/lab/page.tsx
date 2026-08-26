@@ -29,7 +29,7 @@ function Label({
 }) {
   return (
     <div className="container-content flex flex-wrap items-baseline gap-3 pb-4 pt-14">
-      <span className="flex h-7 w-7 items-center justify-center rounded-full bg-amber font-semibold text-navy-deep">
+      <span className="flex h-7 w-7 items-center justify-center rounded-full bg-sky font-semibold text-deep">
         {letter}
       </span>
       <h2 className="font-display text-xl font-semibold">{name}</h2>
@@ -53,14 +53,14 @@ export default async function LabPage({
     children: React.ReactNode;
     pattern?: React.ReactNode;
   }) => (
-    <section className="relative overflow-hidden bg-navy text-cream dark:bg-navy-deep">
+    <section className="relative overflow-hidden surface-dark bg-deep text-mist">
       {pattern}
       <div className="container-content relative flex flex-col items-start gap-5 py-20">
-        <p className="text-sm font-semibold uppercase tracking-widest text-amber">
+        <p className="text-sm font-semibold uppercase tracking-widest text-sky">
           {t('heroEyebrow')}
         </p>
         {children}
-        <p className="max-w-2xl text-lg leading-relaxed text-cream/80">
+        <p className="max-w-2xl text-lg leading-relaxed text-mist/80">
           {t('heroSubtitle')}
         </p>
         <div className="mt-2 flex flex-wrap gap-3">
@@ -70,7 +70,7 @@ export default async function LabPage({
           <span
             className={cn(
               buttonVariants({ variant: 'outline', size: 'lg' }),
-              'border-cream/30 text-cream'
+              'border-mist/30 text-mist'
             )}
           >
             {t('heroCtaSecondary')}
@@ -89,7 +89,7 @@ export default async function LabPage({
   return (
     <div className="pb-24">
       <div className="container-content pt-12">
-        <p className="text-sm font-semibold uppercase tracking-widest text-amber">
+        <p className="text-sm font-semibold uppercase tracking-widest text-sky">
           Internal
         </p>
         <h1 className="mt-2 font-display text-3xl font-semibold">
@@ -120,7 +120,7 @@ export default async function LabPage({
             className="pointer-events-none absolute inset-0 opacity-[0.07]"
             style={{
               backgroundImage:
-                'radial-gradient(circle at 20% 20%, #E5A93A 0, transparent 40%), radial-gradient(circle at 80% 70%, #2D4272 0, transparent 45%)'
+                'radial-gradient(circle at 20% 20%, #8FC1E3 0, transparent 40%), radial-gradient(circle at 80% 70%, #5085A5 0, transparent 45%)'
             }}
           />
         }
@@ -138,7 +138,7 @@ export default async function LabPage({
           <DotPattern
             spacing={22}
             radius={1}
-            className="text-cream/[0.07] [mask-image:radial-gradient(70%_60%_at_30%_40%,white,transparent)]"
+            className="text-mist/[0.07] [mask-image:radial-gradient(70%_60%_at_30%_40%,white,transparent)]"
           />
         }
       >
@@ -155,7 +155,7 @@ export default async function LabPage({
           <DotPattern
             spacing={22}
             radius={1}
-            className="text-cream/[0.07] [mask-image:radial-gradient(70%_60%_at_30%_40%,white,transparent)]"
+            className="text-mist/[0.07] [mask-image:radial-gradient(70%_60%_at_30%_40%,white,transparent)]"
           />
         }
       >
@@ -185,7 +185,7 @@ export default async function LabPage({
           <DotPattern
             spacing={22}
             radius={1}
-            className="text-cream/[0.07] [mask-image:radial-gradient(70%_60%_at_30%_40%,white,transparent)]"
+            className="text-mist/[0.07] [mask-image:radial-gradient(70%_60%_at_30%_40%,white,transparent)]"
           />
         }
       >

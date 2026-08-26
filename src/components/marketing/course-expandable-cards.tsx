@@ -56,6 +56,10 @@ export async function CourseExpandableCards({
             className="w-[264px] shrink-0 snap-start sm:w-[280px]"
           >
             <ExpandableCard
+              // Glass rather than a solid card: on the painting a white
+              // block would punch a hole in the section. Tokens come from
+              // the hero's .surface-dark, so text stays legible.
+              className="border-mist/20 bg-deep/50 backdrop-blur-md hover:bg-deep/65"
               title={lt(course.title, locale)}
               eyebrow={tCourses(`category.${course.category}`)}
               summary={lt(course.shortDescription, locale)}
@@ -76,7 +80,7 @@ export async function CourseExpandableCards({
                     {course.outcomes[locale].slice(0, 4).map((item) => (
                       <li key={item} className="flex items-start gap-3 text-sm">
                         <Check
-                          className="mt-0.5 h-4 w-4 shrink-0 text-amber"
+                          className="mt-0.5 h-4 w-4 shrink-0 text-accent"
                           aria-hidden
                         />
                         <span>{item}</span>

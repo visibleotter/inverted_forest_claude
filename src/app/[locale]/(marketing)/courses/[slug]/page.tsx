@@ -98,12 +98,12 @@ export default async function CoursePage({ params: { locale, slug } }: Props) {
       />
 
       {/* Hero */}
-      <section className="bg-navy text-cream dark:bg-navy-deep">
+      <section className="surface-dark bg-deep text-mist">
         <div className="container-content grid items-center gap-10 py-16 sm:py-20 lg:grid-cols-2">
           <FadeIn>
             <Link
               href="/courses"
-              className="mb-6 inline-flex items-center gap-1.5 text-sm text-cream/70 transition-colors hover:text-cream"
+              className="mb-6 inline-flex items-center gap-1.5 text-sm text-mist/70 transition-colors hover:text-mist"
             >
               <ArrowLeft className="h-4 w-4" aria-hidden />
               {t('backToCourses')}
@@ -112,11 +112,11 @@ export default async function CoursePage({ params: { locale, slug } }: Props) {
               <Badge variant="accent">
                 {tCourses(`category.${course.category}`)}
               </Badge>
-              <Badge className="bg-cream/10 text-cream/90">
+              <Badge className="bg-mist/10 text-mist/90">
                 {tCourses(`difficulty.${course.difficulty}`)}
               </Badge>
               {course.ageGroups.map((age) => (
-                <Badge key={age} className="bg-cream/10 text-cream/90">
+                <Badge key={age} className="bg-mist/10 text-mist/90">
                   {tCourses(`ageGroup.${age}`)}
                 </Badge>
               ))}
@@ -124,7 +124,7 @@ export default async function CoursePage({ params: { locale, slug } }: Props) {
             <h1 className="text-balance text-4xl font-semibold sm:text-5xl">
               {lt(course.title, l)}
             </h1>
-            <p className="mt-4 text-lg leading-relaxed text-cream/80">
+            <p className="mt-4 text-lg leading-relaxed text-mist/80">
               {lt(course.shortDescription, l)}
             </p>
             <div className="mt-6 flex flex-wrap items-center gap-4">
@@ -134,8 +134,8 @@ export default async function CoursePage({ params: { locale, slug } }: Props) {
               >
                 {t('registerCta')}
               </a>
-              <p className="text-cream/80">
-                <span className="font-display text-2xl font-semibold text-cream">
+              <p className="text-mist/80">
+                <span className="font-display text-2xl font-semibold text-mist">
                   {formatPrice(course.monthlyPrice, course.currency, l)}
                 </span>{' '}
                 {tCourses('perMonth')} ·{' '}
@@ -175,7 +175,7 @@ export default async function CoursePage({ params: { locale, slug } }: Props) {
               {course.outcomes[l].map((item) => (
                 <li key={item} className="flex items-start gap-3">
                   <Check
-                    className="mt-1 h-4 w-4 shrink-0 text-amber"
+                    className="mt-1 h-4 w-4 shrink-0 text-accent"
                     aria-hidden
                   />
                   <span>{item}</span>
@@ -192,7 +192,7 @@ export default async function CoursePage({ params: { locale, slug } }: Props) {
                   {course.audience[l].map((item) => (
                     <li key={item} className="flex items-start gap-3">
                       <Users
-                        className="mt-0.5 h-4 w-4 shrink-0 text-amber"
+                        className="mt-0.5 h-4 w-4 shrink-0 text-accent"
                         aria-hidden
                       />
                       <span>{item}</span>
@@ -207,7 +207,7 @@ export default async function CoursePage({ params: { locale, slug } }: Props) {
                   {format.map((item) => (
                     <li key={item.text} className="flex items-start gap-3">
                       <item.icon
-                        className="mt-0.5 h-4 w-4 shrink-0 text-amber"
+                        className="mt-0.5 h-4 w-4 shrink-0 text-accent"
                         aria-hidden
                       />
                       <span>{item.text}</span>
@@ -220,7 +220,7 @@ export default async function CoursePage({ params: { locale, slug } }: Props) {
                     href={course.publicTelegramUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-amber hover:underline"
+                    className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-accent hover:underline"
                   >
                     <Send className="h-4 w-4" aria-hidden />
                     {t('telegramPublic')}
@@ -239,7 +239,7 @@ export default async function CoursePage({ params: { locale, slug } }: Props) {
             <FadeIn key={i} delay={i * 0.08}>
               <Card className="h-full">
                 <CardContent>
-                  <p className="text-xs font-semibold uppercase tracking-widest text-amber">
+                  <p className="text-xs font-semibold uppercase tracking-widest text-accent">
                     {t('moduleLabel', { number: i + 1 })}
                   </p>
                   <h3 className="mt-2 text-lg font-semibold">
@@ -249,7 +249,7 @@ export default async function CoursePage({ params: { locale, slug } }: Props) {
                     {module.topics[l].map((topic) => (
                       <li key={topic} className="flex items-start gap-2.5">
                         <span
-                          className="mt-2 h-1 w-1 shrink-0 rounded-full bg-amber"
+                          className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent"
                           aria-hidden
                         />
                         {topic}
@@ -272,7 +272,7 @@ export default async function CoursePage({ params: { locale, slug } }: Props) {
                 <h3 className="text-2xl font-semibold">
                   {lt(teacher.name, l)}
                 </h3>
-                <p className="mt-1 text-sm font-medium text-amber">
+                <p className="mt-1 text-sm font-medium text-accent">
                   {lt(teacher.title, l)}
                 </p>
                 <p className="mt-4 leading-relaxed text-muted-foreground">

@@ -63,7 +63,7 @@ export default async function RegisterPage({
                 <p className="font-medium">{t('groupFull')}</p>
                 <Link
                   href={`/courses/${course.slug}#schedule`}
-                  className="mt-3 inline-block text-sm font-medium text-amber hover:underline"
+                  className="mt-3 inline-block text-sm font-medium text-accent hover:underline"
                 >
                   {t('backToCourse')}
                 </Link>
@@ -124,7 +124,7 @@ export default async function RegisterPage({
                   {[1, 2, 3].map((i) => (
                     <li key={i} className="flex items-start gap-2.5">
                       <Check
-                        className="mt-0.5 h-4 w-4 shrink-0 text-amber"
+                        className="mt-0.5 h-4 w-4 shrink-0 text-accent"
                         aria-hidden
                       />
                       {t(`afterPayment${i}` as 'afterPayment1')}

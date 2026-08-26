@@ -14,18 +14,18 @@ export async function Footer() {
   const courses = await getData().getCourses();
 
   return (
-    <footer className="border-t border-border bg-navy text-cream dark:bg-navy-deep">
+    <footer className="border-t border-border surface-dark bg-deep text-mist">
       <div className="container-content grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <p className="flex items-center gap-2 font-display text-lg font-semibold">
-            <TreePine className="h-5 w-5 rotate-180 text-amber" aria-hidden />
+            <TreePine className="h-5 w-5 rotate-180 text-sky" aria-hidden />
             Inverted Forest
           </p>
-          <p className="mt-3 max-w-xs text-sm text-cream/70">{t('tagline')}</p>
+          <p className="mt-3 max-w-xs text-sm text-mist/70">{t('tagline')}</p>
         </div>
 
         <nav aria-label={t('coursesTitle')}>
-          <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-amber">
+          <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-sky">
             {t('coursesTitle')}
           </p>
           <ul className="space-y-2 text-sm">
@@ -33,7 +33,7 @@ export async function Footer() {
               <li key={course.id}>
                 <Link
                   href={`/courses/${course.slug}`}
-                  className="text-cream/80 transition-colors hover:text-cream"
+                  className="text-mist/80 transition-colors hover:text-mist"
                 >
                   {lt(course.title, locale)}
                 </Link>
@@ -43,27 +43,27 @@ export async function Footer() {
         </nav>
 
         <nav aria-label={t('schoolTitle')}>
-          <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-amber">
+          <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-sky">
             {t('schoolTitle')}
           </p>
           <ul className="space-y-2 text-sm">
             <li>
-              <Link href="/teachers" className="text-cream/80 hover:text-cream">
+              <Link href="/teachers" className="text-mist/80 hover:text-mist">
                 {tNav('teachers')}
               </Link>
             </li>
             <li>
-              <Link href="/about" className="text-cream/80 hover:text-cream">
+              <Link href="/about" className="text-mist/80 hover:text-mist">
                 {tNav('about')}
               </Link>
             </li>
             <li>
-              <Link href="/faq" className="text-cream/80 hover:text-cream">
+              <Link href="/faq" className="text-mist/80 hover:text-mist">
                 {tNav('faq')}
               </Link>
             </li>
             <li>
-              <Link href="/contacts" className="text-cream/80 hover:text-cream">
+              <Link href="/contacts" className="text-mist/80 hover:text-mist">
                 {tNav('contacts')}
               </Link>
             </li>
@@ -71,17 +71,17 @@ export async function Footer() {
         </nav>
 
         <nav aria-label={t('legalTitle')}>
-          <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-amber">
+          <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-sky">
             {t('legalTitle')}
           </p>
           <ul className="space-y-2 text-sm">
             <li>
-              <Link href="/privacy" className="text-cream/80 hover:text-cream">
+              <Link href="/privacy" className="text-mist/80 hover:text-mist">
                 {t('privacy')}
               </Link>
             </li>
             <li>
-              <Link href="/terms" className="text-cream/80 hover:text-cream">
+              <Link href="/terms" className="text-mist/80 hover:text-mist">
                 {t('terms')}
               </Link>
             </li>
@@ -91,7 +91,7 @@ export async function Footer() {
             <li>
               <a
                 href={`mailto:${siteConfig.contactEmail}`}
-                className="text-cream/80 hover:text-cream"
+                className="text-mist/80 hover:text-mist"
               >
                 {siteConfig.contactEmail}
               </a>
@@ -100,8 +100,8 @@ export async function Footer() {
         </nav>
       </div>
 
-      <div className="border-t border-cream/10">
-        <div className="container-content py-6 text-sm text-cream/50">
+      <div className="border-t border-mist/10">
+        <div className="container-content py-6 text-sm text-mist/50">
           {t('copyright', { year: new Date().getFullYear() })}
         </div>
       </div>

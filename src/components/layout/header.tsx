@@ -21,7 +21,7 @@ export function Header() {
           href="/"
           className="flex items-center gap-2 font-display text-lg font-semibold"
         >
-          <TreePine className="h-5 w-5 rotate-180 text-amber" aria-hidden />
+          <TreePine className="h-5 w-5 rotate-180 text-accent" aria-hidden />
           Inverted Forest
         </Link>
 

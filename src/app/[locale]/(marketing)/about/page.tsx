@@ -55,7 +55,7 @@ export default async function AboutPage({
             <FadeIn key={value.title} delay={i * 0.08}>
               <Card className="h-full">
                 <CardContent>
-                  <value.icon className="mb-4 h-6 w-6 text-amber" aria-hidden />
+                  <value.icon className="mb-4 h-6 w-6 text-accent" aria-hidden />
                   <h3 className="font-sans text-base font-semibold">
                     {value.title}
                   </h3>

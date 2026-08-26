@@ -133,7 +133,7 @@ export function ExpandableCard({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={transition}
-              className="pointer-events-none fixed inset-0 z-40 bg-navy-deep/60 backdrop-blur-md"
+              className="pointer-events-none fixed inset-0 z-40 bg-deep/60 backdrop-blur-md"
             />
           )}
         </AnimatePresence>
@@ -181,7 +181,7 @@ export function ExpandableCard({
                       <motion.p
                         layoutId={layout('eyebrow')}
                         transition={transition}
-                        className="text-sm font-semibold uppercase tracking-widest text-amber"
+                        className="text-sm font-semibold uppercase tracking-widest text-accent"
                       >
                         {eyebrow}
                       </motion.p>
@@ -251,7 +251,7 @@ export function ExpandableCard({
               <motion.p
                 layoutId={layout('eyebrow')}
                 transition={transition}
-                className="text-xs font-semibold uppercase tracking-widest text-amber"
+                className="text-xs font-semibold uppercase tracking-widest text-accent"
               >
                 {eyebrow}
               </motion.p>
@@ -274,7 +274,7 @@ export function ExpandableCard({
             layoutId={layout('button')}
             transition={transition}
             aria-hidden
-            className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors group-hover:border-amber group-hover:text-amber"
+            className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors group-hover:border-accent group-hover:text-accent"
           >
             <Plus className="h-4 w-4" />
           </motion.span>

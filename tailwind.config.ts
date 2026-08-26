@@ -6,18 +6,17 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Brand palette — the existing Inverted Forest identity
-        navy: {
-          DEFAULT: '#1B2A4A',
-          light: '#2D4272',
-          deep: '#12203B'
-        },
-        cream: '#F8F5EF',
-        amber: {
-          DEFAULT: '#C8922A',
-          light: '#E5A93A'
-        },
-        // Semantic tokens (CSS-variable driven, support dark mode)
+        // Brand palette — see CLAUDE.md. Nothing outside these.
+        mist: '#F7F9FB',
+        sky: '#8FC1E3',
+        steel: '#5085A5',
+        teal: '#31708E',
+        sage: '#687864',
+        // Derived: the five supplied colours contain no true dark, which a
+        // dark theme and accents on dark sections both require.
+        deep: '#12252F',
+
+        // Semantic tokens (CSS-variable driven, follow light/dark)
         background: 'rgb(var(--background) / <alpha-value>)',
         foreground: 'rgb(var(--foreground) / <alpha-value>)',
         card: 'rgb(var(--card) / <alpha-value>)',

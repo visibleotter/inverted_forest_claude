@@ -70,7 +70,7 @@ export async function LegalDocumentView({ doc }: { doc: LegalDocument }) {
                     className="flex items-start gap-3 leading-relaxed text-muted-foreground"
                   >
                     <span
-                      className="mt-2.5 h-1 w-1 shrink-0 rounded-full bg-amber"
+                      className="mt-2.5 h-1 w-1 shrink-0 rounded-full bg-accent"
                       aria-hidden
                     />
                     <span>{fill(item)}</span>

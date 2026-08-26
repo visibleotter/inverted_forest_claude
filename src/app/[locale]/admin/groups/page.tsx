@@ -53,7 +53,7 @@ export default async function AdminGroupsPage({
                 href={group.paymentUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="max-w-[180px] truncate text-xs text-amber underline"
+                className="max-w-[180px] truncate text-xs text-accent underline"
               >
                 {group.paymentUrl.replace('https://', '')}
               </a>

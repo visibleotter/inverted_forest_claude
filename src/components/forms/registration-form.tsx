@@ -177,7 +177,7 @@ export function RegistrationForm({ groupId }: Props) {
         <label className="flex items-start gap-3 text-sm">
           <input
             type="checkbox"
-            className="mt-0.5 h-4 w-4 rounded border-border accent-[#C8922A]"
+            className="mt-0.5 h-4 w-4 rounded border-border accent-[#31708E]"
             aria-invalid={Boolean(errors.agreement)}
             {...register('agreement')}
           />

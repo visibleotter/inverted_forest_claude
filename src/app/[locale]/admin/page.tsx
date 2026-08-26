@@ -51,7 +51,7 @@ export default async function AdminDashboardPage({
         {cards.map((card) => (
           <Card key={card.label}>
             <CardContent className="flex items-center gap-4 p-5">
-              <span className="flex h-11 w-11 items-center justify-center rounded-card bg-amber/15 text-amber">
+              <span className="flex h-11 w-11 items-center justify-center rounded-card bg-accent/15 text-accent">
                 <card.icon className="h-5 w-5" aria-hidden />
               </span>
               <div>
