@@ -60,8 +60,8 @@ const sharedFaq = [
       en: 'How does payment work?'
     },
     answer: {
-      ru: 'Оплата помесячная. После регистрации вы переходите на защищённую страницу оплаты. Отменить участие можно в конце любого месяца.',
-      en: 'Billing is monthly. After registration you are redirected to a secure payment page. You can cancel at the end of any month.'
+      ru: 'Оплата помесячная. После регистрации вы переходите на защищённую страницу оплаты нашего платёжного провайдера. Условия отмены изложены в Условиях использования.',
+      en: 'Billing is monthly. After registration you are redirected to our payment provider’s secure page. Cancellation terms are set out in our Terms and Conditions.'
     }
   },
   {

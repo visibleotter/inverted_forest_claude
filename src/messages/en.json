@@ -127,7 +127,7 @@
     "format1": "Live Zoom sessions once a week, 60–90 minutes",
     "format2": "Private group Telegram channel: recordings, materials, discussion",
     "format3": "Small groups — up to 15 people, everyone has a voice",
-    "format4": "Monthly billing, cancel at the end of any month",
+    "format4": "Monthly billing through a secure payment page",
     "scheduleTitle": "Schedule & groups",
     "scheduleSubtitle": "Pick a group — registration takes two minutes",
     "pricingTitle": "Pricing",
@@ -225,7 +225,7 @@
       },
       {
         "q": "How does payment work?",
-        "a": "Billing is monthly: you pay for a month of study, not for the whole course upfront. Payment is by card through a secure payment page. You can cancel at the end of any month."
+        "a": "Billing is monthly: you pay for a month of study, not for the whole course upfront. Payment is by card on our payment provider's secure page — we never receive or store your card details. Cancellation terms are set out in our Terms and Conditions."
       },
       {
         "q": "How do I get access to the group's Telegram channel?",
@@ -244,8 +244,8 @@
         "a": "No. Every course is designed to be engaging both for newcomers and for those already familiar with the subject. All you need is curiosity and a willingness to read."
       },
       {
-        "q": "Can I get a refund?",
-        "a": "If after the first class you feel the course isn't for you, we will refund the first month in full. Just write to us — we'll sort it out like humans."
+        "q": "Can I cancel and get a refund?",
+        "a": "Cancellation and refunds are governed by the Israeli Consumer Protection Law and are set out in full in the “Cancellation and Refund Policy” section of our Terms and Conditions. If you have questions, write to us and we'll walk you through it."
       }
     ]
   },
@@ -260,14 +260,7 @@
     "note": "We teach in Russian and English. Classes are online, from anywhere in the world."
   },
   "legal": {
-    "privacyTitle": "Privacy Policy",
-    "privacyUpdated": "Last updated: January 2026",
-    "privacyIntro": "We collect only the data necessary to organise your studies: your name, email and phone number when you register for a course.",
-    "privacyBody": "Your data is used to contact you, provide access to learning materials and process payments. We do not sell or share your data with third parties, except for services required to run the school (payment providers, email delivery, Telegram). You can request deletion of your data at any time by writing to us.",
-    "termsTitle": "Terms of Service",
-    "termsUpdated": "Last updated: January 2026",
-    "termsIntro": "By registering for an Inverted Forest course you agree to the following terms.",
-    "termsBody": "Payment is monthly and grants access to live classes, recordings and group materials for the paid month. Cancellation is possible at the end of any paid month. Course materials are for personal use only and may not be redistributed. If the course isn't right for you after the first class, we will refund the first month in full."
+    "lastUpdated": "Last updated"
   },
   "footer": {
     "tagline": "History & Philosophy for curious minds",
