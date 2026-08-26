@@ -259,11 +259,12 @@ export class SupabaseProvider implements DataProvider {
       .single();
     if (enrollmentError) throw enrollmentError;
 
+    // Log identifiers, not contact details.
     await db.from('automation_logs').insert({
       source: 'site',
       event: 'registration.created',
       status: 'ok',
-      detail: `${group.id} · ${input.email}`
+      detail: `${group.id} · enrollment ${enrollment.id}`
     });
 
     return { enrollmentId: enrollment.id, paymentUrl: group.paymentUrl };

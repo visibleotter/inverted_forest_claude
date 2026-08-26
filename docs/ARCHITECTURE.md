@@ -138,7 +138,15 @@ supabase/
   seed.sql     production seed
 ```
 
-## 9. Environment variables
+## 9. Security
+
+Payment instruments never touch the platform; personal data is confined to
+service-role-only tables behind RLS; both write paths are rate limited,
+Zod-validated server-side and (for the webhook) idempotent and
+timing-safe. Full detail, threat model and operator checklist:
+[SECURITY.md](SECURITY.md).
+
+## 10. Environment variables
 
 See `.env.example`. Nothing is required to run locally — demo mode covers
 the full experience. Production needs Supabase keys, `ADMIN_EMAILS`,

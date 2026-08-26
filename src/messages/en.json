@@ -86,7 +86,8 @@
     "newsletterPlaceholder": "Your email",
     "newsletterButton": "Subscribe",
     "newsletterSuccess": "Thank you! You're subscribed.",
-    "newsletterError": "Subscription failed. Please try again."
+    "newsletterError": "Subscription failed. Please try again.",
+    "newsletterRateLimited": "Too many attempts. Please try again later."
   },
   "courses": {
     "title": "Our Courses",
@@ -172,6 +173,7 @@
       "lastName": "Please enter your last name",
       "email": "Please enter a valid email",
       "agreement": "You need to accept the terms",
+      "rateLimited": "Too many registration attempts. Please wait a few minutes or contact us directly.",
       "generic": "Something went wrong. Please try again or contact us."
     },
     "groupFull": "Unfortunately this group is already full. Please choose another group.",

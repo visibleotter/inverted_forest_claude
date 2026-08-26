@@ -27,8 +27,15 @@ export function NewsletterForm() {
   }
 
   return (
-    <form action={action} className="flex w-full max-w-md flex-col gap-3 sm:flex-row">
+    <form
+      action={action}
+      className="relative flex w-full max-w-md flex-col gap-3 sm:flex-row"
+    >
       <input type="hidden" name="locale" value={locale} />
+      {/* Honeypot — see registration-form.tsx */}
+      <div aria-hidden className="absolute left-[-9999px] h-0 w-0 overflow-hidden">
+        <input type="text" name="website" tabIndex={-1} autoComplete="off" />
+      </div>
       <label htmlFor="newsletter-email" className="sr-only">
         {t('newsletterPlaceholder')}
       </label>
@@ -41,9 +48,11 @@ export function NewsletterForm() {
         className="flex-1"
       />
       <SubmitButton label={t('newsletterButton')} />
-      {state.status === 'error' && (
+      {(state.status === 'error' || state.status === 'rate_limited') && (
         <p role="alert" className="text-sm text-red-500">
-          {t('newsletterError')}
+          {state.status === 'rate_limited'
+            ? t('newsletterRateLimited')
+            : t('newsletterError')}
         </p>
       )}
     </form>

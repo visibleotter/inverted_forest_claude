@@ -1,22 +1,27 @@
 'use server';
 
+import { headers } from 'next/headers';
 import { z } from 'zod';
 import { getData } from './data';
+import { clientIpFrom, maskEmail, rateLimit } from './security';
 import type { Locale } from './types';
 import { seatsRemaining } from './types';
 
 const registrationSchema = z.object({
-  groupId: z.string().min(1),
+  groupId: z.string().min(1).max(64),
   firstName: z.string().trim().min(1).max(100),
   lastName: z.string().trim().min(1).max(100),
-  email: z.string().trim().email(),
+  email: z.string().trim().max(320).email(),
   phone: z.string().trim().max(30).optional().or(z.literal('')),
   locale: z.enum(['ru', 'en'])
 });
 
 export type RegistrationState =
   | { status: 'idle' }
-  | { status: 'error'; code: 'validation' | 'group_full' | 'unknown' }
+  | {
+      status: 'error';
+      code: 'validation' | 'group_full' | 'rate_limited' | 'unknown';
+    }
   | { status: 'success'; paymentUrl: string | null; enrollmentId: string };
 
 /**
@@ -28,6 +33,17 @@ export async function submitRegistration(
   _prev: RegistrationState,
   formData: FormData
 ): Promise<RegistrationState> {
+  // Honeypot: a hidden field real users never see. Bots fill every input,
+  // so anything here means automation. Answer as a plain validation error
+  // rather than revealing that the trap exists.
+  if (String(formData.get('website') ?? '') !== '') {
+    return { status: 'error', code: 'validation' };
+  }
+
+  const ip = clientIpFrom(headers());
+  const limit = rateLimit(`register:${ip}`, 5, 10 * 60_000);
+  if (!limit.allowed) return { status: 'error', code: 'rate_limited' };
+
   const parsed = registrationSchema.safeParse({
     groupId: formData.get('groupId'),
     firstName: formData.get('firstName'),
@@ -57,6 +73,8 @@ export async function submitRegistration(
       locale: input.locale as Locale
     });
 
+    // The automation pipeline needs the real contact details — that is the
+    // point of the integration — but our own logs only ever see masked data.
     await notifyMake('registration.created', {
       enrollment_id: result.enrollmentId,
       group_id: group.id,
@@ -74,20 +92,31 @@ export async function submitRegistration(
       enrollmentId: result.enrollmentId
     };
   } catch (error) {
-    console.error('[registration] failed', error);
+    console.error(
+      `[registration] failed for ${maskEmail(input.email)} on ${input.groupId}`,
+      error
+    );
     return { status: 'error', code: 'unknown' };
   }
 }
 
 const newsletterSchema = z.object({
-  email: z.string().trim().email(),
+  email: z.string().trim().max(320).email(),
   locale: z.enum(['ru', 'en'])
 });
 
 export async function subscribeNewsletter(
-  _prev: { status: 'idle' | 'success' | 'error' },
+  _prev: { status: 'idle' | 'success' | 'error' | 'rate_limited' },
   formData: FormData
-): Promise<{ status: 'idle' | 'success' | 'error' }> {
+): Promise<{ status: 'idle' | 'success' | 'error' | 'rate_limited' }> {
+  if (String(formData.get('website') ?? '') !== '') {
+    return { status: 'error' };
+  }
+
+  const ip = clientIpFrom(headers());
+  const limit = rateLimit(`newsletter:${ip}`, 5, 10 * 60_000);
+  if (!limit.allowed) return { status: 'rate_limited' };
+
   const parsed = newsletterSchema.safeParse({
     email: formData.get('email'),
     locale: formData.get('locale')
@@ -102,7 +131,10 @@ export async function subscribeNewsletter(
     await notifyMake('newsletter.subscribed', parsed.data);
     return { status: 'success' };
   } catch (error) {
-    console.error('[newsletter] failed', error);
+    console.error(
+      `[newsletter] failed for ${maskEmail(parsed.data.email)}`,
+      error
+    );
     return { status: 'error' };
   }
 }

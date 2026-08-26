@@ -18,8 +18,8 @@ No configuration needed — without Supabase env vars the app runs in
 
 ## Production setup
 
-1. Create a Supabase project, run `supabase/migrations/0001_init.sql`,
-   then `supabase/seed.sql`.
+1. Create a Supabase project, run `supabase/migrations/0001_init.sql` and
+   `supabase/migrations/0002_hardening.sql`, then `supabase/seed.sql`.
 2. Copy `.env.example` → `.env.local` and fill in the keys.
 3. Deploy to Vercel (the repo ships a `vercel.json` for Next.js).
 
@@ -34,3 +34,4 @@ No configuration needed — without Supabase env vars the app runs in
 | `POST /api/webhooks/payment`   | payment results from Make.com         |
 
 Full architecture: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+Security & data protection: [docs/SECURITY.md](docs/SECURITY.md).

@@ -2,7 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useLocale, useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Link } from '@/i18n/navigation';
@@ -19,6 +19,7 @@ export function RegistrationForm({ groupId }: Props) {
   const t = useTranslations('register');
   const locale = useLocale();
   const [result, setResult] = useState<RegistrationState>({ status: 'idle' });
+  const honeypotRef = useRef<HTMLInputElement>(null);
 
   const schema = z.object({
     firstName: z.string().trim().min(1, t('errors.firstName')),
@@ -46,6 +47,7 @@ export function RegistrationForm({ groupId }: Props) {
     formData.set('email', values.email);
     formData.set('phone', values.phone ?? '');
     formData.set('locale', locale);
+    formData.set('website', honeypotRef.current?.value ?? '');
 
     const state = await submitRegistration({ status: 'idle' }, formData);
     setResult(state);
@@ -90,8 +92,20 @@ export function RegistrationForm({ groupId }: Props) {
     <form
       onSubmit={handleSubmit(onSubmit)}
       noValidate
-      className="rounded-card border border-border bg-card p-6 sm:p-8"
+      className="relative rounded-card border border-border bg-card p-6 sm:p-8"
     >
+      {/* Honeypot: hidden from people and assistive tech, irresistible to bots. */}
+      <div aria-hidden className="absolute left-[-9999px] h-0 w-0 overflow-hidden">
+        <input
+          ref={honeypotRef}
+          type="text"
+          name="website"
+          tabIndex={-1}
+          autoComplete="off"
+          defaultValue=""
+        />
+      </div>
+
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
           <label htmlFor="firstName" className="mb-1.5 block text-sm font-medium">
@@ -193,7 +207,9 @@ export function RegistrationForm({ groupId }: Props) {
         <p role="alert" className="mt-4 text-sm text-red-500">
           {result.code === 'group_full'
             ? t('groupFull')
-            : t('errors.generic')}
+            : result.code === 'rate_limited'
+              ? t('errors.rateLimited')
+              : t('errors.generic')}
         </p>
       )}
 
