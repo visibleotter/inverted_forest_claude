@@ -5,6 +5,7 @@ import { Plus } from 'lucide-react';
 import Image from 'next/image';
 import * as React from 'react';
 import { cn } from '@/lib/utils';
+import { Portal } from './portal';
 
 /**
  * Expandable card — a collapsed preview that morphs into a modal panel via
@@ -123,97 +124,99 @@ export function ExpandableCard({
 
   return (
     <>
-      <AnimatePresence>
-        {active && (
-          <motion.div
-            key={`backdrop-${id}`}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={transition}
-            className="pointer-events-none fixed inset-0 z-40 bg-navy-deep/60 backdrop-blur-md"
-          />
-        )}
-      </AnimatePresence>
-
-      <AnimatePresence>
-        {active && (
-          <motion.div
-            key={`panel-${id}`}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: reduce ? 0 : 0.2 }}
-            className="pointer-events-none fixed inset-0 z-50 grid place-items-center p-4 sm:p-6"
-          >
+      <Portal>
+        <AnimatePresence>
+          {active && (
             <motion.div
-              ref={panelRef}
-              layoutId={layout('card')}
+              key={`backdrop-${id}`}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               transition={transition}
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby={titleId}
-              className={cn(
-                'pointer-events-auto relative flex max-h-[88vh] w-full max-w-[850px] flex-col overflow-y-auto rounded-card border border-border bg-card text-card-foreground shadow-2xl',
-                classNameExpanded
-              )}
+              className="pointer-events-none fixed inset-0 z-40 bg-navy-deep/60 backdrop-blur-md"
+            />
+          )}
+        </AnimatePresence>
+
+        <AnimatePresence>
+          {active && (
+            <motion.div
+              key={`panel-${id}`}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: reduce ? 0 : 0.2 }}
+              className="pointer-events-none fixed inset-0 z-50 grid place-items-center p-4 sm:p-6"
             >
               <motion.div
-                layoutId={layout('image')}
+                ref={panelRef}
+                layoutId={layout('card')}
                 transition={transition}
-                className="relative h-64 w-full shrink-0 sm:h-80"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby={titleId}
+                className={cn(
+                  'pointer-events-auto relative flex max-h-[88vh] w-full max-w-[850px] flex-col overflow-y-auto rounded-card border border-border bg-card text-card-foreground shadow-2xl',
+                  classNameExpanded
+                )}
               >
-                <Image
-                  src={src}
-                  alt=""
-                  fill
-                  sizes="850px"
-                  className="object-cover object-center"
-                />
-                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-card to-transparent" />
-              </motion.div>
+                <motion.div
+                  layoutId={layout('image')}
+                  transition={transition}
+                  className="relative h-64 w-full shrink-0 sm:h-80"
+                >
+                  <Image
+                    src={src}
+                    alt=""
+                    fill
+                    sizes="850px"
+                    className="object-cover object-center"
+                  />
+                  <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-card to-transparent" />
+                </motion.div>
 
-              <div className="flex items-start justify-between gap-4 p-6 sm:p-8">
-                <div>
-                  {eyebrow && (
-                    <motion.p
-                      layoutId={layout('eyebrow')}
+                <div className="flex items-start justify-between gap-4 p-6 sm:p-8">
+                  <div>
+                    {eyebrow && (
+                      <motion.p
+                        layoutId={layout('eyebrow')}
+                        transition={transition}
+                        className="text-sm font-semibold uppercase tracking-widest text-amber"
+                      >
+                        {eyebrow}
+                      </motion.p>
+                    )}
+                    <motion.h3
+                      id={titleId}
+                      layoutId={layout('title')}
                       transition={transition}
-                      className="text-sm font-semibold uppercase tracking-widest text-amber"
+                      className="mt-1 font-display text-3xl font-semibold sm:text-4xl"
                     >
-                      {eyebrow}
-                    </motion.p>
-                  )}
-                  <motion.h3
-                    id={titleId}
-                    layoutId={layout('title')}
+                      {title}
+                    </motion.h3>
+                  </div>
+
+                  <motion.button
+                    ref={closeRef}
+                    type="button"
+                    aria-label={closeLabel}
+                    layoutId={layout('button')}
                     transition={transition}
-                    className="mt-1 font-display text-3xl font-semibold sm:text-4xl"
+                    onClick={() => setActive(false)}
+                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                   >
-                    {title}
-                  </motion.h3>
+                    <span className="flex rotate-45">
+                      <Plus className="h-5 w-5" aria-hidden />
+                    </span>
+                  </motion.button>
                 </div>
 
-                <motion.button
-                  ref={closeRef}
-                  type="button"
-                  aria-label={closeLabel}
-                  layoutId={layout('button')}
-                  transition={transition}
-                  onClick={() => setActive(false)}
-                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-                >
-                  <span className="flex rotate-45">
-                    <Plus className="h-5 w-5" aria-hidden />
-                  </span>
-                </motion.button>
-              </div>
-
-              <div className="px-6 pb-8 sm:px-8">{children}</div>
+                <div className="px-6 pb-8 sm:px-8">{children}</div>
+              </motion.div>
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          )}
+        </AnimatePresence>
+      </Portal>
 
       <motion.button
         ref={triggerRef}
