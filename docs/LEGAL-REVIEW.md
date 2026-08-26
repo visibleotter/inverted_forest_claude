@@ -101,28 +101,32 @@ before launch.
 
 ## C. Conflicts between the documents and the live site
 
-### C1. The Privacy Policy promises a cookie consent mechanism that does not exist
+### C1. Cookie consent — RESOLVED
 
-The policy states that except for essential cookies, "we will place and
-use cookies only if and after you provide your consent … via our cookie
-consent mechanism", that users can choose categories, and that consent
-can be withdrawn "via the cookie settings link on the website (e.g.,
-'Manage cookies')". It also says a record of consent may be retained.
+The policy commits to four cookie categories, to consent being taken before
+anything non-essential is set, to withdrawal at any time via a "Manage
+cookies" link, and to retaining a record of what was chosen and when. All of
+that is now implemented:
 
-**The site has no cookie banner, no category controls, and no consent
-record.**
+- `src/lib/consent.ts` holds the record — version, per-category choices and
+  an ISO timestamp — in the `if_cookie_consent` cookie for 180 days.
+- `src/components/consent/cookie-consent.tsx` is the banner and the
+  preferences panel. Every optional category defaults to off, and
+  "Essential only" carries the same visual weight as "Accept all"; a banner
+  where refusing is harder than accepting does not collect valid consent.
+- A "Manage cookies" control sits in the footer, as the policy names.
+- `hasConsent(category)` is the gate to call before loading any third-party
+  script, so adding analytics later cannot bypass the choice.
 
-Today the practical exposure is low: the site sets one functional cookie
-(`NEXT_LOCALE`, remembering the language the user picked) and runs no
-analytics or advertising scripts. The policy nonetheless describes
-machinery you do not have.
+What the site actually sets today is only `NEXT_LOCALE`, the theme value in
+localStorage, and the consent record itself — all Essential under the
+policy's own definition ("cookies required to provide a feature you
+explicitly requested"). The preferences, analytics and marketing categories
+are declared but load nothing yet.
 
-Two ways to close this, and you should pick one before launch:
-
-1. **Build the consent manager** — necessary anyway the moment you add
-   analytics or an advertising pixel.
-2. **Narrow the policy** to describe only the cookies actually in use,
-   and reinstate the fuller text when you add tracking.
+**Still needs a decision:** the policy also mentions privacy-enhanced
+embedding for third-party video. No embeds exist yet; wire them through
+`hasConsent('marketing')` when they do.
 
 ### C2. Refund copy elsewhere on the site contradicted the Terms — now fixed
 

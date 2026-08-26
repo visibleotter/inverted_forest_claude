@@ -1,6 +1,7 @@
 import { TreePine } from 'lucide-react';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
+import { ManageCookiesLink } from '@/components/consent/manage-cookies-link';
 import { getData } from '@/lib/data';
 import { siteConfig } from '@/lib/config';
 import { lt } from '@/lib/utils';
@@ -83,6 +84,9 @@ export async function Footer() {
               <Link href="/terms" className="text-cream/80 hover:text-cream">
                 {t('terms')}
               </Link>
+            </li>
+            <li>
+              <ManageCookiesLink />
             </li>
             <li>
               <a

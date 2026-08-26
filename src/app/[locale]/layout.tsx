@@ -7,6 +7,7 @@ import {
   getTranslations,
   setRequestLocale
 } from 'next-intl/server';
+import { CookieConsent } from '@/components/consent/cookie-consent';
 import { locales, routing } from '@/i18n/routing';
 import { siteConfig } from '@/lib/config';
 import '@/styles/globals.css';
@@ -81,6 +82,7 @@ export default async function LocaleLayout({
       <body>
         <NextIntlClientProvider messages={messages}>
           {children}
+          <CookieConsent />
         </NextIntlClientProvider>
       </body>
     </html>

@@ -271,6 +271,37 @@
   "legal": {
     "lastUpdated": "Last updated"
   },
+  "cookies": {
+    "title": "We use cookies",
+    "body": "Essential cookies keep the site working and are always on. Everything else runs only with your consent. Full details in our",
+    "privacyLink": "privacy policy",
+    "acceptAll": "Accept all",
+    "rejectAll": "Essential only",
+    "customise": "Customise",
+    "save": "Save choices",
+    "manage": "Manage cookies",
+    "alwaysOn": "Always on",
+    "panelTitle": "Cookie settings",
+    "panelBody": "Choose the categories you allow. You can change your mind at any time through the “Manage cookies” link in the site footer.",
+    "categories": {
+      "essentials": {
+        "name": "Essential",
+        "desc": "Required for the site to work: your chosen language and theme, form security, and storing this consent itself."
+      },
+      "preferences": {
+        "name": "Preferences",
+        "desc": "Remember additional interface settings so the site looks familiar on your next visit."
+      },
+      "analytics": {
+        "name": "Analytics",
+        "desc": "Help us understand which pages and courses draw interest so we can improve the site. Not in use today."
+      },
+      "marketing": {
+        "name": "Marketing",
+        "desc": "Let us measure how well course advertising performs. Not in use today."
+      }
+    }
+  },
   "footer": {
     "tagline": "History & Philosophy for curious minds",
     "coursesTitle": "Courses",
