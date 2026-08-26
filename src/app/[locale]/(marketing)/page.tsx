@@ -18,6 +18,8 @@ import { Card, CardContent } from '@/components/ui/card';
 import { FadeIn } from '@/components/ui/fade-in';
 import { Section } from '@/components/ui/section';
 import { CourseCard } from '@/components/marketing/course-card';
+import { CourseExpandableCards } from '@/components/marketing/course-expandable-cards';
+import { DotPattern } from '@/components/magicui/dot-pattern';
 import { NewsletterForm } from '@/components/marketing/newsletter-form';
 import { getData } from '@/lib/data';
 import { cn } from '@/lib/utils';
@@ -42,7 +44,9 @@ export default async function HomePage({
   setRequestLocale(locale);
   const t = await getTranslations('home');
   const tFaq = await getTranslations('faq');
-  const featured = await getData().getFeaturedCourses();
+  const courses = await getData().getCourses();
+  // Derived rather than a second query; the hero strip already has them all.
+  const featured = courses.filter((course) => course.featured);
 
   const why = [
     { icon: Sparkles, title: t('why1Title'), text: t('why1Text') },
@@ -69,15 +73,12 @@ export default async function HomePage({
     <>
       {/* Hero */}
       <section className="relative overflow-hidden bg-navy text-cream dark:bg-navy-deep">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 opacity-[0.07]"
-          style={{
-            backgroundImage:
-              'radial-gradient(circle at 20% 20%, #E5A93A 0, transparent 40%), radial-gradient(circle at 80% 70%, #2D4272 0, transparent 45%)'
-          }}
+        <DotPattern
+          spacing={22}
+          radius={1}
+          className="text-cream/[0.07] [mask-image:radial-gradient(70%_60%_at_30%_40%,white,transparent)]"
         />
-        <div className="container-content relative flex flex-col items-start gap-6 py-24 sm:py-32 lg:py-40">
+        <div className="container-content relative flex flex-col items-start gap-6 py-20 sm:py-24">
           <FadeIn>
             <p className="text-sm font-semibold uppercase tracking-widest text-amber">
               {t('heroEyebrow')}
@@ -109,6 +110,13 @@ export default async function HomePage({
             >
               {t('heroCtaSecondary')}
             </Link>
+          </FadeIn>
+
+          <FadeIn delay={0.4} className="mt-6 w-full">
+            <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-cream/60">
+              {t('heroCoursesLabel')}
+            </p>
+            <CourseExpandableCards courses={courses} />
           </FadeIn>
         </div>
       </section>

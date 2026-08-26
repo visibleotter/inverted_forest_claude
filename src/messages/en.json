@@ -25,9 +25,15 @@
       "title": "Contacts",
       "description": "Get in touch with Inverted Forest — WhatsApp, Telegram or email."
     },
-    "privacy": { "title": "Privacy Policy" },
-    "terms": { "title": "Terms of Service" },
-    "register": { "title": "Course Registration" }
+    "privacy": {
+      "title": "Privacy Policy"
+    },
+    "terms": {
+      "title": "Terms of Service"
+    },
+    "register": {
+      "title": "Course Registration"
+    }
   },
   "nav": {
     "home": "Home",
@@ -49,6 +55,7 @@
     "heroSubtitle": "Live courses for adults and children — from Ancient Greece to Medieval Russia. Learn to think deeper, question more, and see the past anew.",
     "heroCtaPrimary": "Explore Courses",
     "heroCtaSecondary": "Request Consultation",
+    "heroCoursesLabel": "Courses this season",
     "manifestoTitle": "A quiet library in the middle of a forest",
     "manifesto": "We believe history and philosophy are not luxuries but essential tools for understanding ourselves and the world. Our classes are a slow, attentive reading of the past among kindred spirits: no rush, no shallowness, with respect for the sources and for your questions.",
     "featuredTitle": "Featured Courses",
@@ -93,6 +100,7 @@
     "title": "Our Courses",
     "intro": "Thoughtfully designed courses in history, philosophy, literature and anthropology. Live classes in small groups, monthly billing, recordings for all participants.",
     "viewCourse": "View Course",
+    "close": "Close",
     "perMonth": "per month",
     "months": "{count, plural, one {# month} other {# months}}",
     "nextCohort": "Next cohort",
