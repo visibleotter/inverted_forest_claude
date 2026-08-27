@@ -18,7 +18,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { FadeIn } from '@/components/ui/fade-in';
 import { Section } from '@/components/ui/section';
 import { CourseExpandableCards } from '@/components/marketing/course-expandable-cards';
-import { DotPattern } from '@/components/magicui/dot-pattern';
+import { SmoothScrollHero } from '@/components/ui/smooth-scroll-hero';
 import { NewsletterForm } from '@/components/marketing/newsletter-form';
 import { getData } from '@/lib/data';
 import { cn } from '@/lib/utils';
@@ -68,51 +68,30 @@ export default async function HomePage({
 
   return (
     <>
-      {/* Hero */}
-      <section className="relative overflow-hidden surface-dark bg-night text-linen">
-        {/*
-          Painting layer, then a scrim. The scrim is not decoration: the
-          artwork is mid-tone and busy, so text laid straight on it
-          would fail contrast. It stays heavy on the side the copy sits and
-          thins out across, letting the image read while keeping the words
-          on a guaranteed dark ground. Using a CSS background rather than
-          next/image means a missing file degrades to the night base instead
-          of throwing.
-        */}
-        <div
-          aria-hidden
-          className="absolute inset-0 bg-[url('/images/hero.jpg')] bg-cover bg-center"
-        />
-        <div
-          aria-hidden
-          className="absolute inset-0 bg-gradient-to-r from-night via-night/90 to-night/55"
-        />
-        <div
-          aria-hidden
-          className="absolute inset-0 bg-gradient-to-t from-night via-transparent to-night/60"
-        />
-        <DotPattern
-          spacing={22}
-          radius={1}
-          className="text-linen/[0.05] [mask-image:radial-gradient(70%_60%_at_30%_40%,white,transparent)]"
-        />
-        <div className="container-content relative flex flex-col items-start gap-6 py-24 sm:py-32">
-          <FadeIn>
+      {/* Hero — sticky image widening out of a clipped window as you scroll */}
+      <SmoothScrollHero
+        scrollHeight={1200}
+        desktopImage="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=2400&q=80"
+        mobileImage="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1200&q=80"
+        className="surface-dark text-linen"
+      >
+        <div className="container-content flex flex-col items-start gap-6">
+          <FadeIn inView={false}>
             <p className="text-sm font-semibold uppercase tracking-widest text-accent">
               {t('heroEyebrow')}
             </p>
           </FadeIn>
-          <FadeIn delay={0.1}>
+          <FadeIn inView={false} delay={0.1}>
             <h1 className="max-w-3xl text-balance text-4xl font-semibold leading-tight sm:text-5xl lg:text-6xl">
               {t('heroTitle')}
             </h1>
           </FadeIn>
-          <FadeIn delay={0.2}>
+          <FadeIn inView={false} delay={0.2}>
             <p className="max-w-2xl text-lg leading-relaxed text-linen/80">
               {t('heroSubtitle')}
             </p>
           </FadeIn>
-          <FadeIn delay={0.3} className="mt-4 flex flex-wrap gap-3">
+          <FadeIn inView={false} delay={0.3} className="mt-4 flex flex-wrap gap-3">
             <Link
               href="/courses"
               className={buttonVariants({ variant: 'accent', size: 'lg' })}
@@ -130,7 +109,7 @@ export default async function HomePage({
             </Link>
           </FadeIn>
         </div>
-      </section>
+      </SmoothScrollHero>
 
       {/* Manifesto */}
       <Section>

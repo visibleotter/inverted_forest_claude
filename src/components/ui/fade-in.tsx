@@ -6,6 +6,12 @@ interface FadeInProps {
   children: React.ReactNode;
   delay?: number;
   className?: string;
+  /**
+   * Reveal on scroll-into-view (default) or immediately on mount. The
+   * sticky hero needs the latter — it is already in view at load, and its
+   * position changes as the page scrolls.
+   */
+  inView?: boolean;
 }
 
 /**
@@ -15,9 +21,14 @@ interface FadeInProps {
  * reveal now resolves a slight blur as well as opacity, which reads softer
  * than a plain translate. Reduced motion is handled inside BlurFade.
  */
-export function FadeIn({ children, delay = 0, className }: FadeInProps) {
+export function FadeIn({
+  children,
+  delay = 0,
+  className,
+  inView = true
+}: FadeInProps) {
   return (
-    <BlurFade delay={delay} className={className}>
+    <BlurFade delay={delay} className={className} inView={inView}>
       {children}
     </BlurFade>
   );
