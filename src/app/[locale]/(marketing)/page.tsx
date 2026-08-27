@@ -71,7 +71,7 @@ export default async function HomePage({
       {/* Hero — the image opens on scroll, then the copy rises into it */}
       <SmoothScrollHero
         scrollHeight={1200}
-        desktopImage="/images/hero.jpg"
+        desktopImage="/images/hero.webp"
         className="surface-dark text-paper"
       >
         <div className="container-content flex flex-col items-start gap-6">
