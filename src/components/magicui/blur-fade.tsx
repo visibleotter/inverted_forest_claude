@@ -43,15 +43,21 @@ export function BlurFade({
   const inViewResult = useInView(ref, { once: true, margin: '-60px' });
   const isVisible = !inView || inViewResult;
 
-  if (reduce) return <div className={className}>{children}</div>;
-
   const axis = direction === 'left' || direction === 'right' ? 'x' : 'y';
   const sign = direction === 'right' || direction === 'down' ? -offset : offset;
 
-  const variants: Variants = {
-    hidden: { [axis]: sign, opacity: 0, filter: `blur(${blur})` },
-    visible: { [axis]: 0, opacity: 1, filter: 'blur(0px)' }
-  };
+  // Reduced motion keeps the identical element and simply lands on the
+  // visible state instantly, rather than switching to a plain <div>, which
+  // would change the tree between server and client.
+  const variants: Variants = reduce
+    ? {
+        hidden: { opacity: 1, filter: 'none' },
+        visible: { opacity: 1, filter: 'none' }
+      }
+    : {
+        hidden: { [axis]: sign, opacity: 0, filter: `blur(${blur})` },
+        visible: { [axis]: 0, opacity: 1, filter: 'blur(0px)' }
+      };
 
   return (
     <motion.div
@@ -59,7 +65,11 @@ export function BlurFade({
       initial="hidden"
       animate={isVisible ? 'visible' : 'hidden'}
       variants={variants}
-      transition={{ delay: 0.04 + delay, duration, ease: 'easeOut' }}
+      transition={{
+        delay: reduce ? 0 : 0.04 + delay,
+        duration: reduce ? 0 : duration,
+        ease: 'easeOut'
+      }}
       className={className}
       {...props}
     >
