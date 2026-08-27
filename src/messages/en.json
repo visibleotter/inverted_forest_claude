@@ -47,8 +47,7 @@
     "menu": "Menu",
     "closeMenu": "Close menu",
     "close": "Close",
-    "switchLocale": "Русский",
-    "toggleTheme": "Toggle theme"
+    "switchLocale": "Русский"
   },
   "home": {
     "heroEyebrow": "Online school of history & philosophy",
@@ -56,7 +55,6 @@
     "heroSubtitle": "Live courses for adults and children — from Ancient Greece to Medieval Russia. Learn to think deeper, question more, and see the past anew.",
     "heroCtaPrimary": "Explore Courses",
     "heroCtaSecondary": "Request Consultation",
-    "heroCoursesLabel": "Courses this season",
     "manifestoTitle": "A quiet library in the middle of a forest",
     "manifesto": "We believe history and philosophy are not luxuries but essential tools for understanding ourselves and the world. Our classes are a slow, attentive reading of the past among kindred spirits: no rush, no shallowness, with respect for the sources and for your questions.",
     "featuredTitle": "Featured Courses",

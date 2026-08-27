@@ -33,7 +33,7 @@ const MAIN_EASE = [0.65, 0.01, 0.05, 0.99] as const;
 const TEXT_EASE = [0.22, 1, 0.36, 1] as const;
 
 /** Gold flash, then cobalt, then the night the drawer rests on. */
-const WIPE_PANELS = ['#D9A441', '#2E4A8A', '#16233F'];
+const WIPE_PANELS = ['#D9A441', '#2E4A8A', '#141C3E'];
 
 const navLinks = [
   { href: '/', num: '01', key: 'home' },

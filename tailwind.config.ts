@@ -1,18 +1,17 @@
 import type { Config } from 'tailwindcss';
 
 const config: Config = {
-  darkMode: 'class',
   content: ['./src/**/*.{ts,tsx}'],
   theme: {
     extend: {
       colors: {
         // Brand palette — see CLAUDE.md. Nothing outside these.
-        linen: '#F4EFE6',   // warm paper
+        linen: '#F2EAD9',   // warm paper
         gold: '#D9A441',    // Chagall gold — accent on dark only
         haze: '#8E9FD4',    // Utkin storm light — muted text on dark
         cobalt: '#2E4A8A',  // the Chagall blue — primary on light
         rose: '#8E3340',    // deep crimson — warm accent on light only
-        night: '#16233F',   // night sky — dark surfaces, body text on light
+        night: '#141C3E',   // night sky — dark surfaces, body text on light
 
         // Semantic tokens (CSS-variable driven, follow light/dark)
         background: 'rgb(var(--background) / <alpha-value>)',

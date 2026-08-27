@@ -17,7 +17,6 @@ import { buttonVariants } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { FadeIn } from '@/components/ui/fade-in';
 import { Section } from '@/components/ui/section';
-import { CourseCard } from '@/components/marketing/course-card';
 import { CourseExpandableCards } from '@/components/marketing/course-expandable-cards';
 import { DotPattern } from '@/components/magicui/dot-pattern';
 import { NewsletterForm } from '@/components/marketing/newsletter-form';
@@ -45,8 +44,6 @@ export default async function HomePage({
   const t = await getTranslations('home');
   const tFaq = await getTranslations('faq');
   const courses = await getData().getCourses();
-  // Derived rather than a second query; the hero strip already has them all.
-  const featured = courses.filter((course) => course.featured);
 
   const why = [
     { icon: Sparkles, title: t('why1Title'), text: t('why1Text') },
@@ -99,7 +96,7 @@ export default async function HomePage({
           radius={1}
           className="text-linen/[0.05] [mask-image:radial-gradient(70%_60%_at_30%_40%,white,transparent)]"
         />
-        <div className="container-content relative flex flex-col items-start gap-6 py-20 sm:py-24">
+        <div className="container-content relative flex flex-col items-start gap-6 py-24 sm:py-32">
           <FadeIn>
             <p className="text-sm font-semibold uppercase tracking-widest text-accent">
               {t('heroEyebrow')}
@@ -132,13 +129,6 @@ export default async function HomePage({
               {t('heroCtaSecondary')}
             </Link>
           </FadeIn>
-
-          <FadeIn delay={0.4} className="mt-6 w-full">
-            <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-linen/60">
-              {t('heroCoursesLabel')}
-            </p>
-            <CourseExpandableCards courses={courses} />
-          </FadeIn>
         </div>
       </section>
 
@@ -164,13 +154,7 @@ export default async function HomePage({
         title={t('featuredTitle')}
         subtitle={t('featuredSubtitle')}
       >
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {featured.map((course, i) => (
-            <FadeIn key={course.id} delay={i * 0.08}>
-              <CourseCard course={course} />
-            </FadeIn>
-          ))}
-        </div>
+        <CourseExpandableCards courses={courses} />
         <FadeIn className="mt-10">
           <Link href="/courses" className={buttonVariants({ variant: 'outline' })}>
             {t('allCourses')}

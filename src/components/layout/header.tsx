@@ -5,7 +5,6 @@ import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { LocaleSwitcher } from './locale-switcher';
 import { NavDrawer } from './nav-drawer';
-import { ThemeToggle } from './theme-toggle';
 
 /**
  * Header stays to logo + controls + drawer trigger at every breakpoint.
@@ -27,7 +26,6 @@ export function Header() {
 
         <div className="flex items-center gap-1 sm:gap-2">
           <LocaleSwitcher label={t('switchLocale')} />
-          <ThemeToggle label={t('toggleTheme')} />
           <NavDrawer />
         </div>
       </div>

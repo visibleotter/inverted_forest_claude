@@ -24,9 +24,6 @@ const playfair = Playfair_Display({
   display: 'swap'
 });
 
-// Applies the saved theme before first paint to avoid a flash.
-const themeScript = `(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(!t&&matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.classList.add('dark')}}catch(e){}})()`;
-
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }
@@ -74,11 +71,7 @@ export default async function LocaleLayout({
     <html
       lang={locale}
       className={`${inter.variable} ${playfair.variable}`}
-      suppressHydrationWarning
     >
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-      </head>
       <body>
         <NextIntlClientProvider messages={messages}>
           {children}

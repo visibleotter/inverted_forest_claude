@@ -9,7 +9,7 @@ import { seatsRemaining } from '@/lib/types';
 import { cn, formatDate, formatPrice, lt } from '@/lib/utils';
 
 /**
- * Horizontally scrollable row of expandable course cards for the hero.
+ * Grid of expandable course cards.
  *
  * The collapsed card carries the one-sentence `shortDescription` that already
  * exists on every course, so nothing new had to be authored and the strip
@@ -40,26 +40,12 @@ export async function CourseExpandableCards({
   );
 
   return (
-    <div
-      className="w-full overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-      style={{
-        maskImage:
-          'linear-gradient(to right, transparent, black 2%, black 98%, transparent)',
-        WebkitMaskImage:
-          'linear-gradient(to right, transparent, black 2%, black 98%, transparent)'
-      }}
-    >
-      <ul className="flex snap-x snap-mandatory gap-4 px-1">
+    <div className="w-full">
+      <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {cards.map(({ course, nextGroup, seats }) => (
-          <li
-            key={course.id}
-            className="w-[264px] shrink-0 snap-start sm:w-[280px]"
-          >
+          <li key={course.id}>
             <ExpandableCard
-              // Glass rather than a solid card: on the painting a white
-              // block would punch a hole in the section. Tokens come from
-              // the hero's .surface-dark, so text stays legible.
-              className="border-linen/20 bg-night/50 backdrop-blur-md hover:bg-night/65"
+              className="h-full"
               title={lt(course.title, locale)}
               eyebrow={tCourses(`category.${course.category}`)}
               summary={lt(course.shortDescription, locale)}
