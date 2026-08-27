@@ -16,7 +16,8 @@ insert into courses (id, slug, teacher_id, category, difficulty, age_groups, dur
 ('course_002', 'ancient-greece', 'teacher_001', 'history', 'intro', '{adults,children}', 3, 350, 'ILS', 'https://images.unsplash.com/photo-1555993539-1732b0258235?w=1200&q=80', 'https://t.me/invertedforest', 'published', true),
 ('course_003', 'greek-philosophy', 'teacher_001', 'philosophy', 'intermediate', '{adults,teens}', 3, 380, 'ILS', 'https://images.unsplash.com/photo-1564399579883-451a5d44ec08?w=1200&q=80', 'https://t.me/invertedforest', 'published', true),
 ('course_004', 'prehistoric-mindset', 'teacher_001', 'anthropology', 'deep_dive', '{adults}', 2, 380, 'ILS', 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=1200&q=80', 'https://t.me/invertedforest', 'published', false),
-('course_005', 'american-short-stories', 'teacher_001', 'literature', 'intro', '{adults}', 3, 300, 'ILS', 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1200&q=80', 'https://t.me/invertedforest', 'published', false);
+('course_005', 'american-short-stories', 'teacher_001', 'literature', 'intro', '{adults}', 3, 300, 'ILS', 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1200&q=80', 'https://t.me/invertedforest', 'published', false),
+('course_006', 'ancient-near-east', 'teacher_001', 'history', 'intermediate', '{adults,teens}', 3, 350, 'ILS', 'https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=1200&q=80', 'https://t.me/invertedforest', 'published', true);
 
 -- Course translations: titles + short descriptions (full copy lives in the
 -- admin panel / seed.ts and can be completed there).
@@ -27,10 +28,12 @@ insert into course_translations (course_id, locale, title, short_description, de
 ('course_002', 'en', 'Ancient Greece', 'The world of city-states, democracy, and myth — from the Bronze Age Minoans to the conquests of Alexander the Great.', 'A broad survey of ancient Greek history and culture from the Minoan world to the Hellenistic era.'),
 ('course_003', 'ru', 'Греческая философия', 'От досократиков до пещеры Платона, этики Аристотеля и стоического поиска душевного покоя.', 'Курс исследует основные школы и мыслителей древнегреческой философии.'),
 ('course_003', 'en', 'Greek Philosophy', 'From the pre-Socratics to Plato''s cave, Aristotle''s ethics, and the Stoic quest for peace of mind.', 'This course explores the major schools and thinkers of ancient Greek philosophy.'),
-('course_004', 'ru', 'Доисторическое мышление', 'Когнитивный и духовный мир наших доисторических предков — наскальная живопись, ритуал, шаманизм.', 'Опираясь на археологию, когнитивные науки и антропологию, курс исследует, как Homo sapiens развил сознание, язык, искусство и религию.'),
-('course_004', 'en', 'Prehistoric Mindset', 'The cognitive and spiritual world of our prehistoric ancestors — cave paintings, ritual, shamanism.', 'Drawing on archaeology, cognitive science, and anthropology, this course investigates how Homo sapiens developed consciousness, language, art, and religion.'),
+('course_004', 'ru', 'История первобытности', 'Когнитивный и духовный мир наших доисторических предков — наскальная живопись, ритуал, шаманизм.', 'Опираясь на археологию, когнитивные науки и антропологию, курс исследует, как Homo sapiens развил сознание, язык, искусство и религию.'),
+('course_004', 'en', 'Human Prehistory', 'The cognitive and spiritual world of our prehistoric ancestors — cave paintings, ritual, shamanism.', 'Drawing on archaeology, cognitive science, and anthropology, this course investigates how Homo sapiens developed consciousness, language, art, and religion.'),
 ('course_005', 'ru', 'Чтение американских рассказов', 'Книжный клуб для взрослых: от Хемингуэя и Карвера до Фланнери О''Коннор.', 'Каждое занятие посвящено одному-двум рассказам, выбранным за мастерство, темы и культурное значение.'),
-('course_005', 'en', 'Reading Short American Stories', 'A book club for adults: from Hemingway and Carver to Flannery O''Connor.', 'Each session focuses on one or two short stories chosen for their craft, themes, and cultural significance.');
+('course_005', 'en', 'Reading Short American Stories', 'A book club for adults: from Hemingway and Carver to Flannery O''Connor.', 'Each session focuses on one or two short stories chosen for their craft, themes, and cultural significance.'),
+('course_006', 'ru', 'Первые цивилизации Древнего Востока', 'Города, письменность и первые законы — от шумерского Урука до Вавилона, Ассирии и Египта фараонов.', 'Курс о том, как впервые в истории возникли город, государство и письменность: Шумер и Аккад, Вавилон Хаммурапи, Ассирия, Египет, хетты и Персия.'),
+('course_006', 'en', 'The First Civilizations of the Ancient Near East', 'Cities, writing and the first laws — from Sumerian Uruk to Babylon, Assyria and the Egypt of the pharaohs.', 'A course on the first appearance of the city, the state and writing: Sumer and Akkad, the Babylon of Hammurabi, Assyria, Egypt, the Hittites and Persia.');
 
 insert into study_groups (id, course_id, slug, audience, weekday, start_time, timezone, start_date, end_date, capacity, seats_taken, payment_url, telegram_channel_id, status) values
 ('group_101', 'course_002', 'greece-tue-16-children', 'children', 2, '16:00', 'Asia/Jerusalem', '2026-10-06', '2026-12-22', 12, 5, 'https://www.paypal.com/paypalme/invertedforest/350', '-1001000000101', 'enrolling'),
@@ -40,7 +43,9 @@ insert into study_groups (id, course_id, slug, audience, weekday, start_time, ti
 ('group_105', 'course_003', 'philosophy-mon-20-adults', 'adults', 1, '20:00', 'Asia/Jerusalem', '2026-10-05', '2027-01-04', 15, 9, 'https://www.paypal.com/paypalme/invertedforest/380', '-1001000000105', 'enrolling'),
 ('group_106', 'course_003', 'philosophy-thu-18-teens', 'teens', 4, '18:00', 'Asia/Jerusalem', '2026-10-08', '2027-01-07', 12, 12, 'https://www.paypal.com/paypalme/invertedforest/380', '-1001000000106', 'full'),
 ('group_107', 'course_004', 'prehistoric-sun-20-adults', 'adults', 0, '20:00', 'Asia/Jerusalem', '2026-11-01', '2026-12-27', 15, 2, 'https://www.paypal.com/paypalme/invertedforest/380', '-1001000000107', 'enrolling'),
-('group_108', 'course_005', 'stories-thu-20-adults', 'adults', 4, '20:00', 'Asia/Jerusalem', '2026-10-08', '2027-01-07', 10, 6, 'https://www.paypal.com/paypalme/invertedforest/300', '-1001000000108', 'enrolling');
+('group_108', 'course_005', 'stories-thu-20-adults', 'adults', 4, '20:00', 'Asia/Jerusalem', '2026-10-08', '2027-01-07', 10, 6, 'https://www.paypal.com/paypalme/invertedforest/300', '-1001000000108', 'enrolling'),
+('group_109', 'course_006', 'near-east-tue-20-adults', 'adults', 2, '20:00', 'Asia/Jerusalem', '2026-10-06', '2027-01-05', 15, 3, 'https://www.paypal.com/paypalme/invertedforest/350', '-1001000000109', 'enrolling'),
+('group_110', 'course_006', 'near-east-sun-18-teens', 'teens', 0, '18:00', 'Asia/Jerusalem', '2026-10-11', '2027-01-10', 12, 1, 'https://www.paypal.com/paypalme/invertedforest/350', '-1001000000110', 'enrolling');
 
 insert into telegram_channels (chat_id, kind, group_id, title, bot_is_admin) values
 ('-1001000000101', 'private', 'group_101', 'Греция · дети · вт 16:00', true),
@@ -50,7 +55,9 @@ insert into telegram_channels (chat_id, kind, group_id, title, bot_is_admin) val
 ('-1001000000105', 'private', 'group_105', 'Философия · пн 20:00', true),
 ('-1001000000106', 'private', 'group_106', 'Философия · подростки · чт 18:00', true),
 ('-1001000000107', 'private', 'group_107', 'Доистория · вс 20:00', true),
-('-1001000000108', 'private', 'group_108', 'Рассказы · чт 20:00', true);
+('-1001000000108', 'private', 'group_108', 'Рассказы · чт 20:00', true),
+('-1001000000109', 'private', 'group_109', 'Древний Восток · вт 20:00', true),
+('-1001000000110', 'private', 'group_110', 'Древний Восток · подростки · вс 18:00', true);
 
 insert into email_templates (key, locale, subject, body) values
 ('registration_confirmation', 'ru', 'Мы получили вашу регистрацию — Inverted Forest', 'Здравствуйте, {{first_name}}! Мы получили вашу регистрацию на курс «{{course_title}}». Следующий шаг — оплата: {{payment_url}}'),

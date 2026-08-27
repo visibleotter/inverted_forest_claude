@@ -72,6 +72,10 @@ export default async function HomePage({
       <SmoothScrollHero
         scrollHeight={1200}
         desktopImage="/images/hero.webp"
+        // Opens from nothing: a zero-area window at rest, so the first
+        // screen carries no image at all until the reader scrolls.
+        initialClipPercentage={50}
+        finalClipPercentage={50}
         className="surface-dark text-paper"
       >
         <div className="container-content flex flex-col items-start gap-6">

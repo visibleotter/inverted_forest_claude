@@ -389,7 +389,7 @@ export const courses: Course[] = [
     publicTelegramUrl: 'https://t.me/invertedforest',
     status: 'published',
     featured: false,
-    title: { ru: 'Доисторическое мышление', en: 'Prehistoric Mindset' },
+    title: { ru: 'История первобытности', en: 'Human Prehistory' },
     shortDescription: {
       ru: 'Когнитивный и духовный мир наших доисторических предков — наскальная живопись, ритуал, шаманизм и рождение символического мышления.',
       en: 'The cognitive and spiritual world of our prehistoric ancestors — cave paintings, ritual, shamanism, and the birth of symbolic thought.'
@@ -574,6 +574,108 @@ export const courses: Course[] = [
       }
     ],
     faq: sharedFaq
+  },
+  {
+    id: 'course_006',
+    slug: 'ancient-near-east',
+    teacherId: 'teacher_001',
+    category: 'history',
+    difficulty: 'intermediate',
+    ageGroups: ['adults', 'teens'],
+    durationMonths: 3,
+    monthlyPrice: 350,
+    currency: 'ILS',
+    imageUrl:
+      'https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=1200&q=80',
+    publicTelegramUrl: 'https://t.me/invertedforest',
+    status: 'published',
+    featured: true,
+    title: {
+      ru: 'Первые цивилизации Древнего Востока',
+      en: 'The First Civilizations of the Ancient Near East'
+    },
+    shortDescription: {
+      ru: 'Города, письменность и первые законы — от шумерского Урука до Вавилона, Ассирии и Египта фараонов.',
+      en: 'Cities, writing and the first laws — from Sumerian Uruk to Babylon, Assyria and the Egypt of the pharaohs.'
+    },
+    description: {
+      ru: 'Курс о том, как впервые в истории возникли город, государство и письменность. Мы проходим путь от первых земледельческих поселений Междуречья до великих империй: Шумер и Аккад, Вавилон Хаммурапи, Ассирия, Египет Древнего и Нового царства, хетты и Персия. Читаем древнейшие тексты — «Эпос о Гильгамеше», законы Хаммурапи, египетские гимны — и разбираемся, как складывались представления о власти, справедливости и загробной жизни, которые пережили сами эти цивилизации.',
+      en: 'A course on the first appearance of the city, the state and writing. We follow the road from the earliest farming settlements of Mesopotamia to the great empires: Sumer and Akkad, the Babylon of Hammurabi, Assyria, the Egypt of the Old and New Kingdoms, the Hittites and Persia. We read the oldest surviving texts — the Epic of Gilgamesh, the laws of Hammurabi, the Egyptian hymns — and trace how ideas of power, justice and the afterlife took shape and outlived the civilizations that made them.'
+    },
+    outcomes: {
+      ru: [
+        'Понимать, почему город и государство возникли именно в Междуречье',
+        'Читать древнейшие письменные памятники и видеть в них живых людей',
+        'Ориентироваться в трёх тысячелетиях истории Древнего Востока',
+        'Узнавать месопотамские и египетские сюжеты в позднейшей культуре'
+      ],
+      en: [
+        'Understand why the city and the state first appeared between the rivers',
+        'Read the oldest written monuments and find living people in them',
+        'Navigate three millennia of Ancient Near Eastern history',
+        'Recognise Mesopotamian and Egyptian motifs in later culture'
+      ]
+    },
+    audience: {
+      ru: [
+        'Взрослые, которым интересно, с чего началась история',
+        'Подростки, готовящиеся к углублённому изучению древности',
+        'Читатели Библии и античных авторов, желающие увидеть их фон'
+      ],
+      en: [
+        'Adults curious about where history actually begins',
+        'Teens preparing for advanced study of antiquity',
+        'Readers of the Bible and the classics who want to see the background'
+      ]
+    },
+    curriculum: [
+      {
+        title: { ru: 'Рождение города', en: 'The Birth of the City' },
+        topics: {
+          ru: [
+            'Междуречье: земля между Тигром и Евфратом',
+            'Урук и первые города-государства Шумера',
+            'Клинопись: как счёт превратился в литературу'
+          ],
+          en: [
+            'Mesopotamia: the land between the Tigris and the Euphrates',
+            'Uruk and the first city-states of Sumer',
+            'Cuneiform: how accountancy turned into literature'
+          ]
+        }
+      },
+      {
+        title: { ru: 'Империи между реками', en: 'Empires Between the Rivers' },
+        topics: {
+          ru: [
+            'Саргон Аккадский и первая империя в истории',
+            'Хаммурапи и его законы: справедливость по-вавилонски',
+            'Ассирия: армия, библиотека Ашшурбанипала и падение Ниневии'
+          ],
+          en: [
+            'Sargon of Akkad and the first empire in history',
+            'Hammurabi and his laws: justice, Babylonian style',
+            'Assyria: the army, Ashurbanipal’s library and the fall of Nineveh'
+          ]
+        }
+      },
+      {
+        title: { ru: 'Египет и соседи', en: 'Egypt and its Neighbours' },
+        topics: {
+          ru: [
+            'Дар Нила: фараон, пирамиды и Древнее царство',
+            'Новое царство: Хатшепсут, Эхнатон, Рамсес',
+            'Хетты, финикийцы и Персия: конец древнего мира Востока'
+          ],
+          en: [
+            'The gift of the Nile: pharaoh, pyramids and the Old Kingdom',
+            'The New Kingdom: Hatshepsut, Akhenaten, Ramesses',
+            'Hittites, Phoenicians and Persia: the end of the ancient East'
+          ]
+        }
+      }
+    ],
+    faq: sharedFaq
   }
 ];
 
@@ -704,6 +806,38 @@ export const studyGroups: StudyGroup[] = [
     seatsTaken: 6,
     paymentUrl: 'https://www.paypal.com/paypalme/invertedforest/300',
     telegramChannelId: '-1001000000108',
+    status: 'enrolling'
+  },
+  {
+    id: 'group_109',
+    courseId: 'course_006',
+    slug: 'near-east-tue-20-adults',
+    audience: 'adults',
+    weekday: 2,
+    time: '20:00',
+    timezone: 'Asia/Jerusalem',
+    startDate: '2026-10-06',
+    endDate: '2027-01-05',
+    capacity: 15,
+    seatsTaken: 3,
+    paymentUrl: 'https://www.paypal.com/paypalme/invertedforest/350',
+    telegramChannelId: '-1001000000109',
+    status: 'enrolling'
+  },
+  {
+    id: 'group_110',
+    courseId: 'course_006',
+    slug: 'near-east-sun-18-teens',
+    audience: 'teens',
+    weekday: 0,
+    time: '18:00',
+    timezone: 'Asia/Jerusalem',
+    startDate: '2026-10-11',
+    endDate: '2027-01-10',
+    capacity: 12,
+    seatsTaken: 1,
+    paymentUrl: 'https://www.paypal.com/paypalme/invertedforest/350',
+    telegramChannelId: '-1001000000110',
     status: 'enrolling'
   }
 ];
