@@ -15,7 +15,7 @@ export function Section({
   ...props
 }: SectionProps) {
   return (
-    <section className={cn('py-16 sm:py-24', className)} {...props}>
+    <section className={cn('relative py-16 sm:py-24', className)} {...props}>
       <div className="container-content">
         {(eyebrow || title || subtitle) && (
           <div className="mb-10 max-w-2xl sm:mb-14">

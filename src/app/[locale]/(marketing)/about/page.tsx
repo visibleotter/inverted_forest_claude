@@ -62,7 +62,7 @@ export default async function AboutPage({
 
       {/* Teachers, folded in from the page that used to hold them */}
       <Section
-        className="bg-muted/40"
+        className="section-soft"
         title={tTeachers('title')}
         subtitle={tTeachers('intro')}
       >
@@ -149,7 +149,7 @@ export default async function AboutPage({
         </div>
       </Section>
 
-      <Section className="bg-muted/40">
+      <Section className="section-soft">
         <FadeIn className="mx-auto flex max-w-xl flex-col items-center gap-4 text-center">
           <h2 className="text-3xl font-semibold">{t('ctaTitle')}</h2>
           <p className="text-muted-foreground">{t('ctaText')}</p>

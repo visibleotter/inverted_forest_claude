@@ -48,7 +48,7 @@ interface SmoothScrollHeroProps {
 }
 
 export function SmoothScrollHero({
-  scrollHeight = 1700,
+  scrollHeight = 2400,
   desktopImage,
   mobileImage,
   initialClipPercentage = 50,
@@ -61,16 +61,20 @@ export function SmoothScrollHero({
   const { scrollY } = useScroll();
 
   /*
-   * Three phases, all inside the sticky section's own scroll budget:
-   *   0 .. 0.66    the image opens, at one even rate
-   *   0.68 .. 0.90 the copy rises into the opened image
-   *   0.90 .. 1    it rests, so the reader reaches a finished frame
-   *                before the page moves on
-   * Everything must land before 1.0 — that is where the sticky releases.
+   * Four phases inside the sticky section's own scroll budget. At the
+   * default 2400px these work out at roughly:
+   *   0 .. 0.47     ~1130px  the image opens, at one even rate
+   *   0.48 .. 0.64  ~1150-1530px  the copy rises into the opened image
+   *   0.64 .. 1     ~870px   the frame simply holds
+   *
+   * That last stretch is the point of the whole budget: a finished frame
+   * that stays put for most of a thousand pixels, so a fast flick cannot
+   * carry the reader past the one thing the hero has to say. Everything
+   * must land before 1.0 — that is where the sticky releases.
    */
-  const imageDone = scrollHeight * 0.66;
-  const copyFrom = scrollHeight * 0.68;
-  const copyTo = scrollHeight * 0.9;
+  const imageDone = scrollHeight * 0.47;
+  const copyFrom = scrollHeight * 0.48;
+  const copyTo = scrollHeight * 0.64;
 
   const clipStart = useTransform(
     scrollY,
@@ -101,7 +105,7 @@ export function SmoothScrollHero({
   const veilOpacity = useTransform(scrollY, [copyFrom, copyTo], [0, 1]);
 
   // The hint has done its job as soon as scrolling starts.
-  const hintOpacity = useTransform(scrollY, [0, scrollHeight * 0.12], [1, 0]);
+  const hintOpacity = useTransform(scrollY, [0, 200], [1, 0]);
 
   const mobile = mobileImage ?? desktopImage;
 

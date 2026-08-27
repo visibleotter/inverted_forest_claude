@@ -23,6 +23,19 @@
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
+    /*
+     * A slow wash down the page. Fixed attachment so it spans the document
+     * once rather than restarting per element, and the stops are only a
+     * few percent of muted — enough to stop the ground reading as one flat
+     * colour, not enough to notice as a gradient.
+     */
+    background-image: linear-gradient(
+      to bottom,
+      rgb(var(--background)) 0%,
+      rgb(var(--muted) / 0.35) 45%,
+      rgb(var(--background)) 100%
+    );
+    background-attachment: fixed;
   }
 
   h1,
@@ -46,6 +59,55 @@
 }
 
 @layer components {
+  /*
+   * Replaces a flat `bg-muted/40` block. The tint arrives and leaves
+   * gradually, so a section reads as a swell in the page rather than a
+   * panel laid on top of it. Both stops are light, so nothing here can
+   * affect text contrast.
+   */
+  .section-soft {
+    background-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgb(var(--muted) / 0.55) 20%,
+      rgb(var(--muted) / 0.55) 80%,
+      transparent 100%
+    );
+  }
+
+  /*
+   * Softens the seam where a light section meets a dark one. Sits inside
+   * the dark section's own padding, above the content, so no copy ever
+   * lands on the blend.
+   */
+  .seam-top::before,
+  .seam-bottom::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 5rem;
+    pointer-events: none;
+  }
+
+  .seam-top::before {
+    top: 0;
+    background-image: linear-gradient(
+      to bottom,
+      rgb(var(--background)),
+      transparent
+    );
+  }
+
+  .seam-bottom::after {
+    bottom: 0;
+    background-image: linear-gradient(
+      to top,
+      rgb(var(--background)),
+      transparent
+    );
+  }
+
   /*
    * A section that is dark in BOTH themes (hero, footer, drawer). Semantic
    * tokens are redefined here so anything nested inside stays readable —

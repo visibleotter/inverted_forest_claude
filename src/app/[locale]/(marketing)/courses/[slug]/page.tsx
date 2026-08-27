@@ -98,7 +98,7 @@ export default async function CoursePage({ params: { locale, slug } }: Props) {
       />
 
       {/* Hero */}
-      <section className="surface-dark bg-forest text-paper">
+      <section className="seam-bottom relative surface-dark bg-forest text-paper">
         <div className="container-content grid items-center gap-10 py-16 sm:py-20 lg:grid-cols-2">
           <FadeIn>
             <Link
@@ -233,7 +233,7 @@ export default async function CoursePage({ params: { locale, slug } }: Props) {
       </Section>
 
       {/* Curriculum */}
-      <Section className="bg-muted/40" title={t('curriculumTitle')}>
+      <Section className="section-soft" title={t('curriculumTitle')}>
         <div className="grid gap-6 lg:grid-cols-3">
           {course.curriculum.map((module, i) => (
             <FadeIn key={i} delay={i * 0.08}>
@@ -287,7 +287,7 @@ export default async function CoursePage({ params: { locale, slug } }: Props) {
       {/* Schedule */}
       <Section
         id="schedule"
-        className="scroll-mt-20 bg-muted/40"
+        className="scroll-mt-20 section-soft"
         title={t('scheduleTitle')}
         subtitle={t('scheduleSubtitle')}
       >

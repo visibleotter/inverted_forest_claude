@@ -14,7 +14,7 @@ export async function Footer() {
   const courses = await getData().getCourses();
 
   return (
-    <footer className="border-t border-border surface-dark bg-forest text-paper">
+    <footer className="seam-top relative border-t border-border surface-dark bg-forest text-paper">
       <div className="container-content grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <p className="flex items-center gap-2 font-display text-lg font-semibold">

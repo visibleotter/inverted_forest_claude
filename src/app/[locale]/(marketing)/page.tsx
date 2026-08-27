@@ -70,7 +70,7 @@ export default async function HomePage({
     <>
       {/* Hero — the image opens on scroll, then the copy rises into it */}
       <SmoothScrollHero
-        scrollHeight={1700}
+        scrollHeight={2400}
         desktopImage="/images/hero.webp"
         // Opens from nothing: a zero-area window at rest, so the first
         // screen carries no image at all until the reader scrolls.
@@ -119,7 +119,7 @@ export default async function HomePage({
 
       {/* Featured courses */}
       <Section
-        className="bg-muted/40"
+        className="section-soft"
         title={t('featuredTitle')}
         subtitle={t('featuredSubtitle')}
       >
@@ -153,7 +153,10 @@ export default async function HomePage({
       </Section>
 
       {/* How learning works */}
-      <Section className="surface-dark bg-forest text-paper" title={t('howTitle')}>
+      <Section
+        className="seam-top seam-bottom surface-dark bg-forest text-paper"
+        title={t('howTitle')}
+      >
         <ol className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {how.map((step, i) => (
             <FadeIn key={step.title} delay={i * 0.08}>
@@ -198,7 +201,7 @@ export default async function HomePage({
       </Section>
 
       {/* FAQ preview */}
-      <Section className="bg-muted/40" title={t('faqTitle')}>
+      <Section className="section-soft" title={t('faqTitle')}>
         <FadeIn className="max-w-3xl">
           <div className="rounded-card border border-border bg-card px-6">
             {faqItems.slice(0, 4).map((item) => (
