@@ -68,46 +68,31 @@ export default async function HomePage({
 
   return (
     <>
-      {/* Hero — sticky image widening out of a clipped window as you scroll */}
+      {/* Hero — the image opens on scroll, then the copy rises into it */}
       <SmoothScrollHero
         scrollHeight={1200}
-        desktopImage="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=2400&q=80"
-        mobileImage="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1200&q=80"
-        className="surface-dark text-linen"
+        desktopImage="/images/hero.jpg"
+        className="surface-dark text-paper"
       >
         <div className="container-content flex flex-col items-start gap-6">
-          <FadeIn inView={false}>
-            <p className="text-sm font-semibold uppercase tracking-widest text-accent">
-              {t('heroEyebrow')}
-            </p>
-          </FadeIn>
-          <FadeIn inView={false} delay={0.1}>
-            <h1 className="max-w-3xl text-balance text-4xl font-semibold leading-tight sm:text-5xl lg:text-6xl">
-              {t('heroTitle')}
-            </h1>
-          </FadeIn>
-          <FadeIn inView={false} delay={0.2}>
-            <p className="max-w-2xl text-lg leading-relaxed text-linen/80">
-              {t('heroSubtitle')}
-            </p>
-          </FadeIn>
-          <FadeIn inView={false} delay={0.3} className="mt-4 flex flex-wrap gap-3">
-            <Link
-              href="/courses"
-              className={buttonVariants({ variant: 'accent', size: 'lg' })}
-            >
-              {t('heroCtaPrimary')}
-            </Link>
-            <Link
-              href="/contacts"
-              className={cn(
-                buttonVariants({ variant: 'outline', size: 'lg' }),
-                'border-linen/30 text-linen hover:bg-linen/10'
-              )}
-            >
-              {t('heroCtaSecondary')}
-            </Link>
-          </FadeIn>
+          <p className="text-sm font-semibold uppercase tracking-widest text-accent">
+            {t('heroEyebrow')}
+          </p>
+          <h1 className="max-w-3xl text-balance text-4xl font-semibold leading-tight sm:text-5xl lg:text-6xl">
+            {t('heroTitle')}
+          </h1>
+          <p className="max-w-2xl text-lg leading-relaxed text-paper/80">
+            {t('heroSubtitle')}
+          </p>
+          <Link
+            href="/courses"
+            className={cn(
+              buttonVariants({ variant: 'accent', size: 'lg' }),
+              'mt-4'
+            )}
+          >
+            {t('heroCtaPrimary')}
+          </Link>
         </div>
       </SmoothScrollHero>
 
@@ -163,21 +148,21 @@ export default async function HomePage({
       </Section>
 
       {/* How learning works */}
-      <Section className="surface-dark bg-night text-linen" title={t('howTitle')}>
+      <Section className="surface-dark bg-forest text-paper" title={t('howTitle')}>
         <ol className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {how.map((step, i) => (
             <FadeIn key={step.title} delay={i * 0.08}>
               <li className="relative">
                 <span
-                  className="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-accent font-display text-lg font-semibold text-night"
+                  className="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-accent font-display text-lg font-semibold text-forest"
                   aria-hidden
                 >
                   {i + 1}
                 </span>
-                <h3 className="font-sans text-base font-semibold text-linen">
+                <h3 className="font-sans text-base font-semibold text-paper">
                   {step.title}
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-linen/70">
+                <p className="mt-2 text-sm leading-relaxed text-paper/70">
                   {step.text}
                 </p>
               </li>

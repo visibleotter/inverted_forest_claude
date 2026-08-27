@@ -98,12 +98,12 @@ export default async function CoursePage({ params: { locale, slug } }: Props) {
       />
 
       {/* Hero */}
-      <section className="surface-dark bg-night text-linen">
+      <section className="surface-dark bg-forest text-paper">
         <div className="container-content grid items-center gap-10 py-16 sm:py-20 lg:grid-cols-2">
           <FadeIn>
             <Link
               href="/courses"
-              className="mb-6 inline-flex items-center gap-1.5 text-sm text-linen/70 transition-colors hover:text-linen"
+              className="mb-6 inline-flex items-center gap-1.5 text-sm text-paper/70 transition-colors hover:text-paper"
             >
               <ArrowLeft className="h-4 w-4" aria-hidden />
               {t('backToCourses')}
@@ -112,11 +112,11 @@ export default async function CoursePage({ params: { locale, slug } }: Props) {
               <Badge variant="accent">
                 {tCourses(`category.${course.category}`)}
               </Badge>
-              <Badge className="bg-linen/10 text-linen/90">
+              <Badge className="bg-paper/10 text-paper/90">
                 {tCourses(`difficulty.${course.difficulty}`)}
               </Badge>
               {course.ageGroups.map((age) => (
-                <Badge key={age} className="bg-linen/10 text-linen/90">
+                <Badge key={age} className="bg-paper/10 text-paper/90">
                   {tCourses(`ageGroup.${age}`)}
                 </Badge>
               ))}
@@ -124,7 +124,7 @@ export default async function CoursePage({ params: { locale, slug } }: Props) {
             <h1 className="text-balance text-4xl font-semibold sm:text-5xl">
               {lt(course.title, l)}
             </h1>
-            <p className="mt-4 text-lg leading-relaxed text-linen/80">
+            <p className="mt-4 text-lg leading-relaxed text-paper/80">
               {lt(course.shortDescription, l)}
             </p>
             <div className="mt-6 flex flex-wrap items-center gap-4">
@@ -134,8 +134,8 @@ export default async function CoursePage({ params: { locale, slug } }: Props) {
               >
                 {t('registerCta')}
               </a>
-              <p className="text-linen/80">
-                <span className="font-display text-2xl font-semibold text-linen">
+              <p className="text-paper/80">
+                <span className="font-display text-2xl font-semibold text-paper">
                   {formatPrice(course.monthlyPrice, course.currency, l)}
                 </span>{' '}
                 {tCourses('perMonth')} ·{' '}

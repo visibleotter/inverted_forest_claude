@@ -133,7 +133,7 @@ export function ExpandableCard({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={transition}
-              className="pointer-events-none fixed inset-0 z-40 bg-night/60 backdrop-blur-md"
+              className="pointer-events-none fixed inset-0 z-40 bg-forest/60 backdrop-blur-md"
             />
           )}
         </AnimatePresence>

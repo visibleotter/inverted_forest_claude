@@ -2,53 +2,54 @@
 
 ## Colour palette — binding
 
-Derived from Chagall and from Utkin's *Влюблённые. Буря*: an ultramarine
-night tempered by crimson and gold, with the misty violet-blue of the
-storm. The site uses this palette and **nothing outside it**. Do not
-introduce new hues, do not reach for Tailwind's stock colours
-(`blue-500`, `zinc-900`, `emerald-*`…), and do not carry brand colours in
-from copied components — adapt them to these tokens instead.
+Drawn from Monet's morning Seine: willow greens over misty water, with the
+pale warm light on the surface as the only non-green note. The site uses
+this palette and **nothing outside it**. Do not introduce new hues, do not
+reach for Tailwind's stock colours (`blue-500`, `zinc-900`, `emerald-*`…),
+and do not carry brand colours in from copied components — adapt them.
 
 | Token    | Hex       | Role |
 | -------- | --------- | ---- |
-| `linen`  | `#F4EFE6` | Warm paper. Page background in light mode; text on dark surfaces |
-| `gold`   | `#D9A441` | Chagall's gold. Accent **on dark surfaces only** |
-| `haze`   | `#8E9FD4` | Utkin's storm light. Muted text and borders **on dark** |
-| `cobalt` | `#2E4A8A` | The Chagall blue. Primary — buttons and secondary text **on light** |
-| `rose`   | `#8E3340` | Deep crimson. Warm accent **on light surfaces only** |
-| `night`  | `#16233F` | Night sky. Dark surfaces, and body text in light mode |
+| `paper`  | `#F0EFE3` | Pale misty light. Page ground; text on dark surfaces |
+| `glow`   | `#C7BB74` | The warm light on the water. Accent **on dark only** |
+| `sage`   | `#8FB0A0` | Misty far water. Muted text and borders **on dark** |
+| `moss`   | `#3D6552` | Mid willow. Secondary text **on light** |
+| `fern`   | `#2A4A3A` | Deeper willow. Primary and accent **on light** |
+| `forest` | `#16281F` | Darkest willow shadow. Dark surfaces; body text on light |
 
 ### Contrast rules that follow from the palette
 
-Measured, not opinion. Breaking these makes text unreadable:
+Measured, not opinion:
 
-- **`gold` on `linen` is 1.96:1.** Gold is never text on a light ground.
-- **`rose` on `night` is 2.0:1.** Crimson is never text on a dark ground.
-- The warm accent therefore **flips by surface**: `rose` on light,
-  `gold` on dark. This is the rule most easily got wrong.
-- Safe text pairings: `night` on `linen` (13.6), `linen` on `night` (13.6),
-  `cobalt` on `linen` (7.5), `linen` on `cobalt` (7.5), `rose` on `linen`
-  (6.8), `gold` on `night` (6.9), `haze` on `night` (6.0).
+- **`glow` on `paper` is 1.7:1.** The warm light never sits on a light ground.
+- The accent therefore **flips by surface**: `fern` on light, `glow` on dark.
+  This is the rule most easily got wrong.
+- Safe pairings: `forest` on `paper` (13.4), `paper` on `forest` (13.4),
+  `fern` on `paper` (8.5), `glow` on `forest` (8.0), `sage` on `forest`
+  (6.6), `moss` on `paper` (5.7).
 
 ### How the surface flip is implemented
 
-Do not hand-patch elements. Two component classes in
-`src/styles/globals.css` redefine the semantic tokens:
+Do not hand-patch elements. Two classes in `src/styles/globals.css`
+redefine the semantic tokens:
 
-- `.surface-dark` — on any section dark in **both** themes (hero, footer,
-  nav drawer). Anything nested inside it resolves `accent` to gold and
-  `muted-foreground` to haze automatically.
-- `.surface-card` — on a light card **nested inside** a dark section, to
-  restore theme values. `Card` carries it already.
+- `.surface-dark` — on any always-dark section (hero, footer, nav drawer).
+  Anything nested resolves `accent` to glow and `muted-foreground` to sage.
+- `.surface-card` — on a light card nested inside a dark section. `Card`
+  carries it already.
 
-Dark sections use `surface-dark bg-night text-linen` in both themes rather
-than swapping with the theme, so accents on them stay predictable.
+There is no dark mode. `surface-dark` marks sections that are dark in their
+own right, not a theme.
 
 ### When changing colours
 
 Measure composited contrast in the browser, not hex values on paper — an
-alpha wash over an ancestor is where near-misses hide. Two badge washes
-previously shipped at 4.46:1 and 4.28:1 against a 4.5 requirement.
+alpha wash over an ancestor is where near-misses hide. Badges have shipped
+at 4.46 and 4.28 against a 4.5 requirement, invisible to the eye.
+
+Assign the warm or accent tone to the **high-frequency** roles
+(`--primary`, `--accent`). A palette swap that leaves the dominant surfaces
+unchanged does not read as a change at all — that has happened once here.
 
 ## Everything else
 

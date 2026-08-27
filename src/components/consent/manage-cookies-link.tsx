@@ -11,7 +11,7 @@ export function ManageCookiesLink() {
     <button
       type="button"
       onClick={openCookieSettings}
-      className="text-linen/80 transition-colors hover:text-linen"
+      className="text-paper/80 transition-colors hover:text-paper"
     >
       {t('manage')}
     </button>

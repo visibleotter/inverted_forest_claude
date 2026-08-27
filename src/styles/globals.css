@@ -4,17 +4,17 @@
 
 @layer base {
   :root {
-    --background: 242 234 217;      /* linen  #F2EAD9 warm parchment */
-    --foreground: 20 28 62;         /* night          13.9:1 */
-    --card: 251 245 233;
-    --card-foreground: 20 28 62;
-    --muted: 230 218 194;
-    --muted-foreground: 46 74 138;  /* cobalt          7.1:1 */
-    --border: 216 201 172;
-    --primary: 142 51 64;           /* rose — crimson leads on light */
-    --primary-foreground: 242 234 217;
-    --accent: 142 51 64;            /* rose            6.5:1 */
-    --accent-foreground: 242 234 217;
+    --background: 240 239 227;      /* paper  #F0EFE3 */
+    --foreground: 22 40 31;         /* forest         13.4:1 */
+    --card: 250 248 239;
+    --card-foreground: 22 40 31;
+    --muted: 226 228 210;
+    --muted-foreground: 61 101 82;  /* moss            5.7:1 */
+    --border: 205 210 188;
+    --primary: 42 74 58;            /* fern            8.5:1 */
+    --primary-foreground: 240 239 227;
+    --accent: 42 74 58;             /* fern */
+    --accent-foreground: 240 239 227;
   }
 
   html {
@@ -32,7 +32,7 @@
   }
 
   ::selection {
-    @apply bg-gold/40;
+    @apply bg-glow/40;
   }
 }
 
@@ -53,31 +53,29 @@
    * mode.
    */
   .surface-dark {
-    --background: 20 28 62;         /* night  #141C3E ultramarine */
-    --foreground: 242 234 217;      /* linen          13.9:1 */
-    --card: 30 39 82;
-    --card-foreground: 242 234 217;
-    --muted: 39 48 96;
-    --muted-foreground: 142 159 212; /* haze           5.5:1 on card */
-    --border: 62 78 130;
-    --primary: 217 164 65;          /* gold           7.4:1 */
-    --primary-foreground: 20 28 62;
-    --accent: 217 164 65;
-    --accent-foreground: 20 28 62;
+    --card: 30 53 41;
+    --card-foreground: 240 239 227;
+    --muted: 38 64 47;
+    --muted-foreground: 143 176 160; /* sage           5.6:1 on card */
+    --border: 58 90 71;
+    --primary: 199 187 116;         /* glow            8.0:1 */
+    --primary-foreground: 22 40 31;
+    --accent: 199 187 116;
+    --accent-foreground: 22 40 31;
   }
 
   .surface-card {
-    --background: 242 234 217;      /* linen  #F2EAD9 warm parchment */
-    --foreground: 20 28 62;         /* night          13.9:1 */
-    --card: 251 245 233;
-    --card-foreground: 20 28 62;
-    --muted: 230 218 194;
-    --muted-foreground: 46 74 138;  /* cobalt          7.1:1 */
-    --border: 216 201 172;
-    --primary: 142 51 64;           /* rose — crimson leads on light */
-    --primary-foreground: 242 234 217;
-    --accent: 142 51 64;            /* rose            6.5:1 */
-    --accent-foreground: 242 234 217;
+    --background: 240 239 227;      /* paper  #F0EFE3 */
+    --foreground: 22 40 31;         /* forest         13.4:1 */
+    --card: 250 248 239;
+    --card-foreground: 22 40 31;
+    --muted: 226 228 210;
+    --muted-foreground: 61 101 82;  /* moss            5.7:1 */
+    --border: 205 210 188;
+    --primary: 42 74 58;            /* fern            8.5:1 */
+    --primary-foreground: 240 239 227;
+    --accent: 42 74 58;             /* fern */
+    --accent-foreground: 240 239 227;
   }
 
 }
