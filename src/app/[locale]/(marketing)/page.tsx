@@ -70,12 +70,13 @@ export default async function HomePage({
     <>
       {/* Hero — the image opens on scroll, then the copy rises into it */}
       <SmoothScrollHero
-        scrollHeight={1200}
+        scrollHeight={1700}
         desktopImage="/images/hero.webp"
         // Opens from nothing: a zero-area window at rest, so the first
         // screen carries no image at all until the reader scrolls.
         initialClipPercentage={50}
         finalClipPercentage={50}
+        scrollHint={t('scrollHint')}
         className="surface-dark text-paper"
       >
         <div className="container-content flex flex-col items-start gap-6">

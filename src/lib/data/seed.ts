@@ -389,7 +389,7 @@ export const courses: Course[] = [
     publicTelegramUrl: 'https://t.me/invertedforest',
     status: 'published',
     featured: false,
-    title: { ru: 'История первобытности', en: 'Human Prehistory' },
+    title: { ru: 'Рассвет человечества', en: 'The Dawn of Humanity' },
     shortDescription: {
       ru: 'Когнитивный и духовный мир наших доисторических предков — наскальная живопись, ритуал, шаманизм и рождение символического мышления.',
       en: 'The cognitive and spiritual world of our prehistoric ancestors — cave paintings, ritual, shamanism, and the birth of symbolic thought.'

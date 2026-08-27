@@ -11,9 +11,8 @@ import * as React from 'react';
 import { cn } from '@/lib/utils';
 
 /**
- * Smooth-scroll hero: a sticky full-height image that widens out of a
- * clipped window as the page scrolls, while the image settles from
- * oversized to natural scale. Once the image has fully opened, the copy
+ * Smooth-scroll hero: a sticky full-height image that opens out of a
+ * clipped window as the page scrolls. Once it has fully opened, the copy
  * rises into it — so the first screen reads as one continuous gesture,
  * and only after the text has arrived does the page scroll on.
  *
@@ -21,34 +20,40 @@ import { cn } from '@/lib/utils';
  *  - `bg-black` became `bg-forest` to stay in the palette.
  *  - A `children` slot: the original renders background only, and this
  *    hero has to carry the eyebrow, headline, subtitle and button.
- *  - The copy is scroll-driven rather than revealed on mount, and is
- *    inert while invisible so its links cannot be tabbed to or clicked
- *    before they appear.
- *  - A veil sits under the copy for contrast. It is deliberately light:
- *    a heavy scrim hides the artwork, which makes the reveal invisible —
- *    a dark rectangle widening against a dark page.
+ *  - The copy is scroll-driven rather than revealed on mount, and is inert
+ *    while invisible so its link cannot be tabbed to or clicked early.
+ *  - A veil under the copy for contrast, faded in with it. A veil present
+ *    from the start hides the artwork and makes the reveal invisible — a
+ *    dark rectangle widening against a dark page.
+ *  - The original's 170%→100% background zoom is gone. The clip is a
+ *    linear ramp, so it opens at one constant rate; a strong zoom running
+ *    alongside it added a second motion that made the first moments read
+ *    as a lurch while the window was still small. What remains is a
+ *    barely-there settle.
  *  - prefers-reduced-motion shows the final state at once and collapses
- *    the section to one screen, instead of demanding a long scroll to
- *    reach the content.
+ *    the section to one screen.
  */
 
 interface SmoothScrollHeroProps {
-  /** Scroll distance over which the image reveal completes, in pixels. */
+  /** Scroll distance the whole first-screen gesture occupies, in pixels. */
   scrollHeight?: number;
   desktopImage: string;
   mobileImage?: string;
   initialClipPercentage?: number;
   finalClipPercentage?: number;
+  /** Small nudge in the corner, shown before the reader has scrolled. */
+  scrollHint?: string;
   children?: React.ReactNode;
   className?: string;
 }
 
 export function SmoothScrollHero({
-  scrollHeight = 1200,
+  scrollHeight = 1700,
   desktopImage,
   mobileImage,
-  initialClipPercentage = 25,
-  finalClipPercentage = 75,
+  initialClipPercentage = 50,
+  finalClipPercentage = 50,
+  scrollHint,
   children,
   className
 }: SmoothScrollHeroProps) {
@@ -56,18 +61,16 @@ export function SmoothScrollHero({
   const { scrollY } = useScroll();
 
   /*
-   * The first screen is one gesture in three phases, all inside the sticky
-   * section's own scroll budget:
-   *   0 .. 0.60   the image opens out of its clipped window
-   *   0.62 .. 0.85 the copy rises into the opened image
-   *   0.85 .. 1    it simply rests, so the reader arrives at a finished
-   *                frame before the page moves on
-   * Everything must finish before 1.0 — that is where the sticky releases
-   * and the hero starts scrolling away.
+   * Three phases, all inside the sticky section's own scroll budget:
+   *   0 .. 0.66    the image opens, at one even rate
+   *   0.68 .. 0.90 the copy rises into the opened image
+   *   0.90 .. 1    it rests, so the reader reaches a finished frame
+   *                before the page moves on
+   * Everything must land before 1.0 — that is where the sticky releases.
    */
-  const imageDone = scrollHeight * 0.6;
-  const copyFrom = scrollHeight * 0.62;
-  const copyTo = scrollHeight * 0.85;
+  const imageDone = scrollHeight * 0.66;
+  const copyFrom = scrollHeight * 0.68;
+  const copyTo = scrollHeight * 0.9;
 
   const clipStart = useTransform(
     scrollY,
@@ -81,11 +84,8 @@ export function SmoothScrollHero({
   );
   const clipPath = useMotionTemplate`polygon(${clipStart}% ${clipStart}%, ${clipEnd}% ${clipStart}%, ${clipEnd}% ${clipEnd}%, ${clipStart}% ${clipEnd}%)`;
 
-  const backgroundSize = useTransform(
-    scrollY,
-    [0, imageDone],
-    ['170%', '100%']
-  );
+  // A whisper of settle rather than the original zoom.
+  const backgroundSize = useTransform(scrollY, [0, imageDone], ['112%', '100%']);
 
   const contentOpacity = useTransform(scrollY, [copyFrom, copyTo], [0, 1]);
   const contentY = useTransform(scrollY, [copyFrom, copyTo], [28, 0]);
@@ -99,6 +99,9 @@ export function SmoothScrollHero({
     v > copyFrom ? 'auto' : 'none'
   );
   const veilOpacity = useTransform(scrollY, [copyFrom, copyTo], [0, 1]);
+
+  // The hint has done its job as soon as scrolling starts.
+  const hintOpacity = useTransform(scrollY, [0, scrollHeight * 0.12], [1, 0]);
 
   const mobile = mobileImage ?? desktopImage;
 
@@ -133,7 +136,6 @@ export function SmoothScrollHero({
             }}
           />
 
-          {/* Veil, faded in with the copy — absent while the image opens. */}
           <motion.div
             aria-hidden
             className="absolute inset-0 bg-gradient-to-r from-forest/95 via-forest/60 to-forest/15"
@@ -156,6 +158,27 @@ export function SmoothScrollHero({
             }
           >
             {children}
+          </motion.div>
+        )}
+
+        {scrollHint && !reduce && (
+          <motion.div
+            aria-hidden
+            style={{ opacity: hintOpacity }}
+            /*
+             * bottom-24, not bottom-8: the sticky header occupies 4rem of
+             * normal flow, so before the hero sticks its foot sits that far
+             * below the fold. Clearing the header height keeps the hint on
+             * screen at rest, which is the only moment it is needed.
+             */
+            className="pointer-events-none absolute bottom-24 right-8 flex items-center gap-3 text-xs uppercase tracking-widest text-paper/60"
+          >
+            {scrollHint}
+            <motion.span
+              className="block h-8 w-px origin-top bg-paper/40"
+              animate={{ scaleY: [0.3, 1, 0.3], opacity: [0.3, 1, 0.3] }}
+              transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
+            />
           </motion.div>
         )}
       </div>
