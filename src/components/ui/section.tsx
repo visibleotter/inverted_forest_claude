@@ -15,7 +15,18 @@ export function Section({
   ...props
 }: SectionProps) {
   return (
-    <section className={cn('relative py-16 sm:py-24', className)} {...props}>
+    <section
+      className={cn(
+        'relative py-16 sm:py-24',
+        // Dark bands bring their own ground; everything else gets the
+        // light one, so no section is a flat fill.
+        !className?.includes('surface-dark') &&
+          !className?.includes('section-soft') &&
+          'ground-light',
+        className
+      )}
+      {...props}
+    >
       <div className="container-content">
         {(eyebrow || title || subtitle) && (
           <div className="mb-10 max-w-2xl sm:mb-14">

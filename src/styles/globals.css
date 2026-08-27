@@ -4,6 +4,14 @@
 
 @layer base {
   :root {
+    /* Brand palette as raw triples, so grounds can mix them. */
+    --c-paper: 240 239 227;
+    --c-glow: 199 187 116;
+    --c-sage: 143 176 160;
+    --c-moss: 61 101 82;
+    --c-fern: 42 74 58;
+    --c-forest: 22 40 31;
+
     --background: 240 239 227;      /* paper  #F0EFE3 */
     --foreground: 22 40 31;         /* forest         13.4:1 */
     --card: 250 248 239;
@@ -65,14 +73,68 @@
    * panel laid on top of it. Both stops are light, so nothing here can
    * affect text contrast.
    */
+  /*
+   * Light ground. Two washes cross the section rather than filling it
+   * evenly — misty green entering top-left, the warm light off the water
+   * bleeding up from bottom-right. Strengths are set by measurement, not
+   * taste: at the point where every layer overlaps, the ground reaches
+   * rgb(218,222,201), where `moss` — the weakest text on it — still reads
+   * 4.78:1. Pushing either wash further drops secondary text below AA.
+   */
+  .ground-light {
+    background-image:
+      radial-gradient(
+        125% 85% at 8% -5%,
+        rgb(var(--c-sage) / 0.15),
+        transparent 62%
+      ),
+      radial-gradient(
+        100% 70% at 94% 105%,
+        rgb(var(--c-glow) / 0.1),
+        transparent 58%
+      );
+  }
+
+  /* The same ground, over a band that fades in and out vertically. */
   .section-soft {
-    background-image: linear-gradient(
-      to bottom,
-      transparent 0%,
-      rgb(var(--muted) / 0.55) 20%,
-      rgb(var(--muted) / 0.55) 80%,
-      transparent 100%
-    );
+    background-image:
+      radial-gradient(
+        125% 85% at 8% -5%,
+        rgb(var(--c-sage) / 0.15),
+        transparent 62%
+      ),
+      radial-gradient(
+        100% 70% at 94% 105%,
+        rgb(var(--c-glow) / 0.1),
+        transparent 58%
+      ),
+      linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgb(var(--muted) / 0.45) 20%,
+        rgb(var(--muted) / 0.45) 80%,
+        transparent 100%
+      );
+  }
+
+  /*
+   * Dark ground. Deeper willow lifting from top-left, a touch of mid green
+   * at bottom-right. At the lightest point this reaches rgb(36,64,50),
+   * where `sage` still reads 4.81:1 — the binding limit here, since sage
+   * is the palest text that sits on dark.
+   */
+  .ground-dark {
+    background-image:
+      radial-gradient(
+        115% 80% at 10% -5%,
+        rgb(var(--c-fern) / 0.45),
+        transparent 62%
+      ),
+      radial-gradient(
+        95% 65% at 92% 105%,
+        rgb(var(--c-moss) / 0.18),
+        transparent 58%
+      );
   }
 
   /*
