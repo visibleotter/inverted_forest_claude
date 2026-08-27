@@ -19,7 +19,7 @@ import { FadeIn } from '@/components/ui/fade-in';
 import { Section } from '@/components/ui/section';
 import { CourseExpandableCards } from '@/components/marketing/course-expandable-cards';
 import { SmoothScrollHero } from '@/components/ui/smooth-scroll-hero';
-import { NewsletterForm } from '@/components/marketing/newsletter-form';
+// import { NewsletterForm } from '@/components/marketing/newsletter-form';
 import { getData } from '@/lib/data';
 import { cn } from '@/lib/utils';
 
@@ -214,7 +214,16 @@ export default async function HomePage({
         </FadeIn>
       </Section>
 
-      {/* Newsletter */}
+      {/*
+        Newsletter — parked until email delivery exists.
+        The form posts to subscribeNewsletter, which in demo mode accepts an
+        address and stores nothing, so shipping it would collect sign-ups
+        that go nowhere and promise letters nobody can send. Restore this
+        block, and the import above, once a mail provider is wired up.
+        Everything it needs is still in place: the component, the server
+        action, the newsletter_subscribers table and the home.newsletter*
+        strings in both catalogues.
+
       <Section>
         <FadeIn className="mx-auto flex max-w-2xl flex-col items-center gap-4 text-center">
           <h2 className="text-3xl font-semibold">{t('newsletterTitle')}</h2>
@@ -222,6 +231,7 @@ export default async function HomePage({
           <NewsletterForm />
         </FadeIn>
       </Section>
+      */}
     </>
   );
 }
