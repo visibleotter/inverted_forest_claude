@@ -36,7 +36,7 @@ export default async function ContactsPage({
         <p className="mt-4 text-lg text-muted-foreground">{t('intro')}</p>
       </FadeIn>
 
-      <div className="mt-12 grid max-w-4xl gap-6 lg:grid-cols-2">
+      <div className="mt-12 max-w-xl">
         <FadeIn>
           <Card className="h-full">
             <CardContent className="flex h-full flex-col gap-4 p-8">
@@ -83,30 +83,6 @@ export default async function ContactsPage({
           </Card>
         </FadeIn>
 
-        <FadeIn delay={0.1}>
-          <Card className="h-full surface-dark bg-night text-linen">
-            <CardContent className="flex h-full flex-col p-8">
-              <h2 className="text-2xl font-semibold text-linen">
-                {t('consultTitle')}
-              </h2>
-              <p className="mt-3 flex-1 leading-relaxed text-linen/75">
-                {t('consultText')}
-              </p>
-              <a
-                href={siteConfig.telegramUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={cn(
-                  buttonVariants({ variant: 'accent', size: 'lg' }),
-                  'mt-6 w-full'
-                )}
-              >
-                <Send className="h-4 w-4" aria-hidden />
-                {t('telegram')}
-              </a>
-            </CardContent>
-          </Card>
-        </FadeIn>
       </div>
     </div>
   );
