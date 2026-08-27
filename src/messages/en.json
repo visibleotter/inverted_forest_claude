@@ -9,10 +9,6 @@
       "title": "Courses",
       "description": "All Inverted Forest courses: history, philosophy, literature and anthropology. Live classes in small groups."
     },
-    "teachers": {
-      "title": "Teachers",
-      "description": "The teachers of Inverted Forest."
-    },
     "about": {
       "title": "About",
       "description": "Inverted Forest is an online school of history and philosophy for curious minds of all ages."
@@ -38,7 +34,6 @@
   "nav": {
     "home": "Home",
     "courses": "Courses",
-    "teachers": "Teachers",
     "about": "About",
     "faq": "FAQ",
     "contacts": "Contacts",

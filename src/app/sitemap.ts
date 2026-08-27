@@ -6,7 +6,6 @@ import { getData } from '@/lib/data';
 const staticPaths = [
   '',
   '/courses',
-  '/teachers',
   '/about',
   '/faq',
   '/contacts',

@@ -38,10 +38,9 @@ const WIPE_PANELS = ['#C7BB74', '#3D6552', '#16281F'];
 const navLinks = [
   { href: '/', num: '01', key: 'home' },
   { href: '/courses', num: '02', key: 'courses' },
-  { href: '/teachers', num: '03', key: 'teachers' },
-  { href: '/about', num: '04', key: 'about' },
-  { href: '/faq', num: '05', key: 'faq' },
-  { href: '/contacts', num: '06', key: 'contacts' }
+  { href: '/about', num: '03', key: 'about' },
+  { href: '/faq', num: '04', key: 'faq' },
+  { href: '/contacts', num: '05', key: 'contacts' }
 ] as const;
 
 const FOCUSABLE =

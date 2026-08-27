@@ -48,11 +48,6 @@ export async function Footer() {
           </p>
           <ul className="space-y-2 text-sm">
             <li>
-              <Link href="/teachers" className="text-paper/80 hover:text-paper">
-                {tNav('teachers')}
-              </Link>
-            </li>
-            <li>
               <Link href="/about" className="text-paper/80 hover:text-paper">
                 {tNav('about')}
               </Link>
