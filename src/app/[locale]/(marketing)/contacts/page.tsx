@@ -84,12 +84,12 @@ export default async function ContactsPage({
         </FadeIn>
 
         <FadeIn delay={0.1}>
-          <Card className="h-full surface-dark bg-deep text-mist">
+          <Card className="h-full surface-dark bg-night text-linen">
             <CardContent className="flex h-full flex-col p-8">
-              <h2 className="text-2xl font-semibold text-mist">
+              <h2 className="text-2xl font-semibold text-linen">
                 {t('consultTitle')}
               </h2>
-              <p className="mt-3 flex-1 leading-relaxed text-mist/75">
+              <p className="mt-3 flex-1 leading-relaxed text-linen/75">
                 {t('consultText')}
               </p>
               <a

@@ -7,14 +7,12 @@ const config: Config = {
     extend: {
       colors: {
         // Brand palette — see CLAUDE.md. Nothing outside these.
-        mist: '#F7F9FB',
-        sky: '#8FC1E3',
-        steel: '#5085A5',
-        teal: '#31708E',
-        sage: '#687864',
-        // Derived: the five supplied colours contain no true dark, which a
-        // dark theme and accents on dark sections both require.
-        deep: '#12252F',
+        linen: '#F4EFE6',   // warm paper
+        gold: '#D9A441',    // Chagall gold — accent on dark only
+        haze: '#8E9FD4',    // Utkin storm light — muted text on dark
+        cobalt: '#2E4A8A',  // the Chagall blue — primary on light
+        rose: '#8E3340',    // deep crimson — warm accent on light only
+        night: '#16233F',   // night sky — dark surfaces, body text on light
 
         // Semantic tokens (CSS-variable driven, follow light/dark)
         background: 'rgb(var(--background) / <alpha-value>)',

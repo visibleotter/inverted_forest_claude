@@ -4,33 +4,33 @@
 
 @layer base {
   :root {
-    /* Light — mist page, deep ink, teal as the accent */
-    --background: 247 249 251;   /* mist  #F7F9FB */
-    --foreground: 18 37 47;      /* deep  #12252F  14.9:1 on mist */
-    --card: 255 255 255;
-    --card-foreground: 18 37 47;
-    --muted: 233 240 246;        /* mist shaded toward sky */
-    --muted-foreground: 49 112 142; /* teal  #31708E  5.2:1 on mist */
-    --border: 214 227 237;
-    --primary: 49 112 142;       /* teal */
-    --primary-foreground: 247 249 251;
-    --accent: 49 112 142;        /* teal — sky would be 1.8:1 here */
-    --accent-foreground: 247 249 251;
+    /* Light — warm paper, night ink, crimson warmth */
+    --background: 244 239 230;      /* linen  #F4EFE6 */
+    --foreground: 22 35 63;         /* night          13.6:1 */
+    --card: 253 251 247;
+    --card-foreground: 22 35 63;
+    --muted: 234 227 214;
+    --muted-foreground: 46 74 138;  /* cobalt          7.5:1 */
+    --border: 220 211 196;
+    --primary: 46 74 138;           /* cobalt */
+    --primary-foreground: 244 239 230;
+    --accent: 142 51 64;            /* rose            6.8:1 */
+    --accent-foreground: 244 239 230;
   }
 
   .dark {
-    /* Dark — deep ground, mist ink, sky as the accent */
-    --background: 18 37 47;      /* deep  #12252F */
-    --foreground: 247 249 251;   /* mist          14.9:1 on deep */
-    --card: 27 55 69;            /* deep, lifted one step */
-    --card-foreground: 247 249 251;
-    --muted: 35 68 84;
-    --muted-foreground: 143 193 227; /* sky  #8FC1E3  8.2:1 on deep */
-    --border: 46 84 102;
-    --primary: 143 193 227;      /* sky */
-    --primary-foreground: 18 37 47;
-    --accent: 143 193 227;       /* sky */
-    --accent-foreground: 18 37 47;
+    /* Dark — night ground, linen ink, gold warmth */
+    --background: 22 35 63;         /* night  #16233F */
+    --foreground: 244 239 230;      /* linen          13.6:1 */
+    --card: 30 44 76;
+    --card-foreground: 244 239 230;
+    --muted: 38 53 90;
+    --muted-foreground: 142 159 212; /* haze           5.3:1 on card */
+    --border: 58 74 120;
+    --primary: 217 164 65;          /* gold           6.9:1 */
+    --primary-foreground: 22 35 63;
+    --accent: 217 164 65;           /* gold */
+    --accent-foreground: 22 35 63;
   }
 
   html {
@@ -48,7 +48,7 @@
   }
 
   ::selection {
-    @apply bg-sky/40;
+    @apply bg-gold/40;
   }
 }
 
@@ -69,42 +69,38 @@
    * mode.
    */
   .surface-dark {
-    --card: 18 37 47;
-    --card-foreground: 247 249 251;
-    --muted: 27 55 69;
-    --muted-foreground: 199 217 231;
-    --border: 74 106 126;
-    --primary: 143 193 227;
-    --primary-foreground: 18 37 47;
-    --accent: 143 193 227;
-    --accent-foreground: 18 37 47;
+    --card: 22 35 63;
+    --card-foreground: 244 239 230;
+    --muted: 30 44 76;
+    --muted-foreground: 142 159 212;
+    --border: 58 74 120;
+    --primary: 217 164 65;
+    --primary-foreground: 22 35 63;
+    --accent: 217 164 65;
+    --accent-foreground: 22 35 63;
   }
 
-  /*
-   * A light card nested inside a dark section restores the theme values.
-   * Declared before .surface-dark so an element carrying both stays dark.
-   */
   .surface-card {
-    --card: 255 255 255;
-    --card-foreground: 18 37 47;
-    --muted: 233 240 246;
-    --muted-foreground: 49 112 142;
-    --border: 214 227 237;
-    --primary: 49 112 142;
-    --primary-foreground: 247 249 251;
-    --accent: 49 112 142;
-    --accent-foreground: 247 249 251;
+    --card: 253 251 247;
+    --card-foreground: 22 35 63;
+    --muted: 234 227 214;
+    --muted-foreground: 46 74 138;
+    --border: 220 211 196;
+    --primary: 46 74 138;
+    --primary-foreground: 244 239 230;
+    --accent: 142 51 64;
+    --accent-foreground: 244 239 230;
   }
 
   .dark .surface-card {
-    --card: 27 55 69;
-    --card-foreground: 247 249 251;
-    --muted: 35 68 84;
-    --muted-foreground: 143 193 227;
-    --border: 46 84 102;
-    --primary: 143 193 227;
-    --primary-foreground: 18 37 47;
-    --accent: 143 193 227;
-    --accent-foreground: 18 37 47;
+    --card: 30 44 76;
+    --card-foreground: 244 239 230;
+    --muted: 38 53 90;
+    --muted-foreground: 142 159 212;
+    --border: 58 74 120;
+    --primary: 217 164 65;
+    --primary-foreground: 22 35 63;
+    --accent: 217 164 65;
+    --accent-foreground: 22 35 63;
   }
 }

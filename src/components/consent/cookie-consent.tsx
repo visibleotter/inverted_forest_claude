@@ -179,7 +179,7 @@ export function CookieConsent() {
               exit={{ opacity: 0 }}
               transition={transition}
               onClick={() => setPanelOpen(false)}
-              className="fixed inset-0 z-[60] bg-deep/70 backdrop-blur-sm"
+              className="fixed inset-0 z-[60] bg-night/70 backdrop-blur-sm"
             />
             <motion.div
               key="cookie-panel"
@@ -248,7 +248,7 @@ export function CookieConsent() {
                             [category]: event.target.checked
                           }))
                         }
-                        className="mt-1 h-4 w-4 shrink-0 rounded border-border accent-[#31708E]"
+                        className="mt-1 h-4 w-4 shrink-0 rounded border-border accent-[#2E4A8A]"
                       />
                     </label>
                   </li>

@@ -20,7 +20,7 @@ interface AuroraTextProps {
 export const AuroraText = memo(function AuroraText({
   children,
   className,
-  colors = ['#31708E', '#8FC1E3', '#F7F9FB', '#8FC1E3'],
+  colors = ['#2E4A8A', '#D9A441', '#F4EFE6', '#D9A441'],
   speed = 1
 }: AuroraTextProps) {
   return (

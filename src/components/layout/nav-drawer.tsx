@@ -21,7 +21,7 @@ import { cn } from '@/lib/utils';
  *    per-item stagger, and on hover the label slides up by exactly 1em into
  *    a text-shadow ghost of itself.
  *
- * Palette is ours, not the reference's: a sky flash, then teal, then the
+ * Palette is ours, not the reference's: a gold flash, then cobalt, then the
  * deep the drawer finally rests on.
  *
  * Added on top of the reference: a focus trap, focus restore, aria wiring,
@@ -32,8 +32,8 @@ import { cn } from '@/lib/utils';
 const MAIN_EASE = [0.65, 0.01, 0.05, 0.99] as const;
 const TEXT_EASE = [0.22, 1, 0.36, 1] as const;
 
-/** Sky flash, then teal, then the deep the drawer rests on. */
-const WIPE_PANELS = ['#8FC1E3', '#31708E', '#12252F'];
+/** Gold flash, then cobalt, then the night the drawer rests on. */
+const WIPE_PANELS = ['#D9A441', '#2E4A8A', '#16233F'];
 
 const navLinks = [
   { href: '/', num: '01', key: 'home' },
@@ -113,8 +113,8 @@ export function NavDrawer() {
         className={cn(
           'group flex select-none items-center gap-3 rounded-btn border px-3 py-2 text-xs font-medium uppercase tracking-widest transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent',
           open
-            ? 'border-sky/60 bg-sky/10 text-sky'
-            : 'border-border hover:border-sky/50 hover:text-sky'
+            ? 'border-gold/60 bg-gold/10 text-gold'
+            : 'border-border hover:border-gold/50 hover:text-gold'
         )}
       >
         {/* Two stacked labels sliding on one axis. The invisible copy of the
@@ -183,7 +183,7 @@ export function NavDrawer() {
                 }}
                 transition={{ duration: reduce ? 0 : 0.5, ease: MAIN_EASE }}
                 onClick={() => setOpen(false)}
-                className="fixed inset-0 z-[41] bg-deep/70"
+                className="fixed inset-0 z-[41] bg-night/70"
               />
 
               {/* Staggered wipe: the surface arrives in three layers. */}
@@ -238,7 +238,7 @@ export function NavDrawer() {
                       return (
                         <li
                           key={link.href}
-                          className="overflow-hidden border-b border-mist/10"
+                          className="overflow-hidden border-b border-linen/10"
                         >
                           <Link
                             href={link.href}
@@ -249,7 +249,7 @@ export function NavDrawer() {
                             {/* Hover wash, growing from the bottom edge. */}
                             <span
                               aria-hidden
-                              className="absolute inset-0 origin-bottom scale-y-0 bg-mist/[0.06] transition-transform duration-[550ms] ease-[cubic-bezier(.65,.05,0,1)] group-hover:scale-y-100 group-focus-visible:scale-y-100"
+                              className="absolute inset-0 origin-bottom scale-y-0 bg-linen/[0.06] transition-transform duration-[550ms] ease-[cubic-bezier(.65,.05,0,1)] group-hover:scale-y-100 group-focus-visible:scale-y-100"
                             />
 
                             <span className="relative z-10 block shrink-0 overflow-hidden">
@@ -261,7 +261,7 @@ export function NavDrawer() {
                                   delay,
                                   ease: 'linear'
                                 }}
-                                className="block font-sans text-xs tabular-nums tracking-wider text-sky"
+                                className="block font-sans text-xs tabular-nums tracking-wider text-gold"
                               >
                                 {link.num}
                               </motion.span>
@@ -278,7 +278,7 @@ export function NavDrawer() {
                                 }}
                                 className={cn(
                                   'block font-display text-3xl font-semibold tracking-tight transition-transform duration-[550ms] ease-[cubic-bezier(.65,.05,0,1)] group-hover:-translate-y-[1em] group-focus-visible:-translate-y-[1em] md:text-4xl',
-                                  isActive ? 'text-sky' : 'text-mist'
+                                  isActive ? 'text-gold' : 'text-linen'
                                 )}
                                 style={{
                                   textShadow: '0px 1em 0px rgba(200,146,42,0.35)'
@@ -295,7 +295,7 @@ export function NavDrawer() {
                 </nav>
 
                 <div className="pointer-events-auto space-y-4 pt-10">
-                  <div className="h-px bg-mist/10" />
+                  <div className="h-px bg-linen/10" />
                   <motion.div
                     initial={{ opacity: 0, y: 24 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -308,7 +308,7 @@ export function NavDrawer() {
                     <Link
                       href="/courses"
                       onClick={() => setOpen(false)}
-                      className="flex w-full items-center justify-center rounded-btn bg-sky px-4 py-3 text-sm font-semibold text-deep transition-all duration-300 hover:bg-sky hover:shadow-[0_0_20px_rgba(200,146,42,0.3)]"
+                      className="flex w-full items-center justify-center rounded-btn bg-gold px-4 py-3 text-sm font-semibold text-night transition-all duration-300 hover:bg-gold hover:shadow-[0_0_20px_rgba(200,146,42,0.3)]"
                     >
                       {t('explore')}
                     </Link>

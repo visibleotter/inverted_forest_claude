@@ -72,14 +72,14 @@ export default async function HomePage({
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden surface-dark bg-deep text-mist">
+      <section className="relative overflow-hidden surface-dark bg-night text-linen">
         {/*
           Painting layer, then a scrim. The scrim is not decoration: the
-          artwork is mid-tone teal and green, so text laid straight on it
+          artwork is mid-tone and busy, so text laid straight on it
           would fail contrast. It stays heavy on the side the copy sits and
           thins out across, letting the image read while keeping the words
           on a guaranteed dark ground. Using a CSS background rather than
-          next/image means a missing file degrades to the deep base instead
+          next/image means a missing file degrades to the night base instead
           of throwing.
         */}
         <div
@@ -88,16 +88,16 @@ export default async function HomePage({
         />
         <div
           aria-hidden
-          className="absolute inset-0 bg-gradient-to-r from-deep via-deep/90 to-deep/55"
+          className="absolute inset-0 bg-gradient-to-r from-night via-night/90 to-night/55"
         />
         <div
           aria-hidden
-          className="absolute inset-0 bg-gradient-to-t from-deep via-transparent to-deep/60"
+          className="absolute inset-0 bg-gradient-to-t from-night via-transparent to-night/60"
         />
         <DotPattern
           spacing={22}
           radius={1}
-          className="text-mist/[0.05] [mask-image:radial-gradient(70%_60%_at_30%_40%,white,transparent)]"
+          className="text-linen/[0.05] [mask-image:radial-gradient(70%_60%_at_30%_40%,white,transparent)]"
         />
         <div className="container-content relative flex flex-col items-start gap-6 py-20 sm:py-24">
           <FadeIn>
@@ -111,7 +111,7 @@ export default async function HomePage({
             </h1>
           </FadeIn>
           <FadeIn delay={0.2}>
-            <p className="max-w-2xl text-lg leading-relaxed text-mist/80">
+            <p className="max-w-2xl text-lg leading-relaxed text-linen/80">
               {t('heroSubtitle')}
             </p>
           </FadeIn>
@@ -126,7 +126,7 @@ export default async function HomePage({
               href="/contacts"
               className={cn(
                 buttonVariants({ variant: 'outline', size: 'lg' }),
-                'border-mist/30 text-mist hover:bg-mist/10'
+                'border-linen/30 text-linen hover:bg-linen/10'
               )}
             >
               {t('heroCtaSecondary')}
@@ -134,7 +134,7 @@ export default async function HomePage({
           </FadeIn>
 
           <FadeIn delay={0.4} className="mt-6 w-full">
-            <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-mist/60">
+            <p className="mb-4 text-sm font-semibold uppercase tracking-widest text-linen/60">
               {t('heroCoursesLabel')}
             </p>
             <CourseExpandableCards courses={courses} />
@@ -200,21 +200,21 @@ export default async function HomePage({
       </Section>
 
       {/* How learning works */}
-      <Section className="surface-dark bg-deep text-mist" title={t('howTitle')}>
+      <Section className="surface-dark bg-night text-linen" title={t('howTitle')}>
         <ol className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {how.map((step, i) => (
             <FadeIn key={step.title} delay={i * 0.08}>
               <li className="relative">
                 <span
-                  className="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-accent font-display text-lg font-semibold text-deep"
+                  className="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-accent font-display text-lg font-semibold text-night"
                   aria-hidden
                 >
                   {i + 1}
                 </span>
-                <h3 className="font-sans text-base font-semibold text-mist">
+                <h3 className="font-sans text-base font-semibold text-linen">
                   {step.title}
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-mist/70">
+                <p className="mt-2 text-sm leading-relaxed text-linen/70">
                   {step.text}
                 </p>
               </li>

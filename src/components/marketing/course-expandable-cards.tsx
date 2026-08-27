@@ -59,7 +59,7 @@ export async function CourseExpandableCards({
               // Glass rather than a solid card: on the painting a white
               // block would punch a hole in the section. Tokens come from
               // the hero's .surface-dark, so text stays legible.
-              className="border-mist/20 bg-deep/50 backdrop-blur-md hover:bg-deep/65"
+              className="border-linen/20 bg-night/50 backdrop-blur-md hover:bg-night/65"
               title={lt(course.title, locale)}
               eyebrow={tCourses(`category.${course.category}`)}
               summary={lt(course.shortDescription, locale)}
