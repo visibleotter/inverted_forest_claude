@@ -17,7 +17,11 @@ export function Section({
   return (
     <section
       className={cn(
-        'relative py-16 sm:py-24',
+        // Rhythm, not decoration: the sections after the hero are short —
+        // most under a screen — so with tight padding they flick past one
+        // heading after another. The extra air gives each one room to
+        // register before the next arrives.
+        'relative py-20 sm:py-28',
         // Dark bands bring their own ground; everything else gets the
         // light one, so no section is a flat fill.
         !className?.includes('surface-dark') &&

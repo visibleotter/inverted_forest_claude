@@ -48,7 +48,7 @@ interface SmoothScrollHeroProps {
 }
 
 export function SmoothScrollHero({
-  scrollHeight = 2400,
+  scrollHeight = 1800,
   desktopImage,
   mobileImage,
   initialClipPercentage = 50,
@@ -62,18 +62,24 @@ export function SmoothScrollHero({
 
   /*
    * Four phases inside the sticky section's own scroll budget. At the
-   * default 2400px these work out at roughly:
-   *   0 .. 0.47     ~1130px  the image opens, at one even rate
-   *   0.48 .. 0.64  ~1150-1530px  the copy rises into the opened image
-   *   0.64 .. 1     ~870px   the frame simply holds
+   * default 1800px these work out at roughly:
+   *   0 .. 0.48     ~865px  the image opens, at one even rate
+   *   0.50 .. 0.64  ~900-1150px  the copy rises into the opened image
+   *   0.64 .. 1     ~650px  the frame simply holds
    *
    * That last stretch is the point of the whole budget: a finished frame
-   * that stays put for most of a thousand pixels, so a fast flick cannot
+   * that stays put for the better part of a screen, so a fast flick cannot
    * carry the reader past the one thing the hero has to say. Everything
    * must land before 1.0 — that is where the sticky releases.
+   *
+   * The budget is also what sets the *perceived* speed of the rest of the
+   * page. A sticky hero shows one screen of content however far you scroll
+   * it, so every pixel spent here is a pixel where nothing goes by. Spend
+   * too many and the page that follows reads as a blur by contrast — which
+   * is exactly what 2400 did: 4.3 screens of hero against 5.6 of content.
    */
-  const imageDone = scrollHeight * 0.47;
-  const copyFrom = scrollHeight * 0.48;
+  const imageDone = scrollHeight * 0.48;
+  const copyFrom = scrollHeight * 0.5;
   const copyTo = scrollHeight * 0.64;
 
   const clipStart = useTransform(

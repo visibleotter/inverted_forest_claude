@@ -70,7 +70,7 @@ export default async function HomePage({
     <>
       {/* Hero — the image opens on scroll, then the copy rises into it */}
       <SmoothScrollHero
-        scrollHeight={2400}
+        scrollHeight={1800}
         desktopImage="/images/hero.webp"
         // Opens from nothing: a zero-area window at rest, so the first
         // screen carries no image at all until the reader scrolls.
