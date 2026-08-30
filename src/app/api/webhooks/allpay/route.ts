@@ -81,7 +81,18 @@ export async function POST(request: NextRequest) {
   const hook = provider.verifyWebhook(rawBody, contentType);
 
   if (!hook.valid) {
-    console.warn(`[allpay] rejected unsigned or mis-signed delivery from ${ip}`);
+    // Loudly, and this is the reason why.
+    //
+    // Allpay has no account-wide webhook secret: API-created payments are
+    // signed with the API key, dashboard payment links each carry their
+    // own. If the wrong secret is configured, every real payment is
+    // rejected — the safe direction, but a silent one. Allpay would retry
+    // ten times over a day, give up, and the only trace would be a line in
+    // a log nobody is reading while students wait for invitations.
+    //
+    // So this is recorded and, at most once an hour so a flood of junk
+    // cannot drown the channel, announced where someone will see it.
+    await recordRejection(hook.orderId, ip);
     return NextResponse.json({ error: 'invalid signature' }, { status: 401 });
   }
 
@@ -237,6 +248,33 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       { error: 'access grant failed, retry expected' },
       { status: 500 }
+    );
+  }
+}
+
+let lastRejectionAlert = 0;
+
+async function recordRejection(orderId: string | null, ip: string) {
+  const reference = orderId ?? 'unknown order';
+  console.warn(`[allpay] rejected mis-signed delivery for ${reference}`);
+
+  try {
+    await createSupabaseAdminClient().from('automation_logs').insert({
+      source: 'allpay',
+      event: 'webhook.signature_rejected',
+      status: 'error',
+      detail: `${reference} · from ${ip}`
+    });
+  } catch {
+    // A failed log must not turn a rejection into a 500.
+  }
+
+  const hourAgo = Date.now() - 60 * 60 * 1000;
+  if (lastRejectionAlert < hourAgo) {
+    lastRejectionAlert = Date.now();
+    await alertAdmins(
+      `🚨 Allpay webhook rejected: signature did not match any configured secret (${reference}).\n` +
+        `If this coincides with a real payment, check ALLPAY_API_KEY and ALLPAY_WEBHOOK_SECRETS — no access is being granted until it matches.`
     );
   }
 }

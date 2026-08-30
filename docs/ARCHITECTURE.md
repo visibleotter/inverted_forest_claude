@@ -218,13 +218,25 @@ Production needs, in rough order of how much stops working without them:
 | Group | Variables | Missing means |
 | --- | --- | --- |
 | Supabase | `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `ADMIN_EMAILS` | demo mode: nothing is stored |
-| Allpay | `ALLPAY_LOGIN`, `ALLPAY_API_KEY`, `ALLPAY_WEBHOOK_SECRET`, `ALLPAY_VAT_RATE` | falls back to each group's static link; payments arrive unattached |
+| Allpay | `ALLPAY_LOGIN`, `ALLPAY_API_KEY`, `ALLPAY_VAT_RATE` (0 — עוסק פטור), optional `ALLPAY_WEBHOOK_SECRETS` | falls back to each group's static link; payments arrive unattached |
 | Telegram | `TELEGRAM_BOT_TOKEN`, `TELEGRAM_WEBHOOK_SECRET`, `TELEGRAM_ADMIN_CHAT_ID`, `TELEGRAM_ADMIN_USER_IDS` | paid students are never admitted to a channel |
 | Cron | `CRON_SECRET` | missed charges are never noticed |
 | Email | `RESEND_API_KEY`, `EMAIL_FROM` | the invite is only on the success page |
 | Make | `MAKE_EVENTS_WEBHOOK_URL` | events are recorded but nothing is mirrored |
 
-One credential is worth calling out separately: the Allpay webhook secret
-is what stands between the site and a forged payment. Rotate it in the
-Allpay dashboard the moment it appears anywhere it should not — a
-screenshot, a chat, a support ticket.
+One credential is worth calling out separately. Allpay has **no
+account-wide webhook secret**: a payment created through the API is signed
+with `ALLPAY_API_KEY`, and a payment *link* built by hand in the dashboard
+carries its own secret. Verification therefore tries the API key and every
+value in `ALLPAY_WEBHOOK_SECRETS`, accepting on the first match — each
+candidate is a full SHA256 comparison, so trying several is no weaker than
+trying one.
+
+That key is what stands between the site and a forged payment. Rotate it
+the moment it appears anywhere it should not — a screenshot, a chat, a
+support ticket.
+
+Getting it wrong fails *closed*: every real payment is rejected and nobody
+is admitted to a channel. Because that failure is silent from the outside,
+a rejected signature is written to `automation_logs` and announced in the
+admin Telegram chat (at most hourly, so junk traffic cannot drown it).

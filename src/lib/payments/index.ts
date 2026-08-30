@@ -16,9 +16,18 @@ export type {
 function credentials(): AllpayCredentials | null {
   const login = process.env.ALLPAY_LOGIN?.trim();
   const apiKey = process.env.ALLPAY_API_KEY?.trim();
-  const webhookSecret = process.env.ALLPAY_WEBHOOK_SECRET?.trim();
-  if (!login || !apiKey || !webhookSecret) return null;
-  return { login, apiKey, webhookSecret };
+  if (!login || !apiKey) return null;
+
+  // Optional, and comma-separated: Allpay has no account-wide webhook
+  // secret. Payments this site creates are signed with the API key; a
+  // payment *link* built by hand in the dashboard gets its own secret,
+  // and each one that is actually in use belongs on this list.
+  const webhookSecrets = (process.env.ALLPAY_WEBHOOK_SECRETS ?? '')
+    .split(',')
+    .map((value) => value.trim())
+    .filter(Boolean);
+
+  return { login, apiKey, webhookSecrets };
 }
 
 let cached: CheckoutProvider | null = null;

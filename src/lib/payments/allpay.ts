@@ -36,7 +36,19 @@ const BASE = 'https://allpay.to/app/';
 export interface AllpayCredentials {
   login: string;
   apiKey: string;
-  webhookSecret: string;
+  /**
+   * Additional secrets an inbound webhook might be signed with.
+   *
+   * There is no single account-wide webhook secret in Allpay: a payment
+   * *link* created in the dashboard carries its own, and payments created
+   * through the API are signed with the API key. So verification tries the
+   * API key and every secret listed here, and accepts on the first match.
+   *
+   * That is not a weakening. Each candidate is a complete SHA256
+   * comparison against a secret only we and Allpay hold; adding a second
+   * one no more helps a forger than owning two locks helps a burglar.
+   */
+  webhookSecrets: string[];
 }
 
 /* ── Signature ─────────────────────────────────────────────────────────
@@ -290,7 +302,17 @@ export class AllpayProvider implements CheckoutProvider {
 
   verifyWebhook(rawBody: string, contentType: string): WebhookVerification {
     const payload = parseWebhookBody(rawBody, contentType);
-    const valid = verifySignature(payload, this.credentials.webhookSecret);
+
+    // The API key first: it is what signs payments this site created, which
+    // is every payment in the normal flow. Per-link secrets are for the
+    // manual fallback links made by hand in the dashboard.
+    const candidates = [
+      this.credentials.apiKey,
+      ...this.credentials.webhookSecrets
+    ];
+    const valid = candidates.some((secret) =>
+      verifySignature(payload, secret)
+    );
 
     const code = Number(payload.status);
     const state =
