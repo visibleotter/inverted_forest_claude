@@ -517,7 +517,7 @@
     "sentTitle": "Check your inbox",
     "sentText": "If that address is on the admin list, a sign-in link is on its way. It is valid for a limited time.",
     "error": "Couldn't send the email. Try again in a minute.",
-    "demoNote": "The site is in demo mode: no database is connected and the admin area is open without sign-in. Sign-in appears once the Supabase variables are set.",
+    "demoNote": "No database is connected, so the site is running in demo mode. Locally the admin area opens without signing in; on a deployed URL it stays closed until the Supabase variables are set. Sign-in appears as soon as they are.",
     "subtitlePassword": "Enter your email and password. Create the user in Supabase: Authentication → Users → Add user.",
     "password": "Password",
     "signIn": "Sign in",

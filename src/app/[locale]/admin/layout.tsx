@@ -27,6 +27,16 @@ const navItems = [
 
 export const metadata = { robots: { index: false } };
 
+/**
+ * Never prerendered, never cached.
+ *
+ * The access check has to run against the actual request — its cookies and
+ * its host — and a page baked at build time would answer from whatever was
+ * true then. For an authenticated area that is not a caching trade-off,
+ * it is the difference between a gate and a picture of a gate.
+ */
+export const dynamic = 'force-dynamic';
+
 export default async function AdminLayout({
   children,
   params: { locale }
