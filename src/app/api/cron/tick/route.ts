@@ -10,7 +10,7 @@ import { createSupabaseAdminClient } from '@/lib/supabase/server';
 import { alertAdmins } from '@/lib/telegram/client';
 
 /**
- * The hourly sweep.
+ * The sweep.
  *
  * Everything the system has to notice *without* being told lives here, in
  * one endpoint behind one cron entry. The most important of those is the
@@ -19,6 +19,15 @@ import { alertAdmins } from '@/lib/telegram/client';
  * grace period, and therefore the whole "student stops paying" path, is
  * built on polling `subscriptionstatus` rather than on an event that does
  * not exist.
+ *
+ * Scheduled daily, because a Vercel Hobby account allows nothing more
+ * frequent. Everything here tolerates that: grace periods are measured in
+ * days, an abandoned checkout holding a place for a few extra hours costs
+ * nothing, and a grant that failed at payment time is already being
+ * retried by Allpay itself, ten times over the following twenty-four
+ * hours. If a tighter loop is ever wanted, this endpoint takes a bearer
+ * token and Make.com can call it on any schedule — the Vercel cron is the
+ * floor, not the ceiling.
  *
  * It is also the second net under the webhook. If Telegram was down when
  * someone paid, the payment is in the ledger and the grant is missing;
