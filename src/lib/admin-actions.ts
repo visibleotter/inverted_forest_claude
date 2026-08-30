@@ -649,3 +649,146 @@ export async function adminSaveMessages(
     problems
   };
 }
+
+/* ── Course content ────────────────────────────────────────────────── */
+
+const localizedString = z.object({
+  ru: z.string().trim().max(8000),
+  en: z.string().trim().max(8000)
+});
+
+const localizedList = z.object({
+  ru: z.array(z.string().trim().min(1).max(1000)).max(40),
+  en: z.array(z.string().trim().min(1).max(1000)).max(40)
+});
+
+const courseSchema = z.object({
+  id: z
+    .string()
+    .trim()
+    .regex(/^course_[a-z0-9_]+$/, 'id must look like course_007'),
+  slug: z
+    .string()
+    .trim()
+    .regex(/^[a-z0-9-]+$/, 'slug is lowercase letters, digits and dashes'),
+  teacherId: z.string().trim().min(1),
+  category: z.enum(['history', 'philosophy', 'literature', 'anthropology']),
+  difficulty: z.enum(['intro', 'intermediate', 'deep_dive']),
+  ageGroups: z.array(z.enum(['children', 'teens', 'adults'])).min(1),
+  durationMonths: z.number().int().min(1).max(24),
+  monthlyPrice: z.number().nonnegative().finite(),
+  currency: z.enum(['ILS', 'USD', 'EUR']),
+  imageUrl: z.string().trim().url().nullable(),
+  publicTelegramUrl: z.string().trim().url().nullable(),
+  status: z.enum(['draft', 'published', 'archived']),
+  featured: z.boolean(),
+  title: localizedString,
+  shortDescription: localizedString,
+  description: localizedString,
+  outcomes: localizedList,
+  audience: localizedList,
+  curriculum: z
+    .array(z.object({ title: localizedString, topics: localizedList }))
+    .max(24),
+  faq: z
+    .array(z.object({ question: localizedString, answer: localizedString }))
+    .max(40)
+});
+
+export type CourseFormState =
+  | { status: 'idle' }
+  | { status: 'error'; message: string }
+  | { status: 'saved'; id: string };
+
+/**
+ * Create or update a course, both languages at once.
+ *
+ * The payload arrives as one JSON blob rather than a hundred form fields
+ * because the shape is genuinely nested — modules containing topic lists,
+ * FAQ pairs — and flattening that into `curriculum[0].topics.ru[2]` names
+ * would move the complexity into string parsing without removing any.
+ *
+ * Translatable text goes to `course_translations`, one row per locale, so
+ * adding Hebrew later stays an INSERT rather than an ALTER. Everything
+ * non-translatable — price, schedule shape, status — stays on `courses`.
+ */
+export async function adminSaveCourse(
+  _prev: CourseFormState,
+  formData: FormData
+): Promise<CourseFormState> {
+  const access = await checkAdminAccess();
+  if (!access.allowed) return { status: 'error', message: 'unauthorized' };
+  if (isDemoMode()) return { status: 'error', message: 'demo_mode' };
+
+  const raw = formData.get('payload');
+  if (typeof raw !== 'string') return { status: 'error', message: 'no_payload' };
+
+  let parsedJson: unknown;
+  try {
+    parsedJson = JSON.parse(raw);
+  } catch {
+    return { status: 'error', message: 'bad_json' };
+  }
+
+  const parsed = courseSchema.safeParse(parsedJson);
+  if (!parsed.success) {
+    const issue = parsed.error.issues[0];
+    return {
+      status: 'error',
+      message: issue ? `${issue.path.join('.')}: ${issue.message}` : 'validation'
+    };
+  }
+
+  const course = parsed.data;
+  const db = createSupabaseAdminClient();
+
+  const { error: courseError } = await db.from('courses').upsert(
+    {
+      id: course.id,
+      slug: course.slug,
+      teacher_id: course.teacherId,
+      category: course.category,
+      difficulty: course.difficulty,
+      age_groups: course.ageGroups,
+      duration_months: course.durationMonths,
+      monthly_price: course.monthlyPrice,
+      currency: course.currency,
+      image_url: course.imageUrl,
+      public_telegram_url: course.publicTelegramUrl,
+      status: course.status,
+      featured: course.featured,
+      updated_at: new Date().toISOString()
+    },
+    { onConflict: 'id' }
+  );
+  if (courseError) return { status: 'error', message: courseError.message };
+
+  const translations = (['ru', 'en'] as const).map((locale) => ({
+    course_id: course.id,
+    locale,
+    title: course.title[locale],
+    short_description: course.shortDescription[locale],
+    description: course.description[locale],
+    outcomes: course.outcomes[locale],
+    audience: course.audience[locale],
+    curriculum: course.curriculum.map((module) => ({
+      title: module.title[locale],
+      items: module.topics[locale]
+    })),
+    faq: course.faq.map((item) => ({
+      question: item.question[locale],
+      answer: item.answer[locale]
+    }))
+  }));
+
+  const { error: translationError } = await db
+    .from('course_translations')
+    .upsert(translations, { onConflict: 'course_id,locale' });
+  if (translationError) {
+    return { status: 'error', message: translationError.message };
+  }
+
+  // Course copy appears on the home page, the catalogue and its own page.
+  revalidatePath('/', 'layout');
+  return { status: 'saved', id: course.id };
+}

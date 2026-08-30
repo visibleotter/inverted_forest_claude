@@ -1,5 +1,7 @@
 import { getLocale, getTranslations, setRequestLocale } from 'next-intl/server';
+import { Link } from '@/i18n/navigation';
 import { AdminTable } from '@/components/admin/admin-table';
+import { buttonVariants } from '@/components/ui/button';
 import { StatusBadge } from '@/components/admin/status-badge';
 import { getData } from '@/lib/data';
 import type { Locale } from '@/lib/types';
@@ -22,7 +24,15 @@ export default async function AdminCoursesPage({
 
   return (
     <div>
-      <h1 className="mb-6 text-2xl font-semibold">{t('nav.courses')}</h1>
+      <div className="mb-6 flex items-center justify-between gap-4">
+        <h1 className="text-2xl font-semibold">{t('nav.courses')}</h1>
+        <Link
+          href="/admin/courses/new"
+          className={buttonVariants({ variant: 'accent' })}
+        >
+          {t('courseForm.new')}
+        </Link>
+      </div>
       <AdminTable
         headers={[
           t('table.title'),
@@ -36,13 +46,15 @@ export default async function AdminCoursesPage({
           const teacher = teachers.find((x) => x.id === course.teacherId);
           const courseGroups = groups.filter((g) => g.courseId === course.id);
           return [
-            <div key="t">
+            <Link key="t" href={`/admin/courses/${course.id}`} className="block">
               {/* Bilingual side-by-side: source of truth for translators */}
-              <p className="font-medium">{course.title.ru}</p>
+              <p className="font-medium text-accent hover:underline">
+                {course.title.ru}
+              </p>
               <p className="text-xs text-muted-foreground">
                 {course.title.en}
               </p>
-            </div>,
+            </Link>,
             teacher ? lt(teacher.name, l) : '—',
             `${formatPrice(course.monthlyPrice, course.currency, l)} / ${
               l === 'ru' ? 'мес' : 'mo'
