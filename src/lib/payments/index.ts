@@ -54,17 +54,20 @@ export function successUrl(locale: string, enrollmentId: string): string {
 }
 
 /**
- * VAT rate applied to course line items, as a percentage.
+ * VAT rate sent to Allpay on each course line item, as a percentage.
  *
- * Set `ALLPAY_VAT_RATE=0` for a business not registered to charge VAT
- * (עוסק פטור). The default follows the Israeli standard rate, but the
- * correct value is a question for the accountant, not a default worth
- * trusting — it also decides whether the price shown on a course page is
- * VAT-inclusive.
+ * Zero by default: the school trades as עוסק פטור, so no VAT is charged
+ * and the price on a course page is the final price. Nothing in the copy
+ * mentions VAT, and nothing should.
+ *
+ * If the business ever registers as עוסק מורשה, this single variable is
+ * what changes — set `ALLPAY_VAT_RATE=18` (or whatever the rate is by
+ * then) and decide separately whether the displayed prices stay the same
+ * and absorb it, or rise. That is an accountant's call, not a default's.
  */
 export function vatRate(): number {
   const raw = process.env.ALLPAY_VAT_RATE?.trim();
-  if (raw === undefined || raw === '') return 18;
+  if (raw === undefined || raw === '') return 0;
   const parsed = Number(raw);
-  return Number.isFinite(parsed) && parsed >= 0 && parsed <= 100 ? parsed : 18;
+  return Number.isFinite(parsed) && parsed >= 0 && parsed <= 100 ? parsed : 0;
 }

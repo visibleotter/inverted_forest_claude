@@ -7,13 +7,15 @@ import { createSupabaseAdminClient } from './supabase/server';
  * invite stays good, how long an unpaid registration holds its place —
  * these get argued about and changed, and none of them is worth a deploy.
  * Defaults here are the starting values seeded by migration 0003.
+ *
+ * VAT is deliberately not here. It lives in ALLPAY_VAT_RATE, and a second
+ * place claiming to hold it would be a second place to be wrong.
  */
 
 export const SETTING_DEFAULTS = {
   grace_period_days: 3,
   invite_ttl_days: 7,
-  pending_ttl_minutes: 60,
-  vat_rate: 18
+  pending_ttl_minutes: 60
 } as const;
 
 export type SettingKey = keyof typeof SETTING_DEFAULTS;

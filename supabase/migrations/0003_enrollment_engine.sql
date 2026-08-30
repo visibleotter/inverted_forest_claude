@@ -170,8 +170,7 @@ alter table study_groups
 insert into settings (key, value) values
   ('grace_period_days', '3'),
   ('invite_ttl_days', '7'),
-  ('pending_ttl_minutes', '60'),
-  ('vat_rate', '18')
+  ('pending_ttl_minutes', '60')
 on conflict (key) do nothing;
 
 -- ── updated_at ───────────────────────────────────────────────────────
