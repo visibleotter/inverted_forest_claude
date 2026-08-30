@@ -2,34 +2,75 @@
 
 import { Mail } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { createSupabaseBrowserClient } from '@/lib/supabase/client';
 
-type State = 'idle' | 'sending' | 'sent' | 'error';
+type Mode = 'password' | 'link';
+type State = 'idle' | 'working' | 'sent' | 'error';
 
 /**
- * Sign-in by emailed link.
+ * Two ways in, and the order matters.
  *
- * No password to store, lose or leak, and the same mechanism will carry
- * the student portal later. Who is actually allowed in is decided
- * server-side by `ADMIN_EMAILS` — a link delivered to an address that is
- * not on that list authenticates a person who then gets nothing.
+ * **Password** is the default because it needs nothing configured: no
+ * redirect URL allow-listed, no mail provider, no waiting for a message.
+ * Create the user in the Supabase dashboard with a password and sign in.
+ * It works identically on localhost and in production, which the emailed
+ * link does not — that one has to be told, per host, where it may return.
  *
- * The response is intentionally identical whether or not the address is an
- * admin one, so this form cannot be used to find out who the admins are.
+ * **The emailed link** stays as the second option, for the day someone
+ * forgets the password.
+ *
+ * Who is actually allowed in is decided server-side by `ADMIN_EMAILS`.
+ * Authenticating with an address that is not on that list gets you a
+ * session and nothing else.
  */
 export function AdminLoginForm({ demo }: { demo: boolean }) {
   const t = useTranslations('adminLogin');
   const locale = useLocale();
-  const [email, setEmail] = useState('');
-  const [state, setState] = useState<State>('idle');
+  const router = useRouter();
 
-  async function onSubmit(event: React.FormEvent) {
+  const [mode, setMode] = useState<Mode>('password');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [state, setState] = useState<State>('idle');
+  const [message, setMessage] = useState<string | null>(null);
+
+  async function signInWithPassword(event: React.FormEvent) {
     event.preventDefault();
-    if (!email.trim()) return;
-    setState('sending');
+    setState('working');
+    setMessage(null);
+
+    try {
+      const supabase = createSupabaseBrowserClient();
+      const { error } = await supabase.auth.signInWithPassword({
+        email: email.trim(),
+        password
+      });
+
+      if (error) {
+        setState('error');
+        setMessage(t('badCredentials'));
+        return;
+      }
+
+      // The session cookie is set by the browser client. `refresh` makes
+      // the server re-read it, so the admin layout sees a signed-in user
+      // rather than bouncing straight back here.
+      router.replace(`/${locale}/admin`);
+      router.refresh();
+    } catch {
+      setState('error');
+      setMessage(t('error'));
+    }
+  }
+
+  async function sendLink(event: React.FormEvent) {
+    event.preventDefault();
+    setState('working');
+    setMessage(null);
 
     try {
       const supabase = createSupabaseBrowserClient();
@@ -38,11 +79,12 @@ export function AdminLoginForm({ demo }: { demo: boolean }) {
         email: email.trim(),
         options: { emailRedirectTo: redirectTo, shouldCreateUser: false }
       });
-      // `shouldCreateUser: false` means an unknown address returns an
-      // error. Report success regardless — see the note above.
+      // An unknown address returns an error. Report success anyway, so this
+      // form cannot be used to find out who the admins are.
       setState(error && error.status && error.status >= 500 ? 'error' : 'sent');
     } catch {
       setState('error');
+      setMessage(t('error'));
     }
   }
 
@@ -69,14 +111,16 @@ export function AdminLoginForm({ demo }: { demo: boolean }) {
     );
   }
 
+  const busy = state === 'working';
+
   return (
     <form
-      onSubmit={onSubmit}
+      onSubmit={mode === 'password' ? signInWithPassword : sendLink}
       className="rounded-card border border-border bg-card p-8"
     >
       <h1 className="text-2xl font-semibold">{t('title')}</h1>
       <p className="mt-3 leading-relaxed text-muted-foreground">
-        {t('subtitle')}
+        {mode === 'password' ? t('subtitlePassword') : t('subtitle')}
       </p>
 
       <label htmlFor="admin-email" className="mb-1.5 mt-6 block text-sm font-medium">
@@ -91,9 +135,28 @@ export function AdminLoginForm({ demo }: { demo: boolean }) {
         onChange={(event) => setEmail(event.target.value)}
       />
 
+      {mode === 'password' && (
+        <>
+          <label
+            htmlFor="admin-password"
+            className="mb-1.5 mt-4 block text-sm font-medium"
+          >
+            {t('password')}
+          </label>
+          <Input
+            id="admin-password"
+            type="password"
+            autoComplete="current-password"
+            required
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+          />
+        </>
+      )}
+
       {state === 'error' && (
         <p role="alert" className="mt-3 text-sm text-red-500">
-          {t('error')}
+          {message ?? t('error')}
         </p>
       )}
 
@@ -101,11 +164,29 @@ export function AdminLoginForm({ demo }: { demo: boolean }) {
         type="submit"
         variant="accent"
         size="lg"
-        disabled={state === 'sending'}
+        disabled={busy}
         className="mt-6 w-full"
       >
-        {state === 'sending' ? t('sending') : t('submit')}
+        {busy
+          ? mode === 'password'
+            ? t('signingIn')
+            : t('sending')
+          : mode === 'password'
+            ? t('signIn')
+            : t('submit')}
       </Button>
+
+      <button
+        type="button"
+        className="mt-4 w-full text-sm text-muted-foreground underline transition-colors hover:text-foreground"
+        onClick={() => {
+          setMode(mode === 'password' ? 'link' : 'password');
+          setState('idle');
+          setMessage(null);
+        }}
+      >
+        {mode === 'password' ? t('useLink') : t('usePassword')}
+      </button>
     </form>
   );
 }
