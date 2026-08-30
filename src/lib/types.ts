@@ -265,6 +265,43 @@ export interface StudentRow extends Student {
   enrollmentStatus: EnrollmentStatus;
 }
 
+/**
+ * One row of the admin enrollments table.
+ *
+ * Flattened deliberately: the admin screen needs the payer, the
+ * participant, the money and the Telegram state side by side, and joining
+ * four tables in the component is how that screen becomes slow and
+ * inconsistent between providers.
+ */
+export interface EnrollmentAdminRow {
+  id: string;
+  studentName: string;
+  email: string;
+  phone: string | null;
+  /** Set when the payer is not the person attending. */
+  participantName: string | null;
+  courseTitle: LocalizedString;
+  courseId: string;
+  groupId: string;
+  status: EnrollmentStatus;
+  plan: EnrollmentPlan;
+  paidThrough: string | null;
+  graceUntil: string | null;
+  telegramAccessStatus: TelegramAccessStatus;
+  orderId: string | null;
+  createdAt: string;
+}
+
+/** A verified payment that matched no enrollment, awaiting a human. */
+export interface OrphanPaymentRow {
+  id: string;
+  orderId: string | null;
+  amount: number | null;
+  currency: string | null;
+  clientEmail: string | null;
+  createdAt: string;
+}
+
 export interface PaymentRow extends Payment {
   studentName: string;
   courseTitle: LocalizedString;

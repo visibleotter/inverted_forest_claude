@@ -1,6 +1,8 @@
 import type {
   Course,
   DashboardStats,
+  EnrollmentAdminRow,
+  OrphanPaymentRow,
   PaymentRow,
   RegistrationInput,
   RegistrationResult,
@@ -106,6 +108,38 @@ export class SeedProvider implements DataProvider {
       })
       .filter((row): row is StudentRow => row !== null)
       .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+  }
+
+  async getEnrollments(): Promise<EnrollmentAdminRow[]> {
+    return demoEnrollments
+      .map((enr) => {
+        const student = demoStudents.find((s) => s.id === enr.studentId);
+        const course = courses.find((c) => c.id === enr.courseId);
+        if (!student || !course) return null;
+        return {
+          id: enr.id,
+          studentName: `${student.firstName} ${student.lastName}`,
+          email: student.email,
+          phone: student.phone,
+          participantName: enr.participantName,
+          courseTitle: course.title,
+          courseId: course.id,
+          groupId: enr.groupId,
+          status: enr.status,
+          plan: enr.plan,
+          paidThrough: enr.paidThrough,
+          graceUntil: enr.graceUntil,
+          telegramAccessStatus: enr.telegramAccessStatus,
+          orderId: enr.orderId,
+          createdAt: enr.createdAt
+        } satisfies EnrollmentAdminRow;
+      })
+      .filter((row): row is EnrollmentAdminRow => row !== null);
+  }
+
+  async getOrphanPayments(): Promise<OrphanPaymentRow[]> {
+    // Demo mode has no webhook, so nothing can arrive unmatched.
+    return [];
   }
 
   async getPayments(): Promise<PaymentRow[]> {

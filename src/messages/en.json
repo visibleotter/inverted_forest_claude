@@ -385,7 +385,12 @@
       "draft": "Draft",
       "archived": "Archived",
       "botAdmin": "Administrator",
-      "botMissing": "Not connected"
+      "botMissing": "Not connected",
+      "not_granted": "No access",
+      "invite_created": "Invited",
+      "joined": "In channel",
+      "removed": "Removed",
+      "expired": "Expired"
     },
     "settings": {
       "title": "Settings",
@@ -396,6 +401,40 @@
       "make": "Make.com (registration webhook)",
       "webhookSecret": "Payment webhook secret",
       "docsNote": "The full list of variables is documented in .env.example and docs/ARCHITECTURE.md."
+    },
+    "actions": {
+      "title": "Actions",
+      "grant": "Grant access",
+      "resend": "New invite",
+      "revoke": "Revoke access",
+      "cancelSubscription": "Cancel subscription",
+      "confirmRevoke": "Revoke access? The student will be removed from the group channel.",
+      "confirmCancel": "Cancel the Allpay subscription? No further charges will be taken. Access stays until the paid period ends.",
+      "done": "Done",
+      "demoMode": "Demo mode: no database connected, nothing is saved."
+    },
+    "enrollments": {
+      "title": "Enrollments",
+      "participant": "Student",
+      "plan": "Billing",
+      "planMonthly": "monthly",
+      "planFull": "in full",
+      "paidThrough": "Paid through",
+      "access": "Telegram",
+      "orphansTitle": "Payments with no enrollment",
+      "orphansIntro": "The money arrived but could not be attached to anyone — usually a shared link or a stale one. Match it by hand.",
+      "orphansEmpty": "No unmatched payments."
+    },
+    "groupForm": {
+      "new": "New group",
+      "edit": "Edit group",
+      "idHint": "Immutable internal id, like group_101. It travels to Allpay and into the logs — it cannot be changed after creation.",
+      "save": "Save",
+      "saving": "Saving…",
+      "saved": "Saved",
+      "cancel": "Cancel",
+      "seatsHint": "Seats taken are counted from payments automatically — never typed in.",
+      "inviteLimitHint": "How many people one invite admits. Use 2 for children’s groups so a parent can come along."
     }
   },
   "notFound": {

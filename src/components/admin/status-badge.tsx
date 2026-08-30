@@ -18,6 +18,14 @@ const variantByStatus: Record<
   full: 'warning',
   refunded: 'default',
   completed: 'default',
+  // Telegram access states, which are read alongside payment states in the
+  // enrollments table — a paid student who is not in the channel is the
+  // thing an admin is actually looking for.
+  joined: 'success',
+  invite_created: 'accent',
+  not_granted: 'warning',
+  removed: 'danger',
+  expired: 'warning',
   draft: 'default',
   archived: 'default'
 };

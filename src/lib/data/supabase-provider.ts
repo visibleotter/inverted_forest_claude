@@ -10,6 +10,8 @@ import { getNumericSettings } from '../settings';
 import type {
   Course,
   DashboardStats,
+  EnrollmentAdminRow,
+  OrphanPaymentRow,
   Locale,
   LocalizedList,
   LocalizedString,
@@ -486,6 +488,66 @@ export class SupabaseProvider implements DataProvider {
         groupId: row.group_id,
         enrollmentStatus: row.status
       }));
+  }
+
+  async getEnrollments(): Promise<EnrollmentAdminRow[]> {
+    const { data, error } = await this.db
+      .from('enrollments')
+      .select(
+        'id, status, plan, group_id, course_id, participant_name, paid_through, grace_until, telegram_access_status, order_id, created_at, students(first_name, last_name, email, phone), courses(course_translations(locale, title))'
+      )
+      .order('created_at', { ascending: false })
+      .limit(500);
+    if (error) throw error;
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return (data ?? []).map((row: any) => ({
+      id: row.id,
+      studentName: row.students
+        ? `${row.students.first_name} ${row.students.last_name}`
+        : '—',
+      email: row.students?.email ?? '—',
+      phone: row.students?.phone ?? null,
+      participantName: row.participant_name,
+      courseTitle: collectString(
+        row.courses?.course_translations ?? [],
+        'title'
+      ),
+      courseId: row.course_id,
+      groupId: row.group_id,
+      status: row.status,
+      plan: row.plan,
+      paidThrough: row.paid_through,
+      graceUntil: row.grace_until,
+      telegramAccessStatus: row.telegram_access_status,
+      orderId: row.order_id,
+      createdAt: row.created_at
+    }));
+  }
+
+  async getOrphanPayments(): Promise<OrphanPaymentRow[]> {
+    const { data, error } = await this.db
+      .from('orphan_payments')
+      .select('id, order_id, amount, currency, payload, created_at')
+      .is('resolved_at', null)
+      .order('created_at', { ascending: false })
+      .limit(100);
+    if (error) throw error;
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return (data ?? []).map((row: any) => ({
+      id: row.id,
+      orderId: row.order_id,
+      amount: row.amount === null ? null : Number(row.amount),
+      currency: row.currency,
+      // The payer's address is the only usable clue for matching this by
+      // hand, and it is already in the stored payload.
+      clientEmail:
+        typeof row.payload?.client_email === 'string'
+          ? row.payload.client_email
+          : null,
+      createdAt: row.created_at
+    }));
   }
 
   async getPayments(): Promise<PaymentRow[]> {

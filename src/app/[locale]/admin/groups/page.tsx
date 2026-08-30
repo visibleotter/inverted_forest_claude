@@ -1,5 +1,7 @@
 import { getLocale, getTranslations, setRequestLocale } from 'next-intl/server';
+import { Link } from '@/i18n/navigation';
 import { AdminTable } from '@/components/admin/admin-table';
+import { buttonVariants } from '@/components/ui/button';
 import { StatusBadge } from '@/components/admin/status-badge';
 import { getData } from '@/lib/data';
 import type { Locale } from '@/lib/types';
@@ -22,7 +24,15 @@ export default async function AdminGroupsPage({
 
   return (
     <div>
-      <h1 className="mb-6 text-2xl font-semibold">{t('nav.groups')}</h1>
+      <div className="mb-6 flex items-center justify-between gap-4">
+        <h1 className="text-2xl font-semibold">{t('nav.groups')}</h1>
+        <Link
+          href="/admin/groups/new"
+          className={buttonVariants({ variant: 'accent' })}
+        >
+          {t('groupForm.new')}
+        </Link>
+      </div>
       <AdminTable
         headers={[
           'ID',
@@ -37,9 +47,13 @@ export default async function AdminGroupsPage({
         rows={groups.map((group) => {
           const course = courses.find((c) => c.id === group.courseId);
           return [
-            <code key="id" className="text-xs font-semibold">
+            <Link
+              key="id"
+              href={`/admin/groups/${group.id}`}
+              className="font-mono text-xs font-semibold text-accent hover:underline"
+            >
               {group.id}
-            </code>,
+            </Link>,
             course ? lt(course.title, l) : group.courseId,
             tCourses(`ageGroup.${group.audience}`),
             <span key="sch" className="capitalize">

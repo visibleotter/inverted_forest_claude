@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { grantAccess, revokeAccess } from '@/lib/access';
 import { isDemoMode } from '@/lib/data';
+import { sendPastDueEmail } from '@/lib/email/notify';
 import { emit, redeliverPending } from '@/lib/events';
 import { getCheckoutProvider } from '@/lib/payments';
 import { secretsMatch } from '@/lib/security';
@@ -175,6 +176,11 @@ async function pollSubscriptions(graceDays: number): Promise<number> {
       grace_until: graceUntil,
       subscription_state: state
     });
+
+    // Told before their access goes, not after. There is no self-serve way
+    // to re-enter card details on an Allpay subscription, so the email
+    // points at us rather than pretending there is a button to press.
+    await sendPastDueEmail(enrollment.id as string, graceDays, null);
     flagged += 1;
   }
 

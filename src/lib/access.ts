@@ -1,3 +1,4 @@
+import { sendInviteEmail } from './email/notify';
 import { emit } from './events';
 import { maskEmail } from './security';
 import { getNumericSettings } from './settings';
@@ -33,7 +34,9 @@ export type GrantResult =
 interface EnrollmentRow {
   id: string;
   group_id: string;
+  course_id: string;
   student_id: string;
+  participant_name: string | null;
   telegram_access_status: string;
   telegram_user_id: string | null;
 }
@@ -42,6 +45,8 @@ interface GroupRow {
   id: string;
   telegram_channel_id: string | null;
   invite_member_limit: number;
+  weekday: number;
+  start_time: string;
 }
 
 async function loadEnrollment(
@@ -51,14 +56,16 @@ async function loadEnrollment(
 
   const { data: enrollment } = await db
     .from('enrollments')
-    .select('id, group_id, student_id, telegram_access_status, telegram_user_id')
+    .select(
+      'id, group_id, course_id, student_id, participant_name, telegram_access_status, telegram_user_id'
+    )
     .eq('id', enrollmentId)
     .maybeSingle();
   if (!enrollment) return null;
 
   const { data: group } = await db
     .from('study_groups')
-    .select('id, telegram_channel_id, invite_member_limit')
+    .select('id, telegram_channel_id, invite_member_limit, weekday, start_time')
     .eq('id', enrollment.group_id)
     .maybeSingle();
   if (!group) return null;
@@ -149,6 +156,11 @@ export async function grantAccess(enrollmentId: string): Promise<GrantResult> {
     group_id: group.id,
     expires_at: expiresAt.toISOString()
   });
+
+  // Only a freshly minted invite is emailed. A retried webhook returns the
+  // reused branch above and sends nothing, which is what keeps ten Allpay
+  // delivery attempts from becoming ten identical emails.
+  await sendInviteEmail(enrollmentId, link.invite_link, settings.invite_ttl_days);
 
   return {
     status: 'invite',

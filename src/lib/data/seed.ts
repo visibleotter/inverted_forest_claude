@@ -676,6 +676,312 @@ export const courses: Course[] = [
       }
     ],
     faq: sharedFaq
+  },
+  {
+    id: 'course_007',
+    slug: 'russia-early-modern',
+    teacherId: 'teacher_001',
+    category: 'history',
+    difficulty: 'intermediate',
+    ageGroups: ['adults', 'teens'],
+    durationMonths: 3,
+    monthlyPrice: 350,
+    currency: 'ILS',
+    imageUrl:
+      'https://images.unsplash.com/photo-1520106212299-d99c443e4568?w=1200&q=80',
+    publicTelegramUrl: 'https://t.me/invertedforest',
+    status: 'published',
+    featured: false,
+    title: {
+      ru: 'История России Нового времени: от Смуты до 1812 года',
+      en: 'Early Modern Russia: from the Time of Troubles to 1812'
+    },
+    shortDescription: {
+      ru: 'Два века, за которые Московское царство стало империей: Смута, раскол, Пётр, Екатерина и гроза двенадцатого года.',
+      en: 'The two centuries in which a Muscovite kingdom became an empire: the Troubles, the schism, Peter, Catherine and the storm of 1812.'
+    },
+    description: {
+      ru: 'Курс о том, как страна, едва не исчезнувшая в Смуту, за двести лет превратилась в европейскую империю — и чего это стоило. Мы начинаем с пресечения династии и самозванцев, проходим через первых Романовых и церковный раскол, разбираем петровские преобразования не как чудо, а как решение конкретных задач ценой конкретных жертв. Дальше — эпоха дворцовых переворотов, «просвещённый абсолютизм» Екатерины и Пугачёвщина как его тень, короткое царствование Павла и, наконец, 1812 год, когда империя впервые почувствовала себя нацией. Читаем указы, письма и мемуары современников и стараемся понять логику людей, которые не знали, чем всё кончится.',
+      en: 'A course on how a country that nearly ceased to exist during the Time of Troubles became a European empire within two centuries — and what that cost. We begin with a broken dynasty and its pretenders, pass through the first Romanovs and the church schism, and treat the Petrine reforms not as a miracle but as answers to particular problems paid for with particular lives. Then the age of palace coups, Catherine’s enlightened absolutism with the Pugachev revolt as its shadow, the short reign of Paul, and finally 1812, when the empire first felt itself to be a nation. We read decrees, letters and memoirs, and try to recover the reasoning of people who did not know how any of it would end.'
+    },
+    outcomes: {
+      ru: [
+        'Понимать, почему Смута стала возможной и чем она закончилась',
+        'Видеть в петровских реформах цену, а не только результат',
+        'Разбираться в устройстве империи XVIII века: сословия, армия, двор',
+        'Читать источники эпохи и отличать факт от позднейшего мифа'
+      ],
+      en: [
+        'Understand what made the Time of Troubles possible and how it ended',
+        'See the price of the Petrine reforms, not only their results',
+        'Navigate the eighteenth-century empire: estates, army, court',
+        'Read period sources and tell fact from later myth'
+      ]
+    },
+    audience: {
+      ru: [
+        'Взрослые, которым школьный курс оставил больше вопросов, чем ответов',
+        'Читатели русской классики, желающие понять её исторический фон',
+        'Подростки, готовящиеся к серьёзному изучению истории'
+      ],
+      en: [
+        'Adults left with more questions than answers by their school course',
+        'Readers of the Russian classics who want their historical ground',
+        'Teens preparing for serious study of history'
+      ]
+    },
+    curriculum: [
+      {
+        title: { ru: 'Смута и первые Романовы', en: 'The Troubles and the First Romanovs' },
+        topics: {
+          ru: [
+            'Пресечение династии, самозванцы и польская интервенция',
+            'Земский собор 1613 года: как выбирали царя',
+            'Соборное уложение и церковный раскол'
+          ],
+          en: [
+            'A broken dynasty, the pretenders and the Polish intervention',
+            'The Assembly of 1613: how a tsar was chosen',
+            'The Law Code of 1649 and the church schism'
+          ]
+        }
+      },
+      {
+        title: { ru: 'Пётр и рождение империи', en: 'Peter and the Birth of the Empire' },
+        topics: {
+          ru: [
+            'Северная война и цена Петербурга',
+            'Table of Ranks: новая служилая элита',
+            'Церковь без патриарха и государство без границ'
+          ],
+          en: [
+            'The Great Northern War and the cost of Petersburg',
+            'The Table of Ranks and a new service elite',
+            'A church without a patriarch, a state without limits'
+          ]
+        }
+      },
+      {
+        title: { ru: 'Век Екатерины и гроза 1812 года', en: 'Catherine’s Age and the Storm of 1812' },
+        topics: {
+          ru: [
+            'Дворцовые перевороты и роль гвардии',
+            'Просвещённый абсолютизм и восстание Пугачёва',
+            'Александр I, Наполеон и Отечественная война'
+          ],
+          en: [
+            'Palace coups and the role of the guards',
+            'Enlightened absolutism and the Pugachev revolt',
+            'Alexander I, Napoleon and the Patriotic War'
+          ]
+        }
+      }
+    ],
+    faq: sharedFaq
+  },
+  {
+    id: 'course_008',
+    slug: 'russia-nineteenth-century',
+    teacherId: 'teacher_001',
+    category: 'history',
+    difficulty: 'intermediate',
+    ageGroups: ['adults', 'teens'],
+    durationMonths: 3,
+    monthlyPrice: 350,
+    currency: 'ILS',
+    imageUrl:
+      'https://images.unsplash.com/photo-1547989453-2b26e4c85d2b?w=1200&q=80',
+    publicTelegramUrl: 'https://t.me/invertedforest',
+    status: 'published',
+    featured: false,
+    title: {
+      ru: 'История России XIX века',
+      en: 'Russia in the Nineteenth Century'
+    },
+    shortDescription: {
+      ru: 'От декабристов до кануна революции: век великих реформ, великих романов и вопроса, который так и не был решён.',
+      en: 'From the Decembrists to the eve of revolution: a century of great reforms, great novels and one unanswered question.'
+    },
+    description: {
+      ru: 'Век, в котором Россия непрерывно спорила сама с собой о том, кто она такая. Мы начинаем с декабрьского утра 1825 года и николаевской реакции, проходим через спор западников и славянофилов, поражение в Крыму, отмену крепостного права и остальные Великие реформы. Смотрим, как из разочарования в реформах вырастает народничество, а из него — террор, и как убийство Александра II разворачивает страну назад. Заканчиваем индустриализацией девяностых и обществом, которое уже нельзя вернуть к прежнему порядку. Всё это — рядом с Пушкиным, Достоевским и Толстым, потому что их книги были не отражением этих споров, а их частью.',
+      en: 'A century in which Russia argued continuously with itself about what it was. We open on a December morning in 1825 and the reaction that followed, pass through the quarrel of Westernisers and Slavophiles, defeat in the Crimea, the emancipation of the serfs and the other Great Reforms. We watch disappointment in those reforms grow into populism and then into terror, and see the assassination of Alexander II turn the country back. We finish with the industrialisation of the 1890s and a society that could no longer be returned to the old order. All of it alongside Pushkin, Dostoevsky and Tolstoy, whose books were not a reflection of these arguments but a part of them.'
+    },
+    outcomes: {
+      ru: [
+        'Понимать, почему отмена крепостного права не решила крестьянский вопрос',
+        'Разбираться в спорах западников, славянофилов и народников',
+        'Видеть связь между русским романом и политикой своего времени',
+        'Объяснять, откуда в России взялся революционный терроризм'
+      ],
+      en: [
+        'Understand why emancipation did not settle the peasant question',
+        'Follow the arguments of Westernisers, Slavophiles and populists',
+        'See how the Russian novel and the politics of its day were connected',
+        'Explain where revolutionary terrorism in Russia came from'
+      ]
+    },
+    audience: {
+      ru: [
+        'Читатели русской классики, которым нужен исторический контекст',
+        'Взрослые, интересующиеся историей реформ и их пределами',
+        'Подростки и студенты гуманитарных направлений'
+      ],
+      en: [
+        'Readers of the Russian classics who want the historical context',
+        'Adults interested in reform and the limits of reform',
+        'Teens and humanities students'
+      ]
+    },
+    curriculum: [
+      {
+        title: { ru: 'После 1812: империя и её недовольные', en: 'After 1812: the Empire and Its Discontents' },
+        topics: {
+          ru: [
+            'Декабристы: заговор офицеров и его смысл',
+            'Николай I: порядок, цензура и «официальная народность»',
+            'Западники и славянофилы: спор о пути'
+          ],
+          en: [
+            'The Decembrists: an officers’ conspiracy and what it meant',
+            'Nicholas I: order, censorship and Official Nationality',
+            'Westernisers and Slavophiles: the argument about the road'
+          ]
+        }
+      },
+      {
+        title: { ru: 'Великие реформы', en: 'The Great Reforms' },
+        topics: {
+          ru: [
+            'Крымская война как приговор старому порядку',
+            'Отмена крепостного права: что получили крестьяне',
+            'Земства, суд присяжных, всеобщая воинская повинность'
+          ],
+          en: [
+            'The Crimean War as a verdict on the old order',
+            'Emancipation: what the peasants actually received',
+            'Local assemblies, jury trials and universal conscription'
+          ]
+        }
+      },
+      {
+        title: { ru: 'От народничества к революции', en: 'From Populism to Revolution' },
+        topics: {
+          ru: [
+            '«Хождение в народ» и рождение террора',
+            '1 марта 1881 года и контрреформы Александра III',
+            'Индустриализация, город и общество накануне 1905 года'
+          ],
+          en: [
+            'Going to the People, and the birth of terror',
+            'March 1881 and the counter-reforms of Alexander III',
+            'Industry, the city and society on the eve of 1905'
+          ]
+        }
+      }
+    ],
+    faq: sharedFaq
+  },
+  {
+    id: 'course_009',
+    slug: 'russia-twentieth-century',
+    teacherId: 'teacher_001',
+    category: 'history',
+    difficulty: 'deep_dive',
+    ageGroups: ['adults'],
+    durationMonths: 3,
+    monthlyPrice: 380,
+    currency: 'ILS',
+    imageUrl:
+      'https://images.unsplash.com/photo-1513326738677-b964603b136d?w=1200&q=80',
+    publicTelegramUrl: 'https://t.me/invertedforest',
+    status: 'published',
+    featured: false,
+    title: {
+      ru: 'История России XX века',
+      en: 'Russia in the Twentieth Century'
+    },
+    shortDescription: {
+      ru: 'Век, в который уместились две революции, две войны, большой террор и распад страны, где всё это происходило.',
+      en: 'A century holding two revolutions, two wars, the Great Terror and the collapse of the country in which all of it happened.'
+    },
+    description: {
+      ru: 'Самый близкий и самый трудный для разговора век. Мы идём от 1905 года и Первой мировой к семнадцатому году — двум революциям, которые обычно сливают в одну, — через Гражданскую войну, НЭП и сворачивание НЭПа к коллективизации и Большому террору. Отдельно и подробно — война 1941–1945 годов: как её вели, чем за неё заплатили и как о ней потом вспоминали. Затем оттепель и её пределы, застой, Афганистан, перестройка и декабрь 1991 года. Курс опирается на документы, статистику и свидетельства и не заменяет сложность удобной версией — ни одной из тех, что предлагаются сегодня.',
+      en: 'The nearest century, and the hardest to discuss. We move from 1905 and the First World War into 1917 — two revolutions usually merged into one — through the Civil War, the New Economic Policy and its reversal, to collectivisation and the Great Terror. The war of 1941–1945 gets its own extended treatment: how it was fought, what it cost, and how it was afterwards remembered. Then the Thaw and its limits, stagnation, Afghanistan, perestroika and December 1991. The course works from documents, statistics and testimony, and does not trade complexity for a convenient version — of which several are currently on offer.'
+    },
+    outcomes: {
+      ru: [
+        'Различать февраль и октябрь 1917 года и понимать, что стояло за каждым',
+        'Разбираться в механике коллективизации и террора, а не только в цифрах',
+        'Говорить о войне 1941–1945 годов на основании документов',
+        'Понимать, почему СССР распался именно так и именно тогда'
+      ],
+      en: [
+        'Tell February 1917 from October, and see what stood behind each',
+        'Understand the mechanics of collectivisation and terror, not only the figures',
+        'Discuss the war of 1941–1945 from documents',
+        'Understand why the USSR collapsed in the way it did, when it did'
+      ]
+    },
+    audience: {
+      ru: [
+        'Взрослые, готовые к трудному и подробному разговору',
+        'Те, кто вырос на одной версии этого века и хочет проверить её',
+        'Читатели документальной прозы и мемуаров эпохи'
+      ],
+      en: [
+        'Adults ready for a difficult and detailed conversation',
+        'Anyone raised on one version of this century who wants to test it',
+        'Readers of the period’s documentary prose and memoirs'
+      ]
+    },
+    curriculum: [
+      {
+        title: { ru: 'Революция и Гражданская война', en: 'Revolution and Civil War' },
+        topics: {
+          ru: [
+            '1905 год, Дума и незавершённая реформа',
+            'Февраль и Октябрь: две революции одного года',
+            'Гражданская война, красный и белый террор, эмиграция'
+          ],
+          en: [
+            '1905, the Duma and an unfinished reform',
+            'February and October: two revolutions in one year',
+            'Civil war, red and white terror, emigration'
+          ]
+        }
+      },
+      {
+        title: { ru: 'Сталинский порядок и война', en: 'The Stalinist Order and the War' },
+        topics: {
+          ru: [
+            'НЭП и его свёртывание; коллективизация и голод',
+            'Большой террор: механика, масштаб, документы',
+            'Война 1941–1945: ход, цена, память'
+          ],
+          en: [
+            'The NEP and its reversal; collectivisation and famine',
+            'The Great Terror: mechanics, scale, documents',
+            'The war of 1941–1945: course, cost, memory'
+          ]
+        }
+      },
+      {
+        title: { ru: 'От оттепели к 1991 году', en: 'From the Thaw to 1991' },
+        topics: {
+          ru: [
+            'XX съезд, оттепель и её границы',
+            'Застой, диссиденты, Афганистан',
+            'Перестройка, гласность и распад Союза'
+          ],
+          en: [
+            'The Twentieth Congress, the Thaw and its limits',
+            'Stagnation, dissidents, Afghanistan',
+            'Perestroika, glasnost and the end of the Union'
+          ]
+        }
+      }
+    ],
+    faq: sharedFaq
   }
 ];
 
@@ -868,6 +1174,120 @@ export const studyGroups: StudyGroup[] = [
     telegramChatType: 'channel',
     inviteMemberLimit: 2,
     meetingUrl: 'https://meet.google.com/demo-110',
+    status: 'enrolling'
+  },
+  {
+    id: 'group_111',
+    courseId: 'course_007',
+    slug: 'early-modern-mon-20-adults',
+    audience: 'adults',
+    weekday: 1,
+    time: '20:00',
+    timezone: 'Asia/Jerusalem',
+    startDate: '2026-10-05',
+    endDate: '2027-01-04',
+    capacity: 16,
+    seatsTaken: 3,
+    paymentUrl: 'https://allpay.to/link/demo-350',
+    telegramChannelId: '-1001000000111',
+    telegramChatType: 'channel',
+    inviteMemberLimit: 1,
+    meetingUrl: 'https://meet.google.com/demo-111',
+    status: 'enrolling'
+  },
+  {
+    id: 'group_112',
+    courseId: 'course_007',
+    slug: 'early-modern-thu-18-teens',
+    audience: 'teens',
+    weekday: 4,
+    time: '18:00',
+    timezone: 'Asia/Jerusalem',
+    startDate: '2026-10-08',
+    endDate: '2027-01-07',
+    capacity: 12,
+    seatsTaken: 2,
+    paymentUrl: 'https://allpay.to/link/demo-350',
+    telegramChannelId: '-1001000000112',
+    telegramChatType: 'channel',
+    inviteMemberLimit: 2,
+    meetingUrl: 'https://meet.google.com/demo-112',
+    status: 'enrolling'
+  },
+  {
+    id: 'group_113',
+    courseId: 'course_008',
+    slug: 'nineteenth-wed-20-adults',
+    audience: 'adults',
+    weekday: 3,
+    time: '20:00',
+    timezone: 'Asia/Jerusalem',
+    startDate: '2026-10-07',
+    endDate: '2027-01-06',
+    capacity: 16,
+    seatsTaken: 4,
+    paymentUrl: 'https://allpay.to/link/demo-350',
+    telegramChannelId: '-1001000000113',
+    telegramChatType: 'channel',
+    inviteMemberLimit: 1,
+    meetingUrl: 'https://meet.google.com/demo-113',
+    status: 'enrolling'
+  },
+  {
+    id: 'group_114',
+    courseId: 'course_008',
+    slug: 'nineteenth-sun-19-adults',
+    audience: 'adults',
+    weekday: 0,
+    time: '19:00',
+    timezone: 'Asia/Jerusalem',
+    startDate: '2026-10-11',
+    endDate: '2027-01-10',
+    capacity: 16,
+    seatsTaken: 1,
+    paymentUrl: 'https://allpay.to/link/demo-350',
+    telegramChannelId: '-1001000000114',
+    telegramChatType: 'channel',
+    inviteMemberLimit: 1,
+    meetingUrl: 'https://meet.google.com/demo-114',
+    status: 'enrolling'
+  },
+  {
+    id: 'group_115',
+    courseId: 'course_009',
+    slug: 'twentieth-tue-20-adults',
+    audience: 'adults',
+    weekday: 2,
+    time: '20:00',
+    timezone: 'Asia/Jerusalem',
+    startDate: '2026-10-06',
+    endDate: '2027-01-05',
+    capacity: 16,
+    seatsTaken: 6,
+    paymentUrl: 'https://allpay.to/link/demo-380',
+    telegramChannelId: '-1001000000115',
+    telegramChatType: 'channel',
+    inviteMemberLimit: 1,
+    meetingUrl: 'https://meet.google.com/demo-115',
+    status: 'enrolling'
+  },
+  {
+    id: 'group_116',
+    courseId: 'course_009',
+    slug: 'twentieth-fri-11-adults',
+    audience: 'adults',
+    weekday: 5,
+    time: '11:00',
+    timezone: 'Asia/Jerusalem',
+    startDate: '2026-10-09',
+    endDate: '2027-01-08',
+    capacity: 16,
+    seatsTaken: 2,
+    paymentUrl: 'https://allpay.to/link/demo-380',
+    telegramChannelId: '-1001000000116',
+    telegramChatType: 'channel',
+    inviteMemberLimit: 1,
+    meetingUrl: 'https://meet.google.com/demo-116',
     status: 'enrolling'
   }
 ];

@@ -1,6 +1,8 @@
 import type {
   Course,
   DashboardStats,
+  EnrollmentAdminRow,
+  OrphanPaymentRow,
   PaymentRow,
   RegistrationInput,
   RegistrationResult,
@@ -37,6 +39,8 @@ export interface DataProvider {
   /* Admin */
   getDashboardStats(): Promise<DashboardStats>;
   getStudents(): Promise<StudentRow[]>;
+  getEnrollments(): Promise<EnrollmentAdminRow[]>;
+  getOrphanPayments(): Promise<OrphanPaymentRow[]>;
   getPayments(): Promise<PaymentRow[]>;
   getAllGroups(): Promise<StudyGroup[]>;
   getTelegramStatuses(): Promise<TelegramGroupStatus[]>;
