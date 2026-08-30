@@ -266,15 +266,15 @@ alter table ui_messages enable row level security;
 
 
 insert into teachers (id, slug, photo_url) values
-  ('teacher_001', 'mark-ovadia', null)
+  ('teacher_001', 'vadim-markov', null)
 on conflict (id) do update set
   slug = excluded.slug,
   photo_url = excluded.photo_url;
 
 insert into teacher_translations
   (teacher_id, locale, name, title, bio, highlights) values
-  ('teacher_001', 'ru', 'Марк Овадия', 'Историк и философ', 'Историк и философ, увлечённый тем, чтобы оживлять прошлое для любознательных умов всех возрастов. Имея образование в области классических исследований и средневековой истории, я разработал каждый курс так, чтобы сочетать академическую строгость с доступностью. Преподаю на английском и русском языках и работаю со взрослыми, подростками и детьми. Я верю, что философия и история — не роскошь, а необходимые инструменты для понимания себя и нашего мира.', '["Двуязычное преподавание (английский и русский)","Индивидуальные и групповые занятия","Курсы для взрослых, подростков и детей","Живые занятия с вопросами и ответами, записи предоставляются","Основаны на первоисточниках и оригинальных текстах"]'::jsonb),
-  ('teacher_001', 'en', 'Mark Ovadia', 'Historian & Philosopher', 'A historian and philosopher passionate about bringing the past to life for curious minds of all ages. With a background in classical studies and medieval history, I have designed each course to balance scholarly rigour with accessibility. I teach in both English and Russian and work with adults, teenagers, and children. I believe that philosophy and history are not luxuries — they are essential tools for understanding ourselves and our world.', '["Bilingual instruction (English & Russian)","Individual and group sessions available","Courses for adults, teens, and children","Live sessions with Q&A, recordings provided","Rooted in primary sources and original texts"]'::jsonb)
+  ('teacher_001', 'ru', 'Вадим Марков', 'Историк и философ', 'Историк и философ, увлечённый тем, чтобы оживлять прошлое для любознательных умов всех возрастов. Имея образование в области классических исследований и средневековой истории, я разработал каждый курс так, чтобы сочетать академическую строгость с доступностью. Преподаю на английском и русском языках и работаю со взрослыми, подростками и детьми. Я верю, что философия и история — не роскошь, а необходимые инструменты для понимания себя и нашего мира.', '["Двуязычное преподавание (английский и русский)","Индивидуальные и групповые занятия","Курсы для взрослых, подростков и детей","Живые занятия с вопросами и ответами, записи предоставляются","Основаны на первоисточниках и оригинальных текстах"]'::jsonb),
+  ('teacher_001', 'en', 'Vadim Markov', 'Historian & Philosopher', 'A historian and philosopher passionate about bringing the past to life for curious minds of all ages. With a background in classical studies and medieval history, I have designed each course to balance scholarly rigour with accessibility. I teach in both English and Russian and work with adults, teenagers, and children. I believe that philosophy and history are not luxuries — they are essential tools for understanding ourselves and our world.', '["Bilingual instruction (English & Russian)","Individual and group sessions available","Courses for adults, teens, and children","Live sessions with Q&A, recordings provided","Rooted in primary sources and original texts"]'::jsonb)
 on conflict (teacher_id, locale) do update set
   name = excluded.name,
   title = excluded.title,

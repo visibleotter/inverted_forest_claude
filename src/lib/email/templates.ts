@@ -22,8 +22,8 @@ const MOSS = '#3D6552';
 function layout(bodyHtml: string, locale: Locale): string {
   const tagline =
     locale === 'ru'
-      ? 'Школа истории и философии'
-      : 'A school of history and philosophy';
+      ? 'История и философия онлайн'
+      : 'History and philosophy online';
 
   return `<!doctype html>
 <html lang="${locale}"><head><meta charset="utf-8">

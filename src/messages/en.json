@@ -2,7 +2,7 @@
   "meta": {
     "siteName": "Inverted Forest",
     "home": {
-      "title": "Inverted Forest — School of History & Philosophy",
+      "title": "Inverted Forest — History & Philosophy Online",
       "description": "Live online courses in history, philosophy and literature, in Russian and English. From Ancient Greece to Medieval Russia."
     },
     "courses": {
@@ -11,7 +11,7 @@
     },
     "about": {
       "title": "About",
-      "description": "Inverted Forest is an online school of history and philosophy for curious minds of all ages."
+      "description": "Inverted Forest offers online courses in history and philosophy for curious minds of all ages."
     },
     "faq": {
       "title": "FAQ",
@@ -45,7 +45,7 @@
     "switchLocale": "Русский"
   },
   "home": {
-    "heroEyebrow": "Online school of history & philosophy",
+    "heroEyebrow": "History & philosophy courses online",
     "heroTitle": "Explore History & Philosophy",
     "heroSubtitle": "Live courses for adults and children — from Ancient Greece to Medieval Russia. Learn to think deeper, question more, and see the past anew.",
     "heroCtaPrimary": "Explore Courses",
@@ -206,11 +206,11 @@
     "highlightsTitle": "Experience & Approach"
   },
   "about": {
-    "title": "About the school",
-    "intro": "Inverted Forest is an online school of history and philosophy for Russian-speaking students around the world.",
+    "title": "About",
+    "intro": "Inverted Forest offers online courses in history and philosophy for Russian-speaking students around the world.",
     "storyTitle": "Our story",
     "story1": "Inverted Forest began with a simple idea: serious humanities education can be alive, accessible and engaging — without dumbing down and without academic dryness.",
-    "story2": "Today it is a school offering courses in history, philosophy, literature and anthropology, where adults, teens and children study in small groups, read primary sources and learn to ask questions.",
+    "story2": "Today it is a set of courses in history, philosophy, literature and anthropology, where adults, teens and children study in small groups, read primary sources and learn to ask questions.",
     "story3": "The name refers to an inverted forest — a literary image of trees whose roots reach for the sky: knowledge grows from the depths of the past and nourishes the present.",
     "valuesTitle": "Our principles",
     "value1Title": "Depth without snobbery",
@@ -307,7 +307,7 @@
   "footer": {
     "tagline": "History & Philosophy for curious minds",
     "coursesTitle": "Courses",
-    "schoolTitle": "School",
+    "schoolTitle": "About",
     "legalTitle": "Legal",
     "privacy": "Privacy",
     "terms": "Terms",
