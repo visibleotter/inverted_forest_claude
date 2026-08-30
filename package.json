@@ -12,7 +12,8 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "test": "node --test \"src/**/*.test.mts\"",
-    "migrate": "node scripts/migrate.mjs"
+    "migrate": "node scripts/migrate.mjs",
+    "seed:generate": "node scripts/generate-seed.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
