@@ -1,6 +1,7 @@
 import {
   BookOpen,
   CreditCard,
+  FileText,
   GraduationCap,
   LayoutDashboard,
   Send,
@@ -15,6 +16,7 @@ import { checkAdminAccess } from '@/lib/auth';
 const navItems = [
   { href: '/admin', key: 'dashboard', icon: LayoutDashboard },
   { href: '/admin/courses', key: 'courses', icon: BookOpen },
+  { href: '/admin/content', key: 'content', icon: FileText },
   { href: '/admin/groups', key: 'groups', icon: UsersRound },
   { href: '/admin/teachers', key: 'teachers', icon: GraduationCap },
   { href: '/admin/students', key: 'students', icon: Users },

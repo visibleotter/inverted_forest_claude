@@ -331,7 +331,8 @@
       "payments": "Payments",
       "telegram": "Telegram",
       "settings": "Settings",
-      "backToSite": "← Back to site"
+      "backToSite": "← Back to site",
+      "content": "Site copy"
     },
     "dashboard": {
       "activeStudents": "Active students",
@@ -435,6 +436,18 @@
       "cancel": "Cancel",
       "seatsHint": "Seats taken are counted from payments automatically — never typed in.",
       "inviteLimitHint": "How many people one invite admits. Use 2 for children’s groups so a parent can come along."
+    },
+    "content": {
+      "title": "Site copy",
+      "intro": "Every visible string on the site, in both languages. An empty box means “use the wording that ships with the code”, which is also how you undo an edit. The set of keys is decided by the code: you can change a string here, but not invent one.",
+      "search": "Search text or key",
+      "showing": "{shown} of {total}",
+      "edited": "edited",
+      "save": "Save",
+      "saving": "Saving…",
+      "savedCount": "Saved: {changed}. Reset to default: {reset}.",
+      "placeholderProblem": "Not saved — placeholders went missing. They have to stay exactly as they are or the page stops loading:",
+      "demoMode": "Demo mode: no database connected, edits are not saved."
     }
   },
   "notFound": {

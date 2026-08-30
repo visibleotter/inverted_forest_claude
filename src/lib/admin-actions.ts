@@ -4,6 +4,13 @@ import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 import { grantAccess, revokeAccess } from './access';
 import { checkAdminAccess } from './auth';
+import {
+  flattenMessages,
+  invalidateMessagesCache,
+  loadDefaults,
+  placeholdersIn,
+  placeholdersMatch
+} from './content/messages';
 import { isDemoMode } from './data';
 import { sendInviteEmail } from './email/notify';
 import { emit } from './events';
@@ -535,4 +542,110 @@ export async function adminArchiveGroup(
   if (error) return { ok: false, error: error.message };
   refresh();
   return { ok: true, message: 'archived' };
+}
+
+/* ── Site copy ─────────────────────────────────────────────────────── */
+
+export type ContentFormState =
+  | { status: 'idle' }
+  | { status: 'error'; message: string }
+  | { status: 'saved'; changed: number; reset: number; problems: string[] };
+
+/**
+ * Save edited site copy.
+ *
+ * Three rules, each of which exists because of a specific way this can go
+ * wrong when a person edits 361 strings by hand:
+ *
+ *  * A value identical to the shipped default, or emptied, deletes the
+ *    override rather than storing it. That makes "reset to the original"
+ *    the same gesture as clearing the box, and keeps the table to what has
+ *    genuinely been changed.
+ *
+ *  * Placeholders must survive. `t('months', {count})` throws if the text
+ *    loses `{count}`, and a rich string that loses `<terms>` throws too —
+ *    both take down the page they are on. Such an edit is refused and
+ *    named, and the rest of the form still saves.
+ *
+ *  * A key that is not in the shipped catalogue is ignored. Only the code
+ *    decides which strings exist.
+ */
+export async function adminSaveMessages(
+  _prev: ContentFormState,
+  formData: FormData
+): Promise<ContentFormState> {
+  const access = await checkAdminAccess();
+  if (!access.allowed) return { status: 'error', message: 'unauthorized' };
+  if (isDemoMode()) return { status: 'error', message: 'demo_mode' };
+
+  const [defaultsRu, defaultsEn] = await Promise.all([
+    loadDefaults('ru'),
+    loadDefaults('en')
+  ]);
+  const shipped: Record<string, Record<string, string>> = {
+    ru: flattenMessages(defaultsRu),
+    en: flattenMessages(defaultsEn)
+  };
+
+  const db = createSupabaseAdminClient();
+  const editor = 'email' in access ? (access.email ?? null) : null;
+
+  const upserts: {
+    key: string;
+    locale: string;
+    value: string;
+    updated_by: string | null;
+  }[] = [];
+  const removals: { key: string; locale: string }[] = [];
+  const problems: string[] = [];
+
+  formData.forEach((raw, field) => {
+    const match = /^value:(ru|en):(.+)$/.exec(field);
+    if (!match || typeof raw !== 'string') return;
+
+    const locale = match[1] as 'ru' | 'en';
+    const key = match[2]!;
+    const original = shipped[locale]?.[key];
+    if (original === undefined) return;
+
+    const value = raw.trim();
+
+    if (value === '' || value === original.trim()) {
+      removals.push({ key, locale });
+      return;
+    }
+
+    if (!placeholdersMatch(original, value)) {
+      problems.push(`${locale} · ${key}: ${placeholdersIn(original).join(' ')}`);
+      return;
+    }
+
+    upserts.push({ key, locale, value, updated_by: editor });
+  });
+
+  if (upserts.length > 0) {
+    const { error } = await db
+      .from('ui_messages')
+      .upsert(upserts, { onConflict: 'key,locale' });
+    if (error) return { status: 'error', message: error.message };
+  }
+
+  for (const row of removals) {
+    await db
+      .from('ui_messages')
+      .delete()
+      .eq('key', row.key)
+      .eq('locale', row.locale);
+  }
+
+  invalidateMessagesCache();
+  // Copy appears on every page, so the whole site is stale, not one route.
+  revalidatePath('/', 'layout');
+
+  return {
+    status: 'saved',
+    changed: upserts.length,
+    reset: removals.length,
+    problems
+  };
 }

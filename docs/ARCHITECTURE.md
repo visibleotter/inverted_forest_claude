@@ -11,28 +11,47 @@ the platform evolves from "compatible with Make.com + Google Sheets" to
                        ┌──────────────────────────────┐
    Visitor ──────────► │  Next.js App (Vercel)        │
                        │  /ru /en  public site        │
-                       │  /admin   lightweight CRM    │
+                       │  /admin   CRM + copy editor  │
                        │  /portal  student portal (…) │
                        └──────┬───────────────┬───────┘
                               │               │
-                    DataProvider          POST /api/webhooks/payment
-                              │               ▲
+                    DataProvider          POST /api/webhooks/allpay
+                              │               ▲  (SHA256-signed)
               ┌───────────────┴─────┐         │
-              │ SeedProvider (demo) │   ┌─────┴──────┐    ┌────────────┐
-              │ SupabaseProvider    │   │  Make.com  │◄───┤ PayPal /   │
-              └─────────┬───────────┘   │  scenarios │    │ Allpay     │
-                        │               └─────┬──────┘    └────────────┘
-                 ┌──────┴───────┐             │
-                 │  Supabase    │       ┌─────┴──────┐   ┌─────────────┐
-                 │  PostgreSQL  │       │ Telegram   │   │ Email /     │
-                 └──────────────┘       │ Bot        │   │ EasyCount / │
-                                        └────────────┘   │ Sheets      │
-                                                          └─────────────┘
+              │ SeedProvider (demo) │   ┌─────┴──────┐
+              │ SupabaseProvider    │   │   Allpay   │
+              └─────────┬───────────┘   └────────────┘
+                        │
+                 ┌──────┴───────┐
+                 │  Supabase    │◄──── the source of truth
+                 │  PostgreSQL  │
+                 └──────┬───────┘
+                        │ domain_events
+          ┌─────────────┼──────────────┬───────────────┐
+          ▼             ▼              ▼               ▼
+   ┌────────────┐ ┌──────────┐  ┌───────────┐  ┌─────────────┐
+   │ Telegram   │ │  Email   │  │ Make.com  │  │ /api/cron/  │
+   │ Bot        │ │ (Resend) │  │ (optional)│  │ tick hourly │
+   └────────────┘ └──────────┘  └─────┬─────┘  └─────────────┘
+                                      ▼
+                              Google Sheets etc.
 ```
 
-The site **never processes payments**. It redirects to per-group payment
-URLs (PayPal links today, Allpay later) and receives the *result* via a
-webhook, which makes it the system of record.
+The site **never processes payments**. It asks Allpay to create one, sends
+the payer there, and learns the outcome from a signed webhook.
+
+Two properties of this drawing are load-bearing:
+
+**The site is the first receiver, not Make.com.** Signature verification,
+idempotency and the ledger belong in code, and Supabase can only be the
+source of truth if it is written to before anything else hears about it.
+Make subscribes to `domain_events` and can be unplugged without loss —
+which is what the long-term goal of replacing it actually requires.
+
+**The hourly sweep is not housekeeping.** Allpay documents webhooks for
+successful payments and refunds only. A *failed* monthly charge announces
+itself to nobody, so the grace period, the past-due email and the eventual
+removal from a channel are all built on polling `subscriptionstatus`.
 
 ## 2. The data layer — one interface, two backends
 
@@ -72,49 +91,92 @@ is additive work behind the same interface.
 - Each study group owns its own `payment_url` and `telegram_channel_id`,
   so pricing pages, checkout and Telegram access all key off the group.
 
-## 5. Registration & payment flow
+## 5. Registration, payment and access
 
-1. `/{locale}/register/{groupId}` shows course/group summary + form
-   (React Hook Form + Zod, localized validation).
-2. Server action `submitRegistration`:
-   - re-validates with Zod on the server,
-   - rejects full/closed groups,
-   - upserts the student, inserts an enrollment (`pending_payment`),
-   - fires `MAKE_REGISTRATION_WEBHOOK_URL` (fire-and-forget, 5s timeout),
-   - returns the group's `payment_url`.
-3. Client shows confirmation and redirects to the external payment page.
-4. Make.com (triggered by PayPal/Allpay) calls
-   `POST /api/webhooks/payment` with `x-webhook-secret`:
-   - records the payment,
-   - `payment.succeeded` → enrollment `active`, seat count +1 (via the
-     `increment_seats_for_enrollment` SQL function),
-   - `payment.failed` → enrollment `past_due`,
-   - everything is written to `automation_logs`.
-5. Telegram invite (one-time, 7-day expiry) and emails remain Make/bot
-   territory for now; the DB stores `telegram_invited_at` and channel
-   status so the admin panel can display it.
+1. `/{locale}/register/{groupId}` shows the course and group summary and the
+   form. For a children's or teens' group it also asks who is attending:
+   the `students` row is the paying parent, and the child's name lives on
+   the enrollment. Two siblings from one address are two enrollments.
+2. The payer chooses **monthly** or **the whole course up front**.
+3. Server action `submitRegistration` re-validates, refuses full groups,
+   upserts the student and creates (or reuses) a `pending_payment`
+   enrollment. Reuse matters: someone who abandoned checkout an hour ago
+   and came back used to collide with the uniqueness index and see a bare
+   error.
+4. `AllpayProvider.createCheckout` mints a payment whose **`order_id` is the
+   enrollment's own uuid**, with `add_field_1` carrying the group id. A
+   monthly plan sends `subscription: {end_type: 3, end_n: duration_months}`,
+   so Allpay stops charging when the course ends without anyone remembering
+   to switch it off. The payer is redirected to the returned `payment_url`.
+   With no Allpay credentials configured the group's hand-made link is used
+   instead — those payments arrive unattached, by design, because a static
+   link cannot carry an order id.
+5. `POST /api/webhooks/allpay`:
+   - verifies the SHA256 signature over the raw body,
+   - confirms the payment out of band with `paymentstatus`, so a valid
+     signature alone never grants access,
+   - resolves the period index from `subscriptionstatus` — the webhook is a
+     *trigger*, that call is the *ledger* — and writes the payment with
+     `external_id = <order_id>#<period>`, because two monthly deliveries can
+     otherwise be byte-identical and month two would look like a retry,
+   - moves the enrollment to `active` and sets `paid_through`,
+   - appends a `domain_event` and calls `grantAccess`,
+   - a payment matching no enrollment goes to `orphan_payments` and alerts
+     an admin rather than being guessed at from the payer's email.
+6. `grantAccess` mints a single-use Telegram invite (7 days, member limit
+   from the group) and emails it. It is idempotent: Allpay retries up to ten
+   times over twenty-four hours, so a repeat returns the existing invite and
+   sends nothing.
+7. The payer is returned to `/{locale}/enroll/{id}/success`, which polls and
+   shows the invite **on screen**. Email is the backup copy, not the only
+   chance at a link that expires in a week.
+8. `chat_member` updates from the bot record who actually joined. Without
+   that user id nobody can ever be removed from a channel again, which is
+   why `allowed_updates` names `chat_member` explicitly — Telegram does not
+   send it by default.
+
+`grantAccess` / `revokeAccess` in `src/lib/access.ts` are the only code that
+talks to Telegram. The payment webhook, the admin buttons and the bot's
+`/grant` all go through them.
 
 ## 6. Admin panel
 
-`/{locale}/admin` — a lightweight CRM over the same data layer: dashboard
-KPIs, courses (RU/EN side-by-side), study groups (internal IDs, payment
-URLs, capacity), students, payments, Telegram integration status, and a
-settings page showing which integrations are configured.
+`/{locale}/admin` — dashboard, courses, **site copy**, study groups,
+teachers, enrollments, payments, Telegram status, settings.
 
-Access: in demo mode it is open (with banner); with Supabase configured it
-requires an authenticated Supabase user whose email is in `ADMIN_EMAILS`.
+**Enrollments, not students.** The unit of work is one person in one group,
+and every action applies to an enrollment: grant access, mint a fresh
+invite, revoke, cancel the Allpay subscription, refund, move to another
+group in the same course, record a manual Bit payment, match an orphaned
+payment. All of them route through the same primitives the automation uses.
+
+**Study groups** are editable. Two fields deliberately are not: `seats_taken`
+is derived from paid enrollments, and the group id is write-once because it
+travels to Allpay and into every log line.
+
+**Site copy** — `/admin/content` lists every visible string on the site in
+Russian and English side by side. `src/messages/*.json` remains the source
+of *structure*; the `ui_messages` table holds only what has been changed.
+Clearing a field deletes the override and restores the shipped wording, and
+an edit that drops an ICU placeholder or a rich-text tag is refused by name
+rather than taking down the page it appears on at request time.
+
+Access: demo mode is open and read-only; with Supabase configured, sign-in
+is an emailed link at `/{locale}/admin-login` and the address must be in
+`ADMIN_EMAILS`.
 
 ## 7. Roadmap hooks already in place
 
-| Future feature      | What exists today                                      |
-| ------------------- | ------------------------------------------------------ |
-| Native payments     | `payments`/`invoices` tables, provider enum, webhook   |
-| Student portal      | `/portal` route, students/enrollments relations        |
-| Homework/materials  | course `curriculum` JSONB, per-group Telegram channels |
-| Native emails       | `email_templates` table (localized, keyed)             |
-| Native Telegram     | `telegram_channels` table + admin Telegram panel       |
-| More languages      | `locales` table + translation-row model                |
-| Analytics           | `automation_logs`, timestamped payments/enrollments    |
+| Future feature      | What exists today                                       |
+| ------------------- | ------------------------------------------------------- |
+| Replacing Make.com  | `domain_events` + fan-out; Make is already a subscriber |
+| Student portal      | `/portal` route, enrollments carry participant + access |
+| Self-serve cancel   | `cancelSubscription` on the provider, admin path proven |
+| Receipts / SUMIT    | `invoices` table, `payments.receipt_url` from Allpay    |
+| Homework/materials  | course `curriculum` JSONB, per-group channels, meet URL |
+| Native emails       | `email_templates` table + Resend transport              |
+| More languages      | `locales` table, translation rows, `ui_messages`        |
+| Analytics           | `domain_events`, `automation_logs`, timestamped ledger  |
 
 ## 8. Repository layout
 
@@ -149,5 +211,20 @@ timing-safe. Full detail, threat model and operator checklist:
 ## 10. Environment variables
 
 See `.env.example`. Nothing is required to run locally — demo mode covers
-the full experience. Production needs Supabase keys, `ADMIN_EMAILS`,
-`PAYMENT_WEBHOOK_SECRET` and (optionally) `MAKE_REGISTRATION_WEBHOOK_URL`.
+the full experience.
+
+Production needs, in rough order of how much stops working without them:
+
+| Group | Variables | Missing means |
+| --- | --- | --- |
+| Supabase | `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `ADMIN_EMAILS` | demo mode: nothing is stored |
+| Allpay | `ALLPAY_LOGIN`, `ALLPAY_API_KEY`, `ALLPAY_WEBHOOK_SECRET`, `ALLPAY_VAT_RATE` | falls back to each group's static link; payments arrive unattached |
+| Telegram | `TELEGRAM_BOT_TOKEN`, `TELEGRAM_WEBHOOK_SECRET`, `TELEGRAM_ADMIN_CHAT_ID`, `TELEGRAM_ADMIN_USER_IDS` | paid students are never admitted to a channel |
+| Cron | `CRON_SECRET` | missed charges are never noticed |
+| Email | `RESEND_API_KEY`, `EMAIL_FROM` | the invite is only on the success page |
+| Make | `MAKE_EVENTS_WEBHOOK_URL` | events are recorded but nothing is mirrored |
+
+One credential is worth calling out separately: the Allpay webhook secret
+is what stands between the site and a forged payment. Rotate it in the
+Allpay dashboard the moment it appears anywhere it should not — a
+screenshot, a chat, a support ticket.
