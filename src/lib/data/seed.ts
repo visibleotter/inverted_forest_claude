@@ -692,8 +692,11 @@ export const studyGroups: StudyGroup[] = [
     endDate: '2026-12-22',
     capacity: 12,
     seatsTaken: 5,
-    paymentUrl: 'https://www.paypal.com/paypalme/invertedforest/350',
+    paymentUrl: 'https://allpay.to/link/demo-350',
     telegramChannelId: '-1001000000101',
+    telegramChatType: 'channel',
+    inviteMemberLimit: 2,
+    meetingUrl: 'https://meet.google.com/demo-101',
     status: 'enrolling'
   },
   {
@@ -708,8 +711,11 @@ export const studyGroups: StudyGroup[] = [
     endDate: '2026-12-22',
     capacity: 15,
     seatsTaken: 4,
-    paymentUrl: 'https://www.paypal.com/paypalme/invertedforest/350',
+    paymentUrl: 'https://allpay.to/link/demo-350',
     telegramChannelId: '-1001000000102',
+    telegramChatType: 'channel',
+    inviteMemberLimit: 1,
+    meetingUrl: 'https://meet.google.com/demo-102',
     status: 'enrolling'
   },
   {
@@ -724,8 +730,11 @@ export const studyGroups: StudyGroup[] = [
     endDate: '2026-12-25',
     capacity: 15,
     seatsTaken: 11,
-    paymentUrl: 'https://www.paypal.com/paypalme/invertedforest/350',
+    paymentUrl: 'https://allpay.to/link/demo-350',
     telegramChannelId: '-1001000000103',
+    telegramChatType: 'channel',
+    inviteMemberLimit: 1,
+    meetingUrl: 'https://meet.google.com/demo-103',
     status: 'enrolling'
   },
   {
@@ -740,8 +749,11 @@ export const studyGroups: StudyGroup[] = [
     endDate: '2027-01-06',
     capacity: 15,
     seatsTaken: 7,
-    paymentUrl: 'https://www.paypal.com/paypalme/invertedforest/350',
+    paymentUrl: 'https://allpay.to/link/demo-350',
     telegramChannelId: '-1001000000104',
+    telegramChatType: 'channel',
+    inviteMemberLimit: 1,
+    meetingUrl: 'https://meet.google.com/demo-104',
     status: 'enrolling'
   },
   {
@@ -756,8 +768,11 @@ export const studyGroups: StudyGroup[] = [
     endDate: '2027-01-04',
     capacity: 15,
     seatsTaken: 9,
-    paymentUrl: 'https://www.paypal.com/paypalme/invertedforest/380',
+    paymentUrl: 'https://allpay.to/link/demo-380',
     telegramChannelId: '-1001000000105',
+    telegramChatType: 'channel',
+    inviteMemberLimit: 1,
+    meetingUrl: 'https://meet.google.com/demo-105',
     status: 'enrolling'
   },
   {
@@ -772,8 +787,11 @@ export const studyGroups: StudyGroup[] = [
     endDate: '2027-01-07',
     capacity: 12,
     seatsTaken: 12,
-    paymentUrl: 'https://www.paypal.com/paypalme/invertedforest/380',
+    paymentUrl: 'https://allpay.to/link/demo-380',
     telegramChannelId: '-1001000000106',
+    telegramChatType: 'channel',
+    inviteMemberLimit: 2,
+    meetingUrl: 'https://meet.google.com/demo-106',
     status: 'full'
   },
   {
@@ -788,8 +806,11 @@ export const studyGroups: StudyGroup[] = [
     endDate: '2026-12-27',
     capacity: 15,
     seatsTaken: 2,
-    paymentUrl: 'https://www.paypal.com/paypalme/invertedforest/380',
+    paymentUrl: 'https://allpay.to/link/demo-380',
     telegramChannelId: '-1001000000107',
+    telegramChatType: 'channel',
+    inviteMemberLimit: 1,
+    meetingUrl: 'https://meet.google.com/demo-107',
     status: 'enrolling'
   },
   {
@@ -804,8 +825,11 @@ export const studyGroups: StudyGroup[] = [
     endDate: '2027-01-07',
     capacity: 10,
     seatsTaken: 6,
-    paymentUrl: 'https://www.paypal.com/paypalme/invertedforest/300',
+    paymentUrl: 'https://allpay.to/link/demo-300',
     telegramChannelId: '-1001000000108',
+    telegramChatType: 'channel',
+    inviteMemberLimit: 1,
+    meetingUrl: 'https://meet.google.com/demo-108',
     status: 'enrolling'
   },
   {
@@ -820,8 +844,11 @@ export const studyGroups: StudyGroup[] = [
     endDate: '2027-01-05',
     capacity: 15,
     seatsTaken: 3,
-    paymentUrl: 'https://www.paypal.com/paypalme/invertedforest/350',
+    paymentUrl: 'https://allpay.to/link/demo-350',
     telegramChannelId: '-1001000000109',
+    telegramChatType: 'channel',
+    inviteMemberLimit: 1,
+    meetingUrl: 'https://meet.google.com/demo-109',
     status: 'enrolling'
   },
   {
@@ -836,8 +863,11 @@ export const studyGroups: StudyGroup[] = [
     endDate: '2027-01-10',
     capacity: 12,
     seatsTaken: 1,
-    paymentUrl: 'https://www.paypal.com/paypalme/invertedforest/350',
+    paymentUrl: 'https://allpay.to/link/demo-350',
     telegramChannelId: '-1001000000110',
+    telegramChatType: 'channel',
+    inviteMemberLimit: 2,
+    meetingUrl: 'https://meet.google.com/demo-110',
     status: 'enrolling'
   }
 ];
@@ -891,6 +921,21 @@ export const demoEnrollments: Enrollment[] = [
     courseId: 'course_002',
     status: 'active',
     telegramInvitedAt: '2026-06-28T10:20:00Z',
+    participantName: null,
+    participantBirthYear: null,
+    plan: 'monthly',
+    orderId: 'enr_001',
+    externalSubscriptionId: null,
+    subscriptionStatus: 'active',
+    paidThrough: '2026-11-04',
+    graceUntil: null,
+    pendingExpiresAt: null,
+    cancelledAt: null,
+    cancelReason: null,
+    telegramAccessStatus: 'joined',
+    telegramUserId: '480010001',
+    telegramJoinedAt: '2026-06-28T11:02:00Z',
+    telegramRemovedAt: null,
     createdAt: '2026-06-28T10:15:00Z'
   },
   {
@@ -900,6 +945,21 @@ export const demoEnrollments: Enrollment[] = [
     courseId: 'course_003',
     status: 'active',
     telegramInvitedAt: '2026-06-30T18:45:00Z',
+    participantName: null,
+    participantBirthYear: null,
+    plan: 'monthly',
+    orderId: 'enr_002',
+    externalSubscriptionId: null,
+    subscriptionStatus: 'active',
+    paidThrough: '2026-11-10',
+    graceUntil: null,
+    pendingExpiresAt: null,
+    cancelledAt: null,
+    cancelReason: null,
+    telegramAccessStatus: 'joined',
+    telegramUserId: '480010002',
+    telegramJoinedAt: '2026-06-30T19:10:00Z',
+    telegramRemovedAt: null,
     createdAt: '2026-06-30T18:40:00Z'
   },
   {
@@ -909,6 +969,21 @@ export const demoEnrollments: Enrollment[] = [
     courseId: 'course_001',
     status: 'pending_payment',
     telegramInvitedAt: null,
+    participantName: null,
+    participantBirthYear: null,
+    plan: 'monthly',
+    orderId: 'enr_003',
+    externalSubscriptionId: null,
+    subscriptionStatus: 'none',
+    paidThrough: null,
+    graceUntil: null,
+    pendingExpiresAt: '2026-07-02T10:05:00Z',
+    cancelledAt: null,
+    cancelReason: null,
+    telegramAccessStatus: 'not_granted',
+    telegramUserId: null,
+    telegramJoinedAt: null,
+    telegramRemovedAt: null,
     createdAt: '2026-07-02T09:05:00Z'
   },
   {
@@ -918,6 +993,21 @@ export const demoEnrollments: Enrollment[] = [
     courseId: 'course_002',
     status: 'past_due',
     telegramInvitedAt: '2026-07-05T20:30:00Z',
+    participantName: null,
+    participantBirthYear: null,
+    plan: 'monthly',
+    orderId: 'enr_004',
+    externalSubscriptionId: null,
+    subscriptionStatus: 'error',
+    paidThrough: '2026-08-20',
+    graceUntil: '2026-08-23T00:00:00Z',
+    pendingExpiresAt: null,
+    cancelledAt: null,
+    cancelReason: null,
+    telegramAccessStatus: 'joined',
+    telegramUserId: '480010004',
+    telegramJoinedAt: '2026-07-05T21:00:00Z',
+    telegramRemovedAt: null,
     createdAt: '2026-07-05T20:22:00Z'
   }
 ];
@@ -926,41 +1016,49 @@ export const demoPayments: Payment[] = [
   {
     id: 'pay_001',
     enrollmentId: 'enr_001',
-    provider: 'paypal',
+    provider: 'allpay',
     amount: 350,
     currency: 'ILS',
     status: 'succeeded',
-    externalId: 'PAYID-DEMO-001',
+    externalId: 'enr_001#1',
+    periodIndex: 1,
+    receiptUrl: 'https://allpay.to/receipt/demo',
     createdAt: '2026-06-28T10:18:00Z'
   },
   {
     id: 'pay_002',
     enrollmentId: 'enr_002',
-    provider: 'paypal',
+    provider: 'allpay',
     amount: 380,
     currency: 'ILS',
     status: 'succeeded',
-    externalId: 'PAYID-DEMO-002',
+    externalId: 'enr_002#1',
+    periodIndex: 1,
+    receiptUrl: 'https://allpay.to/receipt/demo',
     createdAt: '2026-06-30T18:43:00Z'
   },
   {
     id: 'pay_003',
     enrollmentId: 'enr_003',
-    provider: 'paypal',
+    provider: 'allpay',
     amount: 350,
     currency: 'ILS',
     status: 'pending',
     externalId: null,
+    periodIndex: 1,
+    receiptUrl: null,
     createdAt: '2026-07-02T09:06:00Z'
   },
   {
     id: 'pay_004',
     enrollmentId: 'enr_004',
-    provider: 'paypal',
+    provider: 'allpay',
     amount: 350,
     currency: 'ILS',
     status: 'failed',
-    externalId: 'PAYID-DEMO-004',
+    externalId: 'enr_004#1',
+    periodIndex: 1,
+    receiptUrl: null,
     createdAt: '2026-07-05T20:25:00Z'
   }
 ];

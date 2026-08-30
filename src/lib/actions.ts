@@ -13,7 +13,20 @@ const registrationSchema = z.object({
   lastName: z.string().trim().min(1).max(100),
   email: z.string().trim().max(320).email(),
   phone: z.string().trim().max(30).optional().or(z.literal('')),
-  locale: z.enum(['ru', 'en'])
+  locale: z.enum(['ru', 'en']),
+  // Monthly is the default so a form that omits the field still works.
+  plan: z.enum(['monthly', 'full']).default('monthly'),
+  // Present only for children's and teens' groups, where the person who
+  // pays is not the person who attends.
+  participantName: z.string().trim().max(200).optional().or(z.literal('')),
+  participantBirthYear: z.coerce
+    .number()
+    .int()
+    .min(1900)
+    .max(2100)
+    .optional()
+    .or(z.literal(''))
+    .transform((value) => (typeof value === 'number' ? value : undefined))
 });
 
 export type RegistrationState =
@@ -50,7 +63,10 @@ export async function submitRegistration(
     lastName: formData.get('lastName'),
     email: formData.get('email'),
     phone: formData.get('phone'),
-    locale: formData.get('locale')
+    locale: formData.get('locale'),
+    plan: formData.get('plan') ?? 'monthly',
+    participantName: formData.get('participantName') ?? '',
+    participantBirthYear: formData.get('participantBirthYear') ?? ''
   });
 
   if (!parsed.success) return { status: 'error', code: 'validation' };
@@ -70,7 +86,10 @@ export async function submitRegistration(
       lastName: input.lastName,
       email: input.email,
       phone: input.phone || undefined,
-      locale: input.locale as Locale
+      locale: input.locale as Locale,
+      plan: input.plan,
+      participantName: input.participantName || undefined,
+      participantBirthYear: input.participantBirthYear
     });
 
     // The automation pipeline needs the real contact details — that is the
@@ -83,7 +102,9 @@ export async function submitRegistration(
       last_name: input.lastName,
       email: input.email,
       phone: input.phone || null,
-      locale: input.locale
+      locale: input.locale,
+      plan: input.plan,
+      participant_name: input.participantName || null
     });
 
     return {

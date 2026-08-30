@@ -30,9 +30,37 @@ export type EnrollmentStatus =
   | 'active'
   | 'past_due'
   | 'completed'
-  | 'cancelled';
+  | 'cancelled'
+  | 'refunded';
 export type PaymentProvider = 'paypal' | 'allpay' | 'manual';
 export type PaymentStatus = 'pending' | 'succeeded' | 'failed' | 'refunded';
+
+/** How the course is paid for: monthly subscription or one sum up front. */
+export type EnrollmentPlan = 'monthly' | 'full';
+
+export type SubscriptionStatus =
+  | 'none'
+  | 'active'
+  | 'completed'
+  | 'error'
+  | 'cancelled';
+
+/**
+ * Where an enrollment stands with its private Telegram channel. Separate
+ * from payment status on purpose: someone can be paid up and not yet in
+ * the room, and that gap is the thing an admin most often has to chase.
+ */
+export type TelegramAccessStatus =
+  | 'not_granted'
+  | 'invite_created'
+  | 'joined'
+  | 'removed'
+  | 'expired';
+
+export type InviteStatus = 'active' | 'used' | 'expired' | 'revoked';
+
+/** A channel broadcasts; a supergroup lets students talk to each other. */
+export type TelegramChatType = 'channel' | 'supergroup';
 
 export interface Teacher {
   id: string;
@@ -97,6 +125,11 @@ export interface StudyGroup {
   /** External checkout link (PayPal now, Allpay later). */
   paymentUrl: string | null;
   telegramChannelId: string | null;
+  telegramChatType: TelegramChatType;
+  /** Seats on one invite link. 1 for adults; 2 lets a parent come along. */
+  inviteMemberLimit: number;
+  /** Zoom / Google Meet room, pinned in the channel and shown in admin. */
+  meetingUrl: string | null;
   status: GroupStatus;
 }
 
@@ -120,7 +153,33 @@ export interface Enrollment {
   groupId: string;
   courseId: string;
   status: EnrollmentStatus;
+
+  /**
+   * Who attends, when that is not the person who paid. Null for adult
+   * groups, where the student row is the participant; set for children's
+   * groups, where the student row is the paying parent.
+   */
+  participantName: string | null;
+  participantBirthYear: number | null;
+
+  plan: EnrollmentPlan;
+  /** What we hand the provider and get back in the webhook. */
+  orderId: string | null;
+  externalSubscriptionId: string | null;
+  subscriptionStatus: SubscriptionStatus;
+  /** Access is owed up to this date; everything downstream derives from it. */
+  paidThrough: string | null;
+  graceUntil: string | null;
+  pendingExpiresAt: string | null;
+  cancelledAt: string | null;
+  cancelReason: string | null;
+
+  telegramAccessStatus: TelegramAccessStatus;
+  telegramUserId: string | null;
   telegramInvitedAt: string | null;
+  telegramJoinedAt: string | null;
+  telegramRemovedAt: string | null;
+
   createdAt: string;
 }
 
@@ -131,8 +190,44 @@ export interface Payment {
   amount: number;
   currency: string;
   status: PaymentStatus;
+  /**
+   * Dedupe key with the provider. For a subscription this carries a period
+   * suffix (`<order_id>#2`) because two monthly charges can otherwise
+   * arrive as byte-identical payloads.
+   */
   externalId: string | null;
+  /** 1 = first month, 2 = second … null for one-off payments. */
+  periodIndex: number | null;
+  receiptUrl: string | null;
   createdAt: string;
+}
+
+export interface TelegramInvite {
+  id: string;
+  enrollmentId: string;
+  groupId: string;
+  chatId: string;
+  inviteLink: string;
+  memberLimit: number;
+  status: InviteStatus;
+  createdAt: string;
+  expiresAt: string;
+  usedAt: string | null;
+}
+
+/**
+ * Append-only record of anything worth reacting to. Written before the
+ * side effects, so the fan-out to Make.com (and whatever replaces it) is a
+ * subscriber rather than the orchestrator.
+ */
+export interface DomainEvent {
+  id: string;
+  type: string;
+  enrollmentId: string | null;
+  payload: Record<string, unknown>;
+  createdAt: string;
+  deliveredAt: string | null;
+  deliveryError: string | null;
 }
 
 export interface AutomationLog {
@@ -153,6 +248,10 @@ export interface RegistrationInput {
   email: string;
   phone?: string;
   locale: Locale;
+  /** Set only when the participant is not the payer (children's groups). */
+  participantName?: string;
+  participantBirthYear?: number;
+  plan: EnrollmentPlan;
 }
 
 export interface RegistrationResult {

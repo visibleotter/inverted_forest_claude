@@ -1,3 +1,12 @@
+import { siteConfig } from '../config';
+import { emit } from '../events';
+import {
+  getCheckoutProvider,
+  successUrl,
+  vatRate,
+  webhookUrl
+} from '../payments';
+import { getNumericSettings } from '../settings';
 import type {
   Course,
   DashboardStats,
@@ -134,6 +143,9 @@ function mapGroup(row: any): StudyGroup {
     seatsTaken: row.seats_taken,
     paymentUrl: row.payment_url,
     telegramChannelId: row.telegram_channel_id,
+    telegramChatType: row.telegram_chat_type ?? 'channel',
+    inviteMemberLimit: row.invite_member_limit ?? 1,
+    meetingUrl: row.meeting_url ?? null,
     status: row.status
   };
 }
@@ -247,27 +259,144 @@ export class SupabaseProvider implements DataProvider {
       .single();
     if (studentError) throw studentError;
 
-    const { data: enrollment, error: enrollmentError } = await db
+    const participantName = input.participantName?.trim() || null;
+    const settings = await getNumericSettings();
+    const pendingExpiresAt = new Date(
+      Date.now() + settings.pending_ttl_minutes * 60_000
+    ).toISOString();
+
+    // Someone who registered, thought better of the card and came back an
+    // hour later is the common case, not an edge one. Reuse their unpaid
+    // enrollment rather than colliding with the uniqueness rule — the old
+    // code hit a 23505 here and showed a bare "something went wrong".
+    const { data: open } = await db
       .from('enrollments')
-      .insert({
-        student_id: student.id,
-        group_id: group.id,
-        course_id: group.courseId,
-        status: 'pending_payment'
-      })
       .select('id')
-      .single();
-    if (enrollmentError) throw enrollmentError;
+      .eq('student_id', student.id)
+      .eq('group_id', group.id)
+      .eq('status', 'pending_payment')
+      .is('participant_name', participantName)
+      .maybeSingle();
+
+    let enrollmentId: string;
+
+    if (open) {
+      enrollmentId = open.id as string;
+      const { error } = await db
+        .from('enrollments')
+        .update({
+          plan: input.plan,
+          participant_birth_year: input.participantBirthYear ?? null,
+          pending_expires_at: pendingExpiresAt
+        })
+        .eq('id', enrollmentId);
+      if (error) throw error;
+    } else {
+      const { data: created, error: enrollmentError } = await db
+        .from('enrollments')
+        .insert({
+          student_id: student.id,
+          group_id: group.id,
+          course_id: group.courseId,
+          status: 'pending_payment',
+          plan: input.plan,
+          participant_name: participantName,
+          participant_birth_year: input.participantBirthYear ?? null,
+          pending_expires_at: pendingExpiresAt
+        })
+        .select('id')
+        .single();
+      if (enrollmentError) throw enrollmentError;
+      enrollmentId = created.id as string;
+    }
+
+    // The order id is the enrollment id. It travels to the provider and
+    // comes back in the webhook, which is what removes any need to match a
+    // payment by the payer's email address.
+    await db
+      .from('enrollments')
+      .update({ order_id: enrollmentId })
+      .eq('id', enrollmentId)
+      .is('order_id', null);
+
+    const paymentUrl = await this.buildCheckoutUrl(
+      enrollmentId,
+      group,
+      input
+    );
 
     // Log identifiers, not contact details.
     await db.from('automation_logs').insert({
       source: 'site',
       event: 'registration.created',
       status: 'ok',
-      detail: `${group.id} · enrollment ${enrollment.id}`
+      detail: `${group.id} · enrollment ${enrollmentId} · ${input.plan}`
     });
 
-    return { enrollmentId: enrollment.id, paymentUrl: group.paymentUrl };
+    await emit('enrollment.created', enrollmentId, {
+      group_id: group.id,
+      course_id: group.courseId,
+      plan: input.plan
+    });
+
+    return { enrollmentId, paymentUrl };
+  }
+
+  /**
+   * A checkout URL for this enrollment.
+   *
+   * With Allpay configured, a payment is created per enrollment so the
+   * order id — and therefore the identity of the payer — is ours. Without
+   * it, we fall back to the group's hand-made link from the Allpay
+   * dashboard, which still works but cannot carry an order id, so those
+   * payments arrive as orphans for an admin to match.
+   */
+  private async buildCheckoutUrl(
+    enrollmentId: string,
+    group: StudyGroup,
+    input: RegistrationInput
+  ): Promise<string | null> {
+    const provider = getCheckoutProvider();
+    if (!provider) return group.paymentUrl;
+
+    const course = await this.getCourseById(group.courseId);
+    if (!course) return group.paymentUrl;
+
+    const months = course.durationMonths;
+    const isFull = input.plan === 'full';
+    const title = course.title[input.locale] ?? course.title.ru;
+
+    try {
+      const session = await provider.createCheckout({
+        orderId: enrollmentId,
+        groupId: group.id,
+        currency: course.currency,
+        items: [
+          {
+            name: isFull ? `${title} · ${months} mo` : title,
+            price: isFull ? course.monthlyPrice * months : course.monthlyPrice,
+            qty: 1,
+            vat: vatRate()
+          }
+        ],
+        client: {
+          name: `${input.firstName} ${input.lastName}`,
+          email: input.email,
+          phone: input.phone
+        },
+        locale: input.locale,
+        plan: input.plan,
+        installments: months,
+        webhookUrl: webhookUrl(),
+        successUrl: successUrl(input.locale, enrollmentId),
+        backlinkUrl: `${siteConfig.url}/${input.locale}/courses/${course.slug}`
+      });
+      return session.paymentUrl;
+    } catch (error) {
+      // A provider outage must not swallow the registration we just took.
+      console.error(`[checkout] allpay failed for ${enrollmentId}`, error);
+      return group.paymentUrl;
+    }
   }
 
   async subscribeToNewsletter(email: string, locale: string): Promise<void> {
@@ -376,6 +505,8 @@ export class SupabaseProvider implements DataProvider {
       currency: row.currency,
       status: row.status,
       externalId: row.external_id,
+      periodIndex: row.period_index ?? null,
+      receiptUrl: row.receipt_url ?? null,
       createdAt: row.created_at,
       studentName: row.enrollments?.students
         ? `${row.enrollments.students.first_name} ${row.enrollments.students.last_name}`

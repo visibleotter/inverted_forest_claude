@@ -9,23 +9,47 @@ import { Link } from '@/i18n/navigation';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { submitRegistration, type RegistrationState } from '@/lib/actions';
-import { cn } from '@/lib/utils';
+import type { AgeGroup } from '@/lib/types';
+import { cn, formatPrice } from '@/lib/utils';
 
 interface Props {
   groupId: string;
+  /** Decides whether the participant is asked about separately. */
+  audience: AgeGroup;
+  /** Number of monthly charges, and the length of the pay-in-full option. */
+  durationMonths: number;
+  monthlyPrice: number;
+  currency: string;
 }
 
-export function RegistrationForm({ groupId }: Props) {
+export function RegistrationForm({
+  groupId,
+  audience,
+  durationMonths,
+  monthlyPrice,
+  currency
+}: Props) {
   const t = useTranslations('register');
   const locale = useLocale();
   const [result, setResult] = useState<RegistrationState>({ status: 'idle' });
+  const [plan, setPlan] = useState<'monthly' | 'full'>('monthly');
   const honeypotRef = useRef<HTMLInputElement>(null);
+
+  // A children's or teens' group means the person filling in the form is
+  // not the person attending. Asking for both is the only way the group
+  // list ever shows the child's name — and the only way two siblings
+  // enrolled from one parent's address stay distinguishable.
+  const separateParticipant = audience === 'children' || audience === 'teens';
 
   const schema = z.object({
     firstName: z.string().trim().min(1, t('errors.firstName')),
     lastName: z.string().trim().min(1, t('errors.lastName')),
     email: z.string().trim().email(t('errors.email')),
     phone: z.string().trim().optional(),
+    participantName: separateParticipant
+      ? z.string().trim().min(1, t('errors.participantName'))
+      : z.string().trim().optional(),
+    participantBirthYear: z.string().trim().optional(),
     agreement: z.literal(true, {
       errorMap: () => ({ message: t('errors.agreement') })
     })
@@ -47,6 +71,9 @@ export function RegistrationForm({ groupId }: Props) {
     formData.set('email', values.email);
     formData.set('phone', values.phone ?? '');
     formData.set('locale', locale);
+    formData.set('plan', plan);
+    formData.set('participantName', values.participantName ?? '');
+    formData.set('participantBirthYear', values.participantBirthYear ?? '');
     formData.set('website', honeypotRef.current?.value ?? '');
 
     const state = await submitRegistration({ status: 'idle' }, formData);
@@ -172,6 +199,100 @@ export function RegistrationForm({ groupId }: Props) {
           />
         </div>
       </div>
+
+      {separateParticipant && (
+        <fieldset className="mt-8 border-t border-border pt-6">
+          <legend className="sr-only">{t('participantTitle')}</legend>
+          <h3 className="text-sm font-semibold">{t('participantTitle')}</h3>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {t('participantNameHint')}
+          </p>
+          <div className="mt-4 grid gap-5 sm:grid-cols-2">
+            <div>
+              <label
+                htmlFor="participantName"
+                className="mb-1.5 block text-sm font-medium"
+              >
+                {t('participantName')}
+              </label>
+              <Input
+                id="participantName"
+                aria-invalid={Boolean(errors.participantName)}
+                {...register('participantName')}
+              />
+              {errors.participantName && (
+                <p role="alert" className="mt-1.5 text-sm text-red-500">
+                  {errors.participantName.message}
+                </p>
+              )}
+            </div>
+            <div>
+              <label
+                htmlFor="participantBirthYear"
+                className="mb-1.5 block text-sm font-medium"
+              >
+                {t('participantBirthYear')}
+              </label>
+              <Input
+                id="participantBirthYear"
+                inputMode="numeric"
+                placeholder="2014"
+                {...register('participantBirthYear')}
+              />
+            </div>
+          </div>
+        </fieldset>
+      )}
+
+      <fieldset className="mt-8 border-t border-border pt-6">
+        <legend className="sr-only">{t('planTitle')}</legend>
+        <h3 className="text-sm font-semibold">{t('planTitle')}</h3>
+        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+          {(['monthly', 'full'] as const).map((option) => {
+            const selected = plan === option;
+            const total =
+              option === 'full' ? monthlyPrice * durationMonths : monthlyPrice;
+            return (
+              <label
+                key={option}
+                className={cn(
+                  'cursor-pointer rounded-card border p-4 transition-colors',
+                  selected
+                    ? 'border-accent bg-accent/5'
+                    : 'border-border hover:border-accent/50'
+                )}
+              >
+                <span className="flex items-center gap-2.5">
+                  <input
+                    type="radio"
+                    name="plan"
+                    value={option}
+                    checked={selected}
+                    onChange={() => setPlan(option)}
+                    className="h-4 w-4 accent-[#2A4A3A]"
+                  />
+                  <span className="font-medium">
+                    {option === 'monthly' ? t('planMonthly') : t('planFull')}
+                  </span>
+                </span>
+                <span className="mt-2 block font-display text-xl font-semibold">
+                  {formatPrice(total, currency, locale as 'ru' | 'en')}
+                  {option === 'monthly' && (
+                    <span className="ml-1 font-sans text-sm font-normal text-muted-foreground">
+                      / {t('priceNote')}
+                    </span>
+                  )}
+                </span>
+                <span className="mt-1.5 block text-sm leading-relaxed text-muted-foreground">
+                  {option === 'monthly'
+                    ? t('planMonthlyNote', { months: durationMonths })
+                    : t('planFullNote', { months: durationMonths })}
+                </span>
+              </label>
+            );
+          })}
+        </div>
+      </fieldset>
 
       <div className="mt-6">
         <label className="flex items-start gap-3 text-sm">

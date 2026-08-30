@@ -34,7 +34,9 @@ export default async function AdminLayout({
 }) {
   setRequestLocale(locale);
   const access = await checkAdminAccess();
-  if (!access.allowed) redirect({ href: '/', locale });
+  // Sending them to the home page would look like the admin area does not
+  // exist. Send them to the door instead.
+  if (!access.allowed) redirect({ href: '/admin-login', locale });
 
   const t = await getTranslations('admin');
 

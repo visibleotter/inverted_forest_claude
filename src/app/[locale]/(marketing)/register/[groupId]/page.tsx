@@ -57,7 +57,13 @@ export default async function RegisterPage({
 
           <div className="mt-8">
             {isOpen ? (
-              <RegistrationForm groupId={group.id} />
+              <RegistrationForm
+                groupId={group.id}
+                audience={group.audience}
+                durationMonths={course.durationMonths}
+                monthlyPrice={course.monthlyPrice}
+                currency={course.currency}
+              />
             ) : (
               <div className="rounded-card border border-border bg-card p-8">
                 <p className="font-medium">{t('groupFull')}</p>

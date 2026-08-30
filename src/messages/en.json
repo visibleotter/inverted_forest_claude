@@ -176,7 +176,8 @@
       "email": "Please enter a valid email",
       "agreement": "You need to accept the terms",
       "rateLimited": "Too many registration attempts. Please wait a few minutes or contact us directly.",
-      "generic": "Something went wrong. Please try again or contact us."
+      "generic": "Something went wrong. Please try again or contact us.",
+      "participantName": "Please enter the student's name"
     },
     "groupFull": "Unfortunately this group is already full. Please choose another group.",
     "backToCourse": "Back to the course",
@@ -187,7 +188,16 @@
     "afterPayment": "What happens after payment?",
     "afterPayment1": "Payment confirmation by email",
     "afterPayment2": "A personal one-time invite link to your group's private Telegram channel",
-    "afterPayment3": "Zoom link and all materials — inside the channel"
+    "afterPayment3": "Zoom link and all materials — inside the channel",
+    "planTitle": "How would you like to pay",
+    "planMonthly": "Monthly",
+    "planMonthlyNote": "Charged once a month, {months} times. Card entered once; the subscription ends with the course on its own.",
+    "planFull": "The whole course at once",
+    "planFullNote": "One payment for all {months} months. Nothing to remember later.",
+    "participantTitle": "Who is attending",
+    "participantName": "Student's full name",
+    "participantNameHint": "Filled in by the adult who pays. The Telegram invite goes to your inbox.",
+    "participantBirthYear": "Year of birth"
   },
   "teachers": {
     "title": "Teachers",
@@ -392,5 +402,29 @@
     "title": "Page not found",
     "text": "It seems you've wandered into a part of the forest that doesn't exist.",
     "backHome": "Back home"
+  },
+  "enrollSuccess": {
+    "title": "Checking your payment",
+    "waiting": "This usually takes a few seconds. No need to refresh.",
+    "readyTitle": "Payment received",
+    "readyText": "Here is your personal link to the group's private Telegram channel. It works once and expires in 7 days.",
+    "join": "Open the group channel",
+    "emailedToo": "We've emailed you the same link, in case now isn't a good moment.",
+    "pendingTitle": "Payment not confirmed yet",
+    "pendingText": "If you've just paid, give it a minute. If the payment failed, try again or write to us.",
+    "manualTitle": "Something went wrong",
+    "manualText": "Your payment arrived but access couldn't be granted automatically. We already know, and we'll send your invite — usually within the day.",
+    "contact": "Contact us"
+  },
+  "adminLogin": {
+    "title": "Admin sign-in",
+    "subtitle": "Enter your email and we'll send a sign-in link. No password needed.",
+    "email": "Email",
+    "submit": "Send the link",
+    "sending": "Sending…",
+    "sentTitle": "Check your inbox",
+    "sentText": "If that address is on the admin list, a sign-in link is on its way. It is valid for a limited time.",
+    "error": "Couldn't send the email. Try again in a minute.",
+    "demoNote": "The site is in demo mode: no database is connected and the admin area is open without sign-in. Sign-in appears once the Supabase variables are set."
   }
 }
