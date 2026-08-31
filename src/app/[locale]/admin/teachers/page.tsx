@@ -1,5 +1,7 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { Link } from '@/i18n/navigation';
 import { AdminTable } from '@/components/admin/admin-table';
+import { buttonVariants } from '@/components/ui/button';
 import { getData } from '@/lib/data';
 
 export default async function AdminTeachersPage({
@@ -17,14 +19,24 @@ export default async function AdminTeachersPage({
 
   return (
     <div>
-      <h1 className="mb-6 text-2xl font-semibold">{t('nav.teachers')}</h1>
+      <div className="mb-6 flex items-center justify-between gap-4">
+        <h1 className="text-2xl font-semibold">{t('nav.teachers')}</h1>
+        <Link
+          href="/admin/teachers/new"
+          className={buttonVariants({ variant: 'accent' })}
+        >
+          {t('teacherForm.new')}
+        </Link>
+      </div>
       <AdminTable
         headers={[t('table.name'), t('table.title'), t('table.groups')]}
         rows={teachers.map((teacher) => [
-          <div key="n">
-            <p className="font-medium">{teacher.name.ru}</p>
+          <Link key="n" href={`/admin/teachers/${teacher.id}`} className="block">
+            <p className="font-medium text-accent hover:underline">
+              {teacher.name.ru}
+            </p>
             <p className="text-xs text-muted-foreground">{teacher.name.en}</p>
-          </div>,
+          </Link>,
           <div key="t">
             <p>{teacher.title.ru}</p>
             <p className="text-xs text-muted-foreground">{teacher.title.en}</p>

@@ -792,3 +792,93 @@ export async function adminSaveCourse(
   revalidatePath('/', 'layout');
   return { status: 'saved', id: course.id };
 }
+
+/* ── Teachers ──────────────────────────────────────────────────────── */
+
+const teacherSchema = z.object({
+  id: z
+    .string()
+    .trim()
+    .regex(/^teacher_[a-z0-9_]+$/, 'id must look like teacher_002'),
+  slug: z
+    .string()
+    .trim()
+    .regex(/^[a-z0-9-]+$/, 'slug is lowercase letters, digits and dashes'),
+  photoUrl: z.string().trim().url().nullable(),
+  name: localizedString,
+  title: localizedString,
+  bio: localizedString,
+  highlights: localizedList
+});
+
+export type TeacherFormState =
+  | { status: 'idle' }
+  | { status: 'error'; message: string }
+  | { status: 'saved'; id: string };
+
+/**
+ * Create or update a teacher, both languages at once.
+ *
+ * Same shape as the course editor and for the same reasons: the payload
+ * arrives as one JSON blob because the content is nested, and translatable
+ * text lands in per-locale rows so a third language stays an INSERT.
+ *
+ * The id is write-once — courses reference it — while the slug is free to
+ * change, since nothing resolves a teacher by slug today.
+ */
+export async function adminSaveTeacher(
+  _prev: TeacherFormState,
+  formData: FormData
+): Promise<TeacherFormState> {
+  const access = await checkAdminAccess();
+  if (!access.allowed) return { status: 'error', message: 'unauthorized' };
+  if (isDemoMode()) return { status: 'error', message: 'demo_mode' };
+
+  const raw = formData.get('payload');
+  if (typeof raw !== 'string') return { status: 'error', message: 'no_payload' };
+
+  let parsedJson: unknown;
+  try {
+    parsedJson = JSON.parse(raw);
+  } catch {
+    return { status: 'error', message: 'bad_json' };
+  }
+
+  const parsed = teacherSchema.safeParse(parsedJson);
+  if (!parsed.success) {
+    const issue = parsed.error.issues[0];
+    return {
+      status: 'error',
+      message: issue ? `${issue.path.join('.')}: ${issue.message}` : 'validation'
+    };
+  }
+
+  const teacher = parsed.data;
+  const db = createSupabaseAdminClient();
+
+  const { error: teacherError } = await db.from('teachers').upsert(
+    { id: teacher.id, slug: teacher.slug, photo_url: teacher.photoUrl },
+    { onConflict: 'id' }
+  );
+  if (teacherError) return { status: 'error', message: teacherError.message };
+
+  const translations = (['ru', 'en'] as const).map((locale) => ({
+    teacher_id: teacher.id,
+    locale,
+    name: teacher.name[locale],
+    title: teacher.title[locale],
+    bio: teacher.bio[locale],
+    highlights: teacher.highlights[locale]
+  }));
+
+  const { error: translationError } = await db
+    .from('teacher_translations')
+    .upsert(translations, { onConflict: 'teacher_id,locale' });
+  if (translationError) {
+    return { status: 'error', message: translationError.message };
+  }
+
+  // A teacher's name appears on the About page and on every course card.
+  revalidatePath('/', 'layout');
+  return { status: 'saved', id: teacher.id };
+}

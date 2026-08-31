@@ -488,6 +488,22 @@
       "saved": "Saved",
       "cancel": "Cancel",
       "demoMode": "Demo mode: courses currently come from code, so saving is unavailable. It works once a database is connected."
+    },
+    "teacherForm": {
+      "new": "New teacher",
+      "edit": "Edit teacher",
+      "idHint": "Immutable id, like teacher_002. Courses reference it, so it cannot change after creation.",
+      "photo": "Photo",
+      "name": "Name",
+      "role": "Role",
+      "bio": "About the teacher",
+      "highlights": "How they teach",
+      "onePerLine": "One item per line.",
+      "save": "Save",
+      "saving": "Saving…",
+      "saved": "Saved",
+      "cancel": "Cancel",
+      "demoMode": "Demo mode: teachers currently come from code, so saving is unavailable."
     }
   },
   "notFound": {
