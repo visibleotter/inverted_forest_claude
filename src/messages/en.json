@@ -146,10 +146,29 @@
     "starts": "Starts",
     "seats": "Seats",
     "action": "",
-    "join": "Join",
+    "join": "Join this group",
     "full": "Group is full",
+    "running": "In progress",
     "seatsLeft": "{count, plural, one {# seat left} other {# seats left}}",
-    "timezoneNote": "Times shown in Israel time (GMT+3)."
+    "groupSize": "No more than {capacity} people per group",
+    "startsOn": "Starts {date}",
+    "startsWhenFull": "Starts once the group fills",
+    "runningSince": "Running since {date}",
+    "tryInstead": "Open in another slot:",
+    "noneOpen": "No seats open right now. Write to us and we will tell you when enrolment reopens.",
+    "noSlots": "The schedule for the next intake is still being set. Write to us and we will let you know when enrolment opens.",
+    "yourTime": "Your time: {time}",
+    "timezoneNote": "Times are given in Israel time.",
+    "holidaysNote": "Classes move around public holidays — the change is announced in the group channel.",
+    "audience": {
+      "children": "For children and teens",
+      "childrenNote": "An adult signs up. The Telegram invite goes to their inbox.",
+      "adults": "For adults"
+    },
+    "afterPaymentTitle": "What happens after payment",
+    "afterPayment1": "A confirmation email",
+    "afterPayment2": "A personal link to your group’s private Telegram channel",
+    "afterPayment3": "The class link — in the channel, before every session"
   },
   "register": {
     "title": "Registration",
@@ -435,7 +454,9 @@
       "saved": "Saved",
       "cancel": "Cancel",
       "seatsHint": "Seats taken are counted from payments automatically — never typed in.",
-      "inviteLimitHint": "How many people one invite admits. Use 2 for children’s groups so a parent can come along."
+      "inviteLimitHint": "How many people one invite admits. Use 2 for children’s groups so a parent can come along.",
+      "startConfirmed": "Start date is confirmed",
+      "startConfirmedHint": "While this is unchecked the site says \"starts once the group fills\" instead of showing the date. A date is still required — the paid period is measured from it."
     },
     "content": {
       "title": "Site copy",

@@ -187,6 +187,21 @@ export function GroupForm({ group, courses }: Props) {
           />
         </div>
 
+        <div className="sm:col-span-2">
+          <label className="flex items-start gap-3 text-sm">
+            <input
+              type="checkbox"
+              name="startDateConfirmed"
+              defaultChecked={group?.startDateConfirmed ?? false}
+              className="mt-0.5 h-4 w-4 accent-[#2A4A3A]"
+            />
+            <span>
+              <span className="font-medium">{t('startConfirmed')}</span>
+              <span className={hint}>{t('startConfirmedHint')}</span>
+            </span>
+          </label>
+        </div>
+
         <div>
           <label htmlFor="endDate" className={field}>
             End date
@@ -208,7 +223,7 @@ export function GroupForm({ group, courses }: Props) {
             name="capacity"
             inputMode="numeric"
             required
-            defaultValue={String(group?.capacity ?? 12)}
+            defaultValue={String(group?.capacity ?? 7)}
           />
           <p className={hint}>{t('seatsHint')}</p>
         </div>

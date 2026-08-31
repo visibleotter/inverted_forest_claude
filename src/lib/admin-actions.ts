@@ -429,6 +429,9 @@ const groupSchema = z.object({
   startTime: z.string().trim().regex(/^\d{2}:\d{2}$/),
   timezone: z.string().trim().min(1),
   startDate: z.string().trim().regex(/^\d{4}-\d{2}-\d{2}$/),
+  // Unchecked means the date is a placeholder and the site says the
+  // course starts once the group fills.
+  startDateConfirmed: z.coerce.boolean(),
   endDate: z
     .string()
     .trim()
@@ -474,6 +477,7 @@ export async function adminSaveGroup(
     startTime: formData.get('startTime'),
     timezone: formData.get('timezone') || 'Asia/Jerusalem',
     startDate: formData.get('startDate'),
+    startDateConfirmed: formData.get('startDateConfirmed') === 'on',
     endDate: formData.get('endDate') ?? '',
     capacity: formData.get('capacity'),
     status: formData.get('status'),
@@ -503,6 +507,7 @@ export async function adminSaveGroup(
     start_time: group.startTime,
     timezone: group.timezone,
     start_date: group.startDate,
+    start_date_confirmed: group.startDateConfirmed,
     end_date: group.endDate || null,
     capacity: group.capacity,
     status: group.status,

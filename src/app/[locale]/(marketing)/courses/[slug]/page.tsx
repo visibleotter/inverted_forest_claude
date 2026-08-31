@@ -18,7 +18,7 @@ import { buttonVariants } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { FadeIn } from '@/components/ui/fade-in';
 import { Section } from '@/components/ui/section';
-import { ScheduleTable } from '@/components/marketing/schedule-table';
+import { ScheduleSlots } from '@/components/marketing/schedule-slots';
 import { siteConfig } from '@/lib/config';
 import { getData } from '@/lib/data';
 import type { Locale } from '@/lib/types';
@@ -232,6 +232,29 @@ export default async function CoursePage({ params: { locale, slug } }: Props) {
         </div>
       </Section>
 
+      {/* Schedule */}
+      <Section
+        id="schedule"
+        className="scroll-mt-20 section-soft"
+        title={t('scheduleTitle')}
+        subtitle={t('scheduleSubtitle')}
+      >
+        <FadeIn>
+          <ScheduleSlots groups={groups} />
+        </FadeIn>
+        <FadeIn className="mt-8">
+          <p className="text-sm text-muted-foreground">
+            {t('pricingNote', {
+              months: tCourses('months', { count: course.durationMonths })
+            })}{' '}
+            <span className="font-semibold text-foreground">
+              {formatPrice(course.monthlyPrice, course.currency, l)}
+            </span>{' '}
+            {tCourses('perMonth')}.
+          </p>
+        </FadeIn>
+      </Section>
+
       {/* Curriculum */}
       <Section className="section-soft" title={t('curriculumTitle')}>
         <div className="grid gap-6 lg:grid-cols-3">
@@ -283,29 +306,6 @@ export default async function CoursePage({ params: { locale, slug } }: Props) {
           </FadeIn>
         </Section>
       )}
-
-      {/* Schedule */}
-      <Section
-        id="schedule"
-        className="scroll-mt-20 section-soft"
-        title={t('scheduleTitle')}
-        subtitle={t('scheduleSubtitle')}
-      >
-        <FadeIn>
-          <ScheduleTable groups={groups} />
-        </FadeIn>
-        <FadeIn className="mt-8">
-          <p className="text-sm text-muted-foreground">
-            {t('pricingNote', {
-              months: tCourses('months', { count: course.durationMonths })
-            })}{' '}
-            <span className="font-semibold text-foreground">
-              {formatPrice(course.monthlyPrice, course.currency, l)}
-            </span>{' '}
-            {tCourses('perMonth')}.
-          </p>
-        </FadeIn>
-      </Section>
 
       {/* Course FAQ */}
       {course.faq.length > 0 && (

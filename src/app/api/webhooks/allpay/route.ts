@@ -217,6 +217,31 @@ export async function POST(request: NextRequest) {
   // A seat is consumed once, by the payment that first activated the
   // enrollment — never by a retry and never by month two.
   if (isNewPayment && wasPending) {
+    // Look before incrementing. Places are held while a registration is
+    // unpaid, so an over-full group should be impossible — but a hold can
+    // expire while someone is still on the payment page, and Allpay has
+    // no idea a group has a size. The money has arrived and the student
+    // is admitted either way; what must not happen is that nobody finds
+    // out until a class of seven has nine people in it.
+    const { data: group } = await db
+      .from('study_groups')
+      .select('seats_taken, capacity')
+      .eq('id', enrollment.group_id)
+      .maybeSingle();
+
+    if (group && group.seats_taken >= group.capacity) {
+      await alertAdmins(
+        `⚠️ ${enrollment.group_id} is at capacity (${group.capacity}) and another payment just landed.\n` +
+          `Enrollment ${enrollment.id} has been admitted. Move them to another slot or refund.`
+      );
+      await db.from('automation_logs').insert({
+        source: 'allpay',
+        event: 'group.overbooked',
+        status: 'error',
+        detail: `${enrollment.group_id} · enrollment ${enrollment.id}`
+      });
+    }
+
     await db.rpc('increment_seats_for_enrollment', {
       p_enrollment_id: enrollment.id
     });

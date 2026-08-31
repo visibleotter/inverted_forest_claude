@@ -119,9 +119,21 @@ export interface StudyGroup {
   time: string;
   timezone: string;
   startDate: string; // ISO date
+  /**
+   * Whether `startDate` is a promise or a placeholder. With small groups
+   * the date follows the sign-ups, and printing one nobody intends to
+   * honour is worse than saying the course starts once the group fills.
+   */
+  startDateConfirmed: boolean;
   endDate: string | null;
   capacity: number;
   seatsTaken: number;
+  /**
+   * Places held by registrations that have not been paid for yet and have
+   * not expired. Counted against capacity so that a seven-seat group
+   * cannot have eight people on its payment page at once.
+   */
+  seatsHeld: number;
   /** External checkout link (PayPal now, Allpay later). */
   paymentUrl: string | null;
   telegramChannelId: string | null;
@@ -133,8 +145,20 @@ export interface StudyGroup {
   status: GroupStatus;
 }
 
+/**
+ * Places a new student could still take.
+ *
+ * Paid seats *and* unpaid holds both count. Charging someone for a place
+ * that no longer exists is the failure worth designing against: the money
+ * arrives, the group is over capacity, and someone has to be told.
+ */
 export function seatsRemaining(group: StudyGroup): number {
-  return Math.max(0, group.capacity - group.seatsTaken);
+  return Math.max(0, group.capacity - group.seatsTaken - group.seatsHeld);
+}
+
+/** Seats actually occupied by people who have paid. */
+export function seatsFilled(group: StudyGroup): number {
+  return group.seatsTaken;
 }
 
 export interface Student {

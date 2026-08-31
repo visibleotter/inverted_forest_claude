@@ -32,7 +32,11 @@ const named = args.filter((value) => !value.startsWith('--'));
 const migrations =
   named.length > 0
     ? named.map((name) => (name.endsWith('.sql') ? name : `${name}.sql`))
-    : ['0003_enrollment_engine.sql', '0004_ui_content.sql'];
+    : [
+        '0003_enrollment_engine.sql',
+        '0004_ui_content.sql',
+        '0005_slots_and_capacity.sql'
+      ];
 
 const stripTransaction = (sql) =>
   sql

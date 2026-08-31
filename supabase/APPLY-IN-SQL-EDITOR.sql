@@ -6,7 +6,7 @@
 -- Everything here is safe to run twice: the migrations create objects that
 -- do not exist yet, and the seed upserts.
 --
--- Contains: 0003_enrollment_engine.sql, 0004_ui_content.sql and the content seed
+-- Contains: 0003_enrollment_engine.sql, 0004_ui_content.sql, 0005_slots_and_capacity.sql and the content seed
 --
 -- Afterwards, check it landed by running scripts/inspect-schema.sql.
 
@@ -249,6 +249,40 @@ create trigger ui_messages_touch_updated_at
 alter table ui_messages enable row level security;
 
 
+-- ═══ migration 0005_slots_and_capacity.sql ═════════════════════════
+
+-- Inverted Forest · slots without a committed date, and real capacity
+--
+-- Two changes, both driven by how the school actually runs at this size.
+--
+-- 1. A slot can exist before its start date is decided. With small groups
+--    the date follows the sign-ups, not the other way round, and printing
+--    a date nobody intends to honour is worse than saying "starts once the
+--    group fills". `start_date` stays non-null so that everything
+--    downstream keeps a date to reason about; the flag says whether that
+--    date is a promise or a placeholder.
+--
+-- 2. A place can be held before it is paid for. Seats were only ever
+--    consumed by a completed payment, which left a window: seven people
+--    could each be on the payment page of a seven-seat group and all
+--    succeed. This adds the index the hold query needs; the counting
+--    itself lives in the data layer.
+
+alter table study_groups
+  add column start_date_confirmed boolean not null default true;
+
+-- Existing rows keep their dates as promises; new slots default to
+-- unconfirmed in the admin form, which is the common case now.
+comment on column study_groups.start_date_confirmed is
+  'false = the date is a placeholder and the site says "starts once the group fills"';
+
+-- Pending enrollments are counted against capacity until they expire, so
+-- this lookup happens on every schedule render.
+create index enrollments_pending_hold_idx
+  on enrollments (group_id, pending_expires_at)
+  where status = 'pending_payment';
+
+
 -- ═══ content seed ═════════════════════════════════════════════
 
 -- Inverted Forest · content seed
@@ -285,15 +319,15 @@ insert into courses
   (id, slug, teacher_id, category, difficulty, age_groups, duration_months,
    monthly_price, currency, image_url, public_telegram_url, status, featured)
 values
-  ('course_001', 'medieval-russia', 'teacher_001', 'history', 'intermediate', '{adults,teens}', 3, 350, 'ILS', 'https://images.unsplash.com/photo-1547448415-e9f5b28e570d?w=1200&q=80', 'https://t.me/invertedforest', 'published', true),
-  ('course_002', 'ancient-greece', 'teacher_001', 'history', 'intro', '{adults,children}', 3, 350, 'ILS', 'https://images.unsplash.com/photo-1555993539-1732b0258235?w=1200&q=80', 'https://t.me/invertedforest', 'published', true),
-  ('course_003', 'greek-philosophy', 'teacher_001', 'philosophy', 'intermediate', '{adults,teens}', 3, 380, 'ILS', 'https://images.unsplash.com/photo-1564399579883-451a5d44ec08?w=1200&q=80', 'https://t.me/invertedforest', 'published', true),
-  ('course_004', 'prehistoric-mindset', 'teacher_001', 'anthropology', 'deep_dive', '{adults}', 2, 380, 'ILS', 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=1200&q=80', 'https://t.me/invertedforest', 'published', false),
-  ('course_005', 'american-short-stories', 'teacher_001', 'literature', 'intro', '{adults}', 3, 300, 'ILS', 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1200&q=80', 'https://t.me/invertedforest', 'published', false),
-  ('course_006', 'ancient-near-east', 'teacher_001', 'history', 'intermediate', '{adults,teens}', 3, 350, 'ILS', 'https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=1200&q=80', 'https://t.me/invertedforest', 'published', true),
-  ('course_007', 'russia-early-modern', 'teacher_001', 'history', 'intermediate', '{adults,teens}', 3, 350, 'ILS', 'https://images.unsplash.com/photo-1520106212299-d99c443e4568?w=1200&q=80', 'https://t.me/invertedforest', 'published', false),
-  ('course_008', 'russia-nineteenth-century', 'teacher_001', 'history', 'intermediate', '{adults,teens}', 3, 350, 'ILS', 'https://images.unsplash.com/photo-1547989453-2b26e4c85d2b?w=1200&q=80', 'https://t.me/invertedforest', 'published', false),
-  ('course_009', 'russia-twentieth-century', 'teacher_001', 'history', 'deep_dive', '{adults}', 3, 380, 'ILS', 'https://images.unsplash.com/photo-1513326738677-b964603b136d?w=1200&q=80', 'https://t.me/invertedforest', 'published', false)
+  ('course_001', 'medieval-russia', 'teacher_001', 'history', 'intermediate', '{adults,teens}', 3, 220, 'ILS', 'https://images.unsplash.com/photo-1547448415-e9f5b28e570d?w=1200&q=80', 'https://t.me/invertedforest', 'published', true),
+  ('course_002', 'ancient-greece', 'teacher_001', 'history', 'intro', '{adults,children}', 3, 220, 'ILS', 'https://images.unsplash.com/photo-1555993539-1732b0258235?w=1200&q=80', 'https://t.me/invertedforest', 'published', true),
+  ('course_003', 'greek-philosophy', 'teacher_001', 'philosophy', 'intermediate', '{adults,teens}', 3, 220, 'ILS', 'https://images.unsplash.com/photo-1564399579883-451a5d44ec08?w=1200&q=80', 'https://t.me/invertedforest', 'published', true),
+  ('course_004', 'prehistoric-mindset', 'teacher_001', 'anthropology', 'deep_dive', '{adults}', 2, 220, 'ILS', 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=1200&q=80', 'https://t.me/invertedforest', 'published', false),
+  ('course_005', 'american-short-stories', 'teacher_001', 'literature', 'intro', '{adults}', 3, 220, 'ILS', 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1200&q=80', 'https://t.me/invertedforest', 'published', false),
+  ('course_006', 'ancient-near-east', 'teacher_001', 'history', 'intermediate', '{adults,teens}', 3, 220, 'ILS', 'https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=1200&q=80', 'https://t.me/invertedforest', 'published', true),
+  ('course_007', 'russia-early-modern', 'teacher_001', 'history', 'intermediate', '{adults,teens}', 3, 220, 'ILS', 'https://images.unsplash.com/photo-1520106212299-d99c443e4568?w=1200&q=80', 'https://t.me/invertedforest', 'published', false),
+  ('course_008', 'russia-nineteenth-century', 'teacher_001', 'history', 'intermediate', '{adults,teens}', 3, 220, 'ILS', 'https://images.unsplash.com/photo-1547989453-2b26e4c85d2b?w=1200&q=80', 'https://t.me/invertedforest', 'published', false),
+  ('course_009', 'russia-twentieth-century', 'teacher_001', 'history', 'deep_dive', '{adults}', 3, 220, 'ILS', 'https://images.unsplash.com/photo-1513326738677-b964603b136d?w=1200&q=80', 'https://t.me/invertedforest', 'published', false)
 on conflict (id) do update set
   slug = excluded.slug,
   teacher_id = excluded.teacher_id,
@@ -342,25 +376,25 @@ on conflict (course_id, locale) do update set
 
 insert into study_groups
   (id, course_id, slug, audience, weekday, start_time, timezone,
-   start_date, end_date, capacity, status,
+   start_date, start_date_confirmed, end_date, capacity, status,
    telegram_chat_type, invite_member_limit)
 values
-  ('group_101', 'course_002', 'greece-tue-16-children', 'children', 2, '16:00', 'Asia/Jerusalem', '2026-10-06', '2026-12-22', 12, 'enrolling', 'channel', 2),
-  ('group_102', 'course_002', 'greece-tue-20-adults', 'adults', 2, '20:00', 'Asia/Jerusalem', '2026-10-06', '2026-12-22', 15, 'enrolling', 'channel', 1),
-  ('group_103', 'course_002', 'greece-fri-18-adults', 'adults', 5, '18:00', 'Asia/Jerusalem', '2026-10-09', '2026-12-25', 15, 'enrolling', 'channel', 1),
-  ('group_104', 'course_001', 'medieval-russia-wed-20-adults', 'adults', 3, '20:00', 'Asia/Jerusalem', '2026-10-07', '2027-01-06', 15, 'enrolling', 'channel', 1),
-  ('group_105', 'course_003', 'philosophy-mon-20-adults', 'adults', 1, '20:00', 'Asia/Jerusalem', '2026-10-05', '2027-01-04', 15, 'enrolling', 'channel', 1),
-  ('group_106', 'course_003', 'philosophy-thu-18-teens', 'teens', 4, '18:00', 'Asia/Jerusalem', '2026-10-08', '2027-01-07', 12, 'enrolling', 'channel', 2),
-  ('group_107', 'course_004', 'prehistoric-sun-20-adults', 'adults', 0, '20:00', 'Asia/Jerusalem', '2026-11-01', '2026-12-27', 15, 'enrolling', 'channel', 1),
-  ('group_108', 'course_005', 'stories-thu-20-adults', 'adults', 4, '20:00', 'Asia/Jerusalem', '2026-10-08', '2027-01-07', 10, 'enrolling', 'channel', 1),
-  ('group_109', 'course_006', 'near-east-tue-20-adults', 'adults', 2, '20:00', 'Asia/Jerusalem', '2026-10-06', '2027-01-05', 15, 'enrolling', 'channel', 1),
-  ('group_110', 'course_006', 'near-east-sun-18-teens', 'teens', 0, '18:00', 'Asia/Jerusalem', '2026-10-11', '2027-01-10', 12, 'enrolling', 'channel', 2),
-  ('group_111', 'course_007', 'early-modern-mon-20-adults', 'adults', 1, '20:00', 'Asia/Jerusalem', '2026-10-05', '2027-01-04', 16, 'enrolling', 'channel', 1),
-  ('group_112', 'course_007', 'early-modern-thu-18-teens', 'teens', 4, '18:00', 'Asia/Jerusalem', '2026-10-08', '2027-01-07', 12, 'enrolling', 'channel', 2),
-  ('group_113', 'course_008', 'nineteenth-wed-20-adults', 'adults', 3, '20:00', 'Asia/Jerusalem', '2026-10-07', '2027-01-06', 16, 'enrolling', 'channel', 1),
-  ('group_114', 'course_008', 'nineteenth-sun-19-adults', 'adults', 0, '19:00', 'Asia/Jerusalem', '2026-10-11', '2027-01-10', 16, 'enrolling', 'channel', 1),
-  ('group_115', 'course_009', 'twentieth-tue-20-adults', 'adults', 2, '20:00', 'Asia/Jerusalem', '2026-10-06', '2027-01-05', 16, 'enrolling', 'channel', 1),
-  ('group_116', 'course_009', 'twentieth-fri-11-adults', 'adults', 5, '11:00', 'Asia/Jerusalem', '2026-10-09', '2027-01-08', 16, 'enrolling', 'channel', 1)
+  ('group_101', 'course_002', 'greece-tue-16-children', 'children', 2, '16:00', 'Asia/Jerusalem', '2026-10-06', false, '2026-12-22', 7, 'enrolling', 'channel', 2),
+  ('group_102', 'course_002', 'greece-tue-20-adults', 'adults', 2, '20:00', 'Asia/Jerusalem', '2026-10-06', false, '2026-12-22', 7, 'enrolling', 'channel', 1),
+  ('group_103', 'course_002', 'greece-fri-18-adults', 'adults', 5, '18:00', 'Asia/Jerusalem', '2026-10-09', false, '2026-12-25', 7, 'enrolling', 'channel', 1),
+  ('group_104', 'course_001', 'medieval-russia-wed-20-adults', 'adults', 3, '20:00', 'Asia/Jerusalem', '2026-10-07', false, '2027-01-06', 7, 'enrolling', 'channel', 1),
+  ('group_105', 'course_003', 'philosophy-mon-20-adults', 'adults', 1, '20:00', 'Asia/Jerusalem', '2026-10-05', false, '2027-01-04', 7, 'enrolling', 'channel', 1),
+  ('group_106', 'course_003', 'philosophy-thu-18-teens', 'teens', 4, '18:00', 'Asia/Jerusalem', '2026-10-08', false, '2027-01-07', 7, 'enrolling', 'channel', 2),
+  ('group_107', 'course_004', 'prehistoric-sun-20-adults', 'adults', 0, '20:00', 'Asia/Jerusalem', '2026-11-01', false, '2026-12-27', 7, 'enrolling', 'channel', 1),
+  ('group_108', 'course_005', 'stories-thu-20-adults', 'adults', 4, '20:00', 'Asia/Jerusalem', '2026-10-08', false, '2027-01-07', 7, 'enrolling', 'channel', 1),
+  ('group_109', 'course_006', 'near-east-tue-20-adults', 'adults', 2, '20:00', 'Asia/Jerusalem', '2026-10-06', false, '2027-01-05', 7, 'enrolling', 'channel', 1),
+  ('group_110', 'course_006', 'near-east-sun-18-teens', 'teens', 0, '18:00', 'Asia/Jerusalem', '2026-10-11', false, '2027-01-10', 7, 'enrolling', 'channel', 2),
+  ('group_111', 'course_007', 'early-modern-mon-20-adults', 'adults', 1, '20:00', 'Asia/Jerusalem', '2026-10-05', false, '2027-01-04', 7, 'enrolling', 'channel', 1),
+  ('group_112', 'course_007', 'early-modern-thu-18-teens', 'teens', 4, '18:00', 'Asia/Jerusalem', '2026-10-08', false, '2027-01-07', 7, 'enrolling', 'channel', 2),
+  ('group_113', 'course_008', 'nineteenth-wed-20-adults', 'adults', 3, '20:00', 'Asia/Jerusalem', '2026-10-07', false, '2027-01-06', 7, 'enrolling', 'channel', 1),
+  ('group_114', 'course_008', 'nineteenth-sun-19-adults', 'adults', 0, '19:00', 'Asia/Jerusalem', '2026-10-11', false, '2027-01-10', 7, 'enrolling', 'channel', 1),
+  ('group_115', 'course_009', 'twentieth-tue-20-adults', 'adults', 2, '20:00', 'Asia/Jerusalem', '2026-10-06', false, '2027-01-05', 7, 'enrolling', 'channel', 1),
+  ('group_116', 'course_009', 'twentieth-fri-11-adults', 'adults', 5, '11:00', 'Asia/Jerusalem', '2026-10-09', false, '2027-01-08', 7, 'enrolling', 'channel', 1)
 on conflict (id) do update set
   course_id = excluded.course_id,
   slug = excluded.slug,
@@ -369,6 +403,7 @@ on conflict (id) do update set
   start_time = excluded.start_time,
   timezone = excluded.timezone,
   start_date = excluded.start_date,
+  start_date_confirmed = excluded.start_date_confirmed,
   end_date = excluded.end_date,
   capacity = excluded.capacity,
   status = excluded.status,

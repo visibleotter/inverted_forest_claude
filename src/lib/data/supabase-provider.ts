@@ -140,9 +140,13 @@ function mapGroup(row: any): StudyGroup {
     time: row.start_time,
     timezone: row.timezone,
     startDate: row.start_date,
+    startDateConfirmed: row.start_date_confirmed ?? true,
     endDate: row.end_date,
     capacity: row.capacity,
     seatsTaken: row.seats_taken,
+    // Filled in by `withHolds`; a group read without it simply shows no
+    // holds, which is the old behaviour rather than a wrong number.
+    seatsHeld: 0,
     paymentUrl: row.payment_url,
     telegramChannelId: row.telegram_channel_id,
     telegramChatType: row.telegram_chat_type ?? 'channel',
@@ -217,6 +221,41 @@ export class SupabaseProvider implements DataProvider {
     return data ? mapTeacher(data) : null;
   }
 
+  /**
+   * Count the places held by unpaid, unexpired registrations.
+   *
+   * A seat used to be consumed only by a completed payment, which left a
+   * window wide enough to drive through: with seven places, seven people
+   * could each be sitting on the Allpay page at once and all succeed.
+   * Holding the place for the length of `pending_ttl_minutes` closes it,
+   * and the hourly sweep releases anything abandoned.
+   */
+  private async withHolds(groups: StudyGroup[]): Promise<StudyGroup[]> {
+    if (groups.length === 0) return groups;
+
+    const { data, error } = await this.db
+      .from('enrollments')
+      .select('group_id')
+      .eq('status', 'pending_payment')
+      .in('group_id', groups.map((g) => g.id))
+      .gt('pending_expires_at', new Date().toISOString());
+
+    // A failed count must not make the schedule unavailable; showing no
+    // holds is the previous behaviour, not a wrong answer.
+    if (error) return groups;
+
+    const held = new Map<string, number>();
+    for (const row of data ?? []) {
+      const id = row.group_id as string;
+      held.set(id, (held.get(id) ?? 0) + 1);
+    }
+
+    return groups.map((group) => ({
+      ...group,
+      seatsHeld: held.get(group.id) ?? 0
+    }));
+  }
+
   async getGroupsForCourse(courseId: string): Promise<StudyGroup[]> {
     const { data, error } = await this.db
       .from('study_groups')
@@ -224,7 +263,7 @@ export class SupabaseProvider implements DataProvider {
       .eq('course_id', courseId)
       .order('start_date');
     if (error) throw error;
-    return (data ?? []).map(mapGroup);
+    return this.withHolds((data ?? []).map(mapGroup));
   }
 
   async getGroupById(id: string): Promise<StudyGroup | null> {
@@ -234,7 +273,9 @@ export class SupabaseProvider implements DataProvider {
       .eq('id', id)
       .maybeSingle();
     if (error) throw error;
-    return data ? mapGroup(data) : null;
+    if (!data) return null;
+    const [group] = await this.withHolds([mapGroup(data)]);
+    return group ?? null;
   }
 
   async createRegistration(
@@ -586,7 +627,7 @@ export class SupabaseProvider implements DataProvider {
       .select('*')
       .order('start_date');
     if (error) throw error;
-    return (data ?? []).map(mapGroup);
+    return this.withHolds((data ?? []).map(mapGroup));
   }
 
   async getTelegramStatuses(): Promise<TelegramGroupStatus[]> {

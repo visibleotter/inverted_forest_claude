@@ -148,14 +148,14 @@ function groupStatements() {
     return (
       `(${q(g.id)}, ${q(g.courseId)}, ${q(g.slug)}, ${q(g.audience)}, ` +
       `${g.weekday}, ${q(g.time)}, ${q(g.timezone)}, ${q(g.startDate)}, ` +
-      `${q(g.endDate)}, ${g.capacity}, ${q(status)}, ` +
+      `${g.startDateConfirmed}, ${q(g.endDate)}, ${g.capacity}, ${q(status)}, ` +
       `${q(g.telegramChatType)}, ${g.inviteMemberLimit})`
     );
   });
 
   return `insert into study_groups
   (id, course_id, slug, audience, weekday, start_time, timezone,
-   start_date, end_date, capacity, status,
+   start_date, start_date_confirmed, end_date, capacity, status,
    telegram_chat_type, invite_member_limit)
 values
   ${rows(values)}
@@ -167,6 +167,7 @@ on conflict (id) do update set
   start_time = excluded.start_time,
   timezone = excluded.timezone,
   start_date = excluded.start_date,
+  start_date_confirmed = excluded.start_date_confirmed,
   end_date = excluded.end_date,
   capacity = excluded.capacity,
   status = excluded.status,
