@@ -1,5 +1,6 @@
 import { getLocale, getTranslations, setRequestLocale } from 'next-intl/server';
 import { AdminTable } from '@/components/admin/admin-table';
+import { PaymentActions } from '@/components/admin/payment-actions';
 import { StatusBadge } from '@/components/admin/status-badge';
 import { getData } from '@/lib/data';
 import type { Locale } from '@/lib/types';
@@ -25,7 +26,8 @@ export default async function AdminPaymentsPage({
           t('table.course'),
           t('table.amount'),
           t('table.provider'),
-          t('table.status')
+          t('table.status'),
+          t('actions.title')
         ]}
         rows={payments.map((payment) => [
           new Date(payment.createdAt).toLocaleDateString(
@@ -35,7 +37,12 @@ export default async function AdminPaymentsPage({
           lt(payment.courseTitle, l),
           formatPrice(payment.amount, payment.currency, l),
           <span key="p" className="capitalize">{payment.provider}</span>,
-          <StatusBadge key="s" status={payment.status} />
+          <StatusBadge key="s" status={payment.status} />,
+          <PaymentActions
+            key="act"
+            enrollmentId={payment.enrollmentId}
+            refundable={payment.status === 'succeeded'}
+          />
         ])}
       />
     </div>

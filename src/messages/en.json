@@ -431,7 +431,17 @@
       "confirmRevoke": "Revoke access? The student will be removed from the group channel.",
       "confirmCancel": "Cancel the Allpay subscription? No further charges will be taken. Access stays until the paid period ends.",
       "done": "Done",
-      "demoMode": "Demo mode: no database connected, nothing is saved."
+      "demoMode": "Demo mode: no database connected, nothing is saved.",
+      "edit": "Edit",
+      "configure": "Configure",
+      "refund": "Refund",
+      "confirmRefund": "Refund this payment? Allpay will process it and access will be revoked.",
+      "moveGroup": "Move",
+      "movePrompt": "Move to which group?",
+      "manualPayment": "Record payment (Bit)",
+      "manualAmount": "Amount",
+      "manualReference": "Transfer reference or note",
+      "confirm": "Confirm"
     },
     "enrollments": {
       "title": "Enrollments",

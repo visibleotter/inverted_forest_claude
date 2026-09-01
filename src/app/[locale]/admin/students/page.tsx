@@ -4,7 +4,7 @@ import { EnrollmentActions } from '@/components/admin/enrollment-actions';
 import { StatusBadge } from '@/components/admin/status-badge';
 import { getData } from '@/lib/data';
 import type { Locale } from '@/lib/types';
-import { lt } from '@/lib/utils';
+import { lt, weekdayName } from '@/lib/utils';
 
 /**
  * Enrollments, not students.
@@ -24,10 +24,28 @@ export default async function AdminEnrollmentsPage({
   const l = (await getLocale()) as Locale;
   const t = await getTranslations('admin');
   const data = getData();
-  const [enrollments, orphans] = await Promise.all([
+  const [enrollments, orphans, groups, courses] = await Promise.all([
     data.getEnrollments(),
-    data.getOrphanPayments()
+    data.getOrphanPayments(),
+    data.getAllGroups(),
+    data.getCourses()
   ]);
+
+  // A move is only ever to another slot of the same course: a different
+  // course is a different price and a different subscription, which is a
+  // refund and a new registration, not a move.
+  const moveTargetsFor = (courseId: string, groupId: string) =>
+    groups
+      .filter(
+        (group) =>
+          group.courseId === courseId &&
+          group.id !== groupId &&
+          group.status === 'enrolling'
+      )
+      .map((group) => ({
+        id: group.id,
+        label: `${group.id} · ${weekdayName(group.weekday, l)} ${group.time}`
+      }));
 
   const dateFormat = (value: string | null) =>
     value ? new Date(value).toLocaleDateString(l === 'ru' ? 'ru-RU' : 'en-US') : '—';
@@ -74,6 +92,13 @@ export default async function AdminEnrollmentsPage({
               plan={row.plan}
               subscriptionCancellable={
                 row.status === 'active' || row.status === 'past_due'
+              }
+              moveTargets={moveTargetsFor(row.courseId, row.groupId)}
+              defaultAmount={
+                courses.find((c) => c.id === row.courseId)?.monthlyPrice ?? 0
+              }
+              currency={
+                courses.find((c) => c.id === row.courseId)?.currency ?? 'ILS'
               }
             />
           ])}

@@ -40,7 +40,8 @@ export default async function AdminCoursesPage({
           t('table.price'),
           t('table.duration'),
           t('table.groups'),
-          t('table.status')
+          t('table.status'),
+          t('actions.title')
         ]}
         rows={courses.map((course) => {
           const teacher = teachers.find((x) => x.id === course.teacherId);
@@ -61,7 +62,14 @@ export default async function AdminCoursesPage({
             }`,
             String(course.durationMonths),
             String(courseGroups.length),
-            <StatusBadge key="s" status={course.status} />
+            <StatusBadge key="s" status={course.status} />,
+            <Link
+              key="edit"
+              href={`/admin/courses/${course.id}`}
+              className={buttonVariants({ variant: 'outline', size: 'sm' })}
+            >
+              {t('actions.edit')}
+            </Link>
           ];
         })}
       />

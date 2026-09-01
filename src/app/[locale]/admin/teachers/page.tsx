@@ -29,7 +29,12 @@ export default async function AdminTeachersPage({
         </Link>
       </div>
       <AdminTable
-        headers={[t('table.name'), t('table.title'), t('table.groups')]}
+        headers={[
+          t('table.name'),
+          t('table.title'),
+          t('table.groups'),
+          t('actions.title')
+        ]}
         rows={teachers.map((teacher) => [
           <Link key="n" href={`/admin/teachers/${teacher.id}`} className="block">
             <p className="font-medium text-accent hover:underline">
@@ -41,7 +46,14 @@ export default async function AdminTeachersPage({
             <p>{teacher.title.ru}</p>
             <p className="text-xs text-muted-foreground">{teacher.title.en}</p>
           </div>,
-          String(courses.filter((c) => c.teacherId === teacher.id).length)
+          String(courses.filter((c) => c.teacherId === teacher.id).length),
+          <Link
+              key="edit"
+              href={`/admin/teachers/${teacher.id}`}
+              className={buttonVariants({ variant: 'outline', size: 'sm' })}
+            >
+              {t('actions.edit')}
+            </Link>
         ])}
       />
     </div>

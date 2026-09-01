@@ -1,5 +1,7 @@
 import { getLocale, getTranslations, setRequestLocale } from 'next-intl/server';
+import { Link } from '@/i18n/navigation';
 import { AdminTable } from '@/components/admin/admin-table';
+import { buttonVariants } from '@/components/ui/button';
 import { StatusBadge } from '@/components/admin/status-badge';
 import { Badge } from '@/components/ui/badge';
 import { getData } from '@/lib/data';
@@ -28,7 +30,8 @@ export default async function AdminTelegramPage({
           t('table.botStatus'),
           t('table.members'),
           t('table.lastInvite'),
-          t('table.status')
+          t('table.status'),
+          t('actions.title')
         ]}
         rows={statuses.map(({ group, courseTitle, botIsAdmin, membersCount, lastInviteAt }) => [
           <div key="g">
@@ -52,7 +55,16 @@ export default async function AdminTelegramPage({
                 l === 'ru' ? 'ru-RU' : 'en-US'
               )
             : '—',
-          <StatusBadge key="s" status={group.status} />
+          <StatusBadge key="s" status={group.status} />,
+          // The channel id lives on the study group, so that is where a
+          // missing one gets fixed — no second place to set the same thing.
+          <Link
+            key="cfg"
+            href={`/admin/groups/${group.id}`}
+            className={buttonVariants({ variant: 'outline', size: 'sm' })}
+          >
+            {t('actions.configure')}
+          </Link>
         ])}
       />
     </div>

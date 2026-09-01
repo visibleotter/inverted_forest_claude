@@ -42,7 +42,8 @@ export default async function AdminGroupsPage({
           t('table.start'),
           t('table.capacity'),
           t('table.paymentUrl'),
-          t('table.status')
+          t('table.status'),
+          t('actions.title')
         ]}
         rows={groups.map((group) => {
           const course = courses.find((c) => c.id === group.courseId);
@@ -74,7 +75,14 @@ export default async function AdminGroupsPage({
             ) : (
               '—'
             ),
-            <StatusBadge key="s" status={group.status} />
+            <StatusBadge key="s" status={group.status} />,
+            <Link
+              key="edit"
+              href={`/admin/groups/${group.id}`}
+              className={buttonVariants({ variant: 'outline', size: 'sm' })}
+            >
+              {t('actions.edit')}
+            </Link>
           ];
         })}
       />
