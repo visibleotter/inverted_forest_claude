@@ -19,15 +19,22 @@ set capacity = 7,
     -- their dates firm up.
     start_date_confirmed = false;
 
--- A group whose demo seat count exceeded the new cap would show as full
--- and be unbookable. There are no real payments yet, so this is safe;
--- once there are, seats_taken must only ever be moved by the payment
--- webhook.
+-- Clear the seat counts inherited from the demo data.
+--
+-- They were invented to make a demo look busy: 5 here, 6 there, 7 on one
+-- group — which on a live site reads as a class that is full and cannot be
+-- booked. An earlier version of this file only reset counts *above* the
+-- new cap, so exactly 7 of 7 slipped through.
+--
+-- The guard is not decoration. This runs only while no student has ever
+-- enrolled; after the first real payment it does nothing, because
+-- seats_taken is then a real number that only the payment webhook may
+-- move.
 update study_groups
 set seats_taken = 0,
     status = case when status = 'full' then 'enrolling'::group_status
                   else status end
-where seats_taken > 7;
+where not exists (select 1 from enrollments);
 
 -- Confirm:
 select id, capacity, seats_taken, status, start_date_confirmed
