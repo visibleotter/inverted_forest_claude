@@ -3,62 +3,114 @@
 import { Check } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
-import { createPortal } from 'react-dom';
 import { useRouter } from '@/i18n/navigation';
 
 /**
  * Confirm a save, then go back up a level.
  *
- * Editing forms used to leave you exactly where you were, with a small
- * line of text as the only sign anything had happened — so the honest
- * question after pressing Save was "did that work?". Now the answer
- * arrives as a notice you cannot miss, and then the page returns to the
- * list you came from, which is where the next thing you want to do is.
+ * The first version of this held a timer inside the form: show a notice,
+ * wait, then navigate. It worked most of the time, which was the problem.
+ * Every save action calls `revalidatePath(..., 'layout')`, so when the
+ * action resolves Next may re-render — and remount — the form. A timer
+ * owned by a component that has just been remounted is a timer that never
+ * fires, and whether that happened came down to timing. Hence "sometimes".
  *
- * The pause is deliberate: navigating instantly would take the
- * confirmation away with it.
+ * So nothing is timed inside the form any more. Saving records a flag and
+ * navigates immediately; the notice is displayed by a host that lives in
+ * the admin layout, which survives the navigation and the remount both.
  */
 
-const HOLD_MS = 1100;
+const FLAG = 'admin:saved';
+const EVENT = 'admin:saved';
+const VISIBLE_MS = 2600;
 
-export function useSavedRedirect(saved: boolean, backTo: string) {
-  const router = useRouter();
-  const [showing, setShowing] = useState(false);
-
-  useEffect(() => {
-    if (!saved) return;
-    setShowing(true);
-
-    const timer = setTimeout(() => {
-      router.push(backTo);
-      // The list is rendered on the server; without this it can come back
-      // from cache still showing what was just changed.
-      router.refresh();
-    }, HOLD_MS);
-
-    return () => clearTimeout(timer);
-  }, [saved, backTo, router]);
-
-  return showing;
+/** Record that something was saved, wherever the page goes next. */
+export function notifySaved(): void {
+  try {
+    window.sessionStorage.setItem(FLAG, String(Date.now()));
+  } catch {
+    // Private windows and blocked storage: the event below still fires,
+    // so a save without navigation is still confirmed.
+  }
+  window.dispatchEvent(new Event(EVENT));
 }
 
 /**
- * The notice itself.
+ * Confirm, then return to the list.
  *
- * Portalled to the body because these forms sit inside cards and sticky
- * footers, and an ancestor with a transform or a backdrop filter becomes
- * the containing block for anything fixed inside it — which is how a
- * "bottom right of the screen" toast ends up pinned to the middle of a
- * form instead.
+ * Navigation is immediate — the notice travels with it rather than
+ * delaying it.
  */
-export function SavedToast({ show }: { show: boolean }) {
+export function useSavedRedirect(saved: boolean, backTo: string): void {
+  const router = useRouter();
+  const [done, setDone] = useState(false);
+
+  useEffect(() => {
+    if (!saved || done) return;
+    setDone(true);
+    notifySaved();
+    router.push(backTo);
+    // The list is rendered on the server; without this it can come back
+    // from cache still showing what was just changed.
+    router.refresh();
+  }, [saved, done, backTo, router]);
+}
+
+/** Confirm without going anywhere — for the editor that has no level above. */
+export function useSavedNotice(saved: boolean): void {
+  const [done, setDone] = useState(false);
+
+  useEffect(() => {
+    if (!saved || done) return;
+    setDone(true);
+    notifySaved();
+  }, [saved, done]);
+}
+
+/**
+ * Displays the notice. Mounted once, in the admin layout.
+ *
+ * Being in the layout is what makes it reliable: it is still there after
+ * the form that triggered it has been replaced by the list.
+ */
+export function AdminToastHost() {
   const t = useTranslations('admin.actions');
-  const [mounted, setMounted] = useState(false);
+  const [visible, setVisible] = useState(false);
 
-  useEffect(() => setMounted(true), []);
-  if (!mounted || !show) return null;
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout> | null = null;
 
-  return createPortal(
+    const show = () => {
+      setVisible(true);
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(() => setVisible(false), VISIBLE_MS);
+    };
+
+    const consume = () => {
+      try {
+        if (window.sessionStorage.getItem(FLAG)) {
+          window.sessionStorage.removeItem(FLAG);
+          show();
+        }
+      } catch {
+        // Nothing to consume; the event path covers the same-page case.
+      }
+    };
+
+    // Two ways in: arriving on a new page after a save, and a save that
+    // stayed put.
+    consume();
+    window.addEventListener(EVENT, consume);
+
+    return () => {
+      window.removeEventListener(EVENT, consume);
+      if (timer) clearTimeout(timer);
+    };
+  }, []);
+
+  if (!visible) return null;
+
+  return (
     <div
       role="status"
       aria-live="polite"
@@ -68,7 +120,6 @@ export function SavedToast({ show }: { show: boolean }) {
         <Check className="h-3.5 w-3.5 text-accent" aria-hidden />
       </span>
       {t('savedToast')}
-    </div>,
-    document.body
+    </div>
   );
 }

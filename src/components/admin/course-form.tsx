@@ -5,10 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
 import { Link } from '@/i18n/navigation';
-import {
-  SavedToast,
-  useSavedRedirect
-} from '@/components/admin/save-feedback';
+import { useSavedRedirect } from '@/components/admin/save-feedback';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { adminSaveCourse, type CourseFormState } from '@/lib/admin-actions';
@@ -144,7 +141,7 @@ export function CourseForm({ course, teachers }: Props) {
   );
 
   // Confirm, then return to the list — see save-feedback.tsx.
-  const savedToast = useSavedRedirect(state.status === 'saved', '/admin/courses');
+  useSavedRedirect(state.status === 'saved', '/admin/courses');
 
   const isNew = course === null;
   const set = <K extends keyof Course>(key: K, value: Course[K]) =>
@@ -161,9 +158,7 @@ export function CourseForm({ course, teachers }: Props) {
     }));
 
   return (
-    <>
-      <SavedToast show={savedToast} />
-      <form action={formAction} className="max-w-4xl space-y-10">
+    <form action={formAction} className="max-w-4xl space-y-10">
       <input type="hidden" name="payload" value={JSON.stringify(draft)} />
 
       {/* ── Basics ─────────────────────────────────────────────────── */}
@@ -636,6 +631,5 @@ export function CourseForm({ course, teachers }: Props) {
         )}
       </div>
     </form>
-    </>
   );
 }

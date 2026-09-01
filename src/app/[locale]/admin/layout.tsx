@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link, redirect } from '@/i18n/navigation';
+import { AdminToastHost } from '@/components/admin/save-feedback';
 import { checkAdminAccess } from '@/lib/auth';
 
 const navItems = [
@@ -90,6 +91,7 @@ export default async function AdminLayout({
           </div>
         )}
         <main className="p-6 sm:p-8">{children}</main>
+        <AdminToastHost />
       </div>
     </div>
   );

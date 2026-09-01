@@ -3,10 +3,7 @@
 import { useLocale, useTranslations } from 'next-intl';
 import { useFormState, useFormStatus } from 'react-dom';
 import { Link } from '@/i18n/navigation';
-import {
-  SavedToast,
-  useSavedRedirect
-} from '@/components/admin/save-feedback';
+import { useSavedRedirect } from '@/components/admin/save-feedback';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { adminSaveGroup, type GroupFormState } from '@/lib/admin-actions';
@@ -59,14 +56,12 @@ export function GroupForm({ group, courses }: Props) {
   );
 
   // Confirm, then return to the list — see save-feedback.tsx.
-  const savedToast = useSavedRedirect(state.status === 'saved', '/admin/groups');
+  useSavedRedirect(state.status === 'saved', '/admin/groups');
 
   const isNew = group === null;
 
   return (
-    <>
-      <SavedToast show={savedToast} />
-      <form action={formAction} className="max-w-2xl space-y-6">
+    <form action={formAction} className="max-w-2xl space-y-6">
       <div>
         <label htmlFor="id" className={field}>
           ID
@@ -341,6 +336,5 @@ export function GroupForm({ group, courses }: Props) {
         </Link>
       </div>
     </form>
-    </>
   );
 }

@@ -4,6 +4,7 @@ import { RotateCcw, Search } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
+import { useSavedNotice } from '@/components/admin/save-feedback';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { adminSaveMessages, type ContentFormState } from '@/lib/admin-actions';
@@ -52,6 +53,10 @@ export function ContentEditor({ namespace, rows }: Props) {
     adminSaveMessages,
     { status: 'idle' }
   );
+
+  // Confirmation without leaving: this page has no level above it, and it
+  // is worked through many fields at a time.
+  useSavedNotice(state.status === 'saved');
 
   const visible = useMemo(() => {
     const needle = query.trim().toLowerCase();
