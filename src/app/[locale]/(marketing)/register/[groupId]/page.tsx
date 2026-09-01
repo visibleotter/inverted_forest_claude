@@ -31,7 +31,9 @@ export default async function RegisterPage({
   const group = await data.getGroupById(groupId);
   if (!group) notFound();
   const course = await data.getCourseById(group.courseId);
-  if (!course) notFound();
+  // Hiding a course has to close its slots too, or the catalogue says one
+  // thing and a bookmarked registration link says another.
+  if (!course || course.status !== 'published') notFound();
 
   const [t, tCourses] = await Promise.all([
     getTranslations('register'),

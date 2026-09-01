@@ -183,11 +183,20 @@ export class SupabaseProvider implements DataProvider {
     return (data ?? []).map(mapCourse);
   }
 
+  /**
+   * Public lookup, so unpublished courses are invisible here.
+   *
+   * Filtering the catalogue alone was not enough: a draft vanished from
+   * the list and stayed reachable at its own address, which is not hidden,
+   * only harder to find. `getCourseById` below stays unfiltered — the
+   * admin has to be able to open what it is editing.
+   */
   async getCourseBySlug(slug: string): Promise<Course | null> {
     const { data, error } = await this.db
       .from('courses')
       .select(COURSE_SELECT)
       .eq('slug', slug)
+      .eq('status', 'published')
       .maybeSingle();
     if (error) throw error;
     return data ? mapCourse(data) : null;

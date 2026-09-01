@@ -62,7 +62,7 @@ function emptyCourse(teacherId: string): Course {
     difficulty: 'intro',
     ageGroups: ['adults'],
     durationMonths: 3,
-    monthlyPrice: 350,
+    monthlyPrice: 220,
     currency: 'ILS',
     imageUrl: null,
     publicTelegramUrl: null,
@@ -211,7 +211,7 @@ export function CourseForm({ course, teachers }: Props) {
 
           <div>
             <label htmlFor="course-status" className={field}>
-              {t('status')}
+              {t('statusLabel')}
             </label>
             <select
               id="course-status"
@@ -221,12 +221,15 @@ export function CourseForm({ course, teachers }: Props) {
                 set('status', event.target.value as Course['status'])
               }
             >
-              {['draft', 'published', 'archived'].map((value) => (
+              {(['published', 'draft', 'archived'] as const).map((value) => (
                 <option key={value} value={value}>
-                  {value}
+                  {t(`status.${value}`)}
                 </option>
               ))}
             </select>
+            <p className="mt-1.5 text-xs text-muted-foreground">
+              {t('statusHint')}
+            </p>
           </div>
 
           <div>

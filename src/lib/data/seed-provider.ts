@@ -36,7 +36,10 @@ export class SeedProvider implements DataProvider {
   }
 
   async getCourseBySlug(slug: string): Promise<Course | null> {
-    return courses.find((c) => c.slug === slug) ?? null;
+    // Public lookup: an unpublished course is not reachable by URL either.
+    return (
+      courses.find((c) => c.slug === slug && c.status === 'published') ?? null
+    );
   }
 
   async getCourseById(id: string): Promise<Course | null> {

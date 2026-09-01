@@ -76,6 +76,14 @@ export async function submitRegistration(
     const data = getData();
     const group = await data.getGroupById(input.groupId);
     if (!group) return { status: 'error', code: 'unknown' };
+
+    // The page already refuses a hidden course, but a form can be posted
+    // without ever loading that page.
+    const course = await data.getCourseById(group.courseId);
+    if (!course || course.status !== 'published') {
+      return { status: 'error', code: 'unknown' };
+    }
+
     if (group.status !== 'enrolling' || seatsRemaining(group) === 0) {
       return { status: 'error', code: 'group_full' };
     }

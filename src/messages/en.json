@@ -488,7 +488,6 @@
       "idHint": "Immutable id, like course_010. It cannot be changed after creation.",
       "slugHint": "The course page address. Changing it breaks every external link to the course.",
       "teacher": "Teacher",
-      "status": "Status",
       "category": "Category",
       "difficulty": "Level",
       "duration": "Duration, months",
@@ -518,7 +517,14 @@
       "saving": "Saving…",
       "saved": "Saved",
       "cancel": "Cancel",
-      "demoMode": "Demo mode: courses currently come from code, so saving is unavailable. It works once a database is connected."
+      "demoMode": "Demo mode: courses currently come from code, so saving is unavailable. It works once a database is connected.",
+      "statusLabel": "Visibility on the site",
+      "statusHint": "Draft and archived remove the course from the site entirely: gone from the catalogue, 404 at its own address, no way to register. It stays whole in the admin and in the database.",
+      "status": {
+        "published": "Published — visible to everyone",
+        "draft": "Draft — hidden from the site",
+        "archived": "Archived — hidden from the site"
+      }
     },
     "teacherForm": {
       "new": "New teacher",
