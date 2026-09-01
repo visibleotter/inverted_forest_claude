@@ -6,6 +6,7 @@ import type {
   PaymentRow,
   RegistrationInput,
   RegistrationResult,
+  Student,
   StudentRow,
   StudyGroup,
   Teacher,
@@ -121,6 +122,7 @@ export class SeedProvider implements DataProvider {
         if (!student || !course) return null;
         return {
           id: enr.id,
+          studentId: student.id,
           studentName: `${student.firstName} ${student.lastName}`,
           email: student.email,
           phone: student.phone,
@@ -138,6 +140,10 @@ export class SeedProvider implements DataProvider {
         } satisfies EnrollmentAdminRow;
       })
       .filter((row): row is EnrollmentAdminRow => row !== null);
+  }
+
+  async getStudentById(id: string): Promise<Student | null> {
+    return demoStudents.find((student) => student.id === id) ?? null;
   }
 
   async getOrphanPayments(): Promise<OrphanPaymentRow[]> {

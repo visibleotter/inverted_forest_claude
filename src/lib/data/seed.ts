@@ -1334,6 +1334,7 @@ export const demoStudents: Student[] = [
     email: 'anna.kozlova@example.com',
     phone: '+972 50 000 0001',
     locale: 'ru',
+    notes: null,
     createdAt: '2026-06-28T10:15:00Z'
   },
   {
@@ -1343,6 +1344,7 @@ export const demoStudents: Student[] = [
     email: 'm.stern@example.com',
     phone: null,
     locale: 'en',
+    notes: null,
     createdAt: '2026-06-30T18:40:00Z'
   },
   {
@@ -1352,6 +1354,7 @@ export const demoStudents: Student[] = [
     email: 'd.waksman@example.com',
     phone: '+972 54 000 0003',
     locale: 'ru',
+    notes: null,
     createdAt: '2026-07-02T09:05:00Z'
   },
   {
@@ -1361,6 +1364,7 @@ export const demoStudents: Student[] = [
     email: 'elena.bruk@example.com',
     phone: '+972 52 000 0004',
     locale: 'ru',
+    notes: null,
     createdAt: '2026-07-05T20:22:00Z'
   }
 ];

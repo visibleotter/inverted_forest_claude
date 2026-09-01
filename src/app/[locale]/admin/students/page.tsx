@@ -1,4 +1,5 @@
 import { getLocale, getTranslations, setRequestLocale } from 'next-intl/server';
+import { Link } from '@/i18n/navigation';
 import { AdminTable } from '@/components/admin/admin-table';
 import { EnrollmentActions } from '@/components/admin/enrollment-actions';
 import { StatusBadge } from '@/components/admin/status-badge';
@@ -68,9 +69,15 @@ export default async function AdminEnrollmentsPage({
             t('actions.title')
           ]}
           rows={enrollments.map((row) => [
-            <span key="n" className="font-medium">
-              {row.studentName}
-            </span>,
+            <div key="n">
+              <p className="font-medium">{row.studentName}</p>
+              <Link
+                href={`/admin/students/${row.studentId}`}
+                className="text-xs text-accent hover:underline"
+              >
+                {t('actions.editContacts')}
+              </Link>
+            </div>,
             row.participantName ?? '—',
             <span key="e" className="text-xs">
               {row.email}

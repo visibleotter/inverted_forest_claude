@@ -887,3 +887,86 @@ export async function adminSaveTeacher(
   revalidatePath('/', 'layout');
   return { status: 'saved', id: teacher.id };
 }
+
+/* ── Students ──────────────────────────────────────────────────────── */
+
+const studentSchema = z.object({
+  id: z.string().uuid(),
+  firstName: z.string().trim().min(1).max(100),
+  lastName: z.string().trim().min(1).max(100),
+  email: z.string().trim().max(320).email(),
+  phone: z.string().trim().max(30).optional().or(z.literal('')),
+  locale: z.enum(['ru', 'en']),
+  notes: z.string().trim().max(4000).optional().or(z.literal(''))
+});
+
+export type StudentFormState =
+  | { status: 'idle' }
+  | { status: 'error'; message: string }
+  | { status: 'saved' };
+
+/**
+ * Correct a student's contact details.
+ *
+ * Mostly this fixes a typo made at registration, and the typo that matters
+ * is in the email: it is where the Telegram invite goes, it is what the
+ * bot's `/grant` looks a person up by, and it is unique across students.
+ * A collision therefore means two records for one person, which is a merge
+ * and not something to do silently — so it is reported rather than forced.
+ *
+ * Note that this does not re-send anything. Fixing the address and getting
+ * the invite to the new one are two decisions, and the second has its own
+ * button on the enrollment.
+ */
+export async function adminSaveStudent(
+  _prev: StudentFormState,
+  formData: FormData
+): Promise<StudentFormState> {
+  const access = await checkAdminAccess();
+  if (!access.allowed) return { status: 'error', message: 'unauthorized' };
+  if (isDemoMode()) return { status: 'error', message: 'demo_mode' };
+
+  const parsed = studentSchema.safeParse({
+    id: formData.get('id'),
+    firstName: formData.get('firstName'),
+    lastName: formData.get('lastName'),
+    email: formData.get('email'),
+    phone: formData.get('phone') ?? '',
+    locale: formData.get('locale'),
+    notes: formData.get('notes') ?? ''
+  });
+
+  if (!parsed.success) {
+    const issue = parsed.error.issues[0];
+    return {
+      status: 'error',
+      message: issue ? `${issue.path.join('.')}: ${issue.message}` : 'validation'
+    };
+  }
+
+  const student = parsed.data;
+  const db = createSupabaseAdminClient();
+
+  const { error } = await db
+    .from('students')
+    .update({
+      first_name: student.firstName,
+      last_name: student.lastName,
+      // Stored lowercase, because that is how every lookup asks for it.
+      email: student.email.toLowerCase(),
+      phone: student.phone || null,
+      locale: student.locale,
+      notes: student.notes || null
+    })
+    .eq('id', student.id);
+
+  if (error) {
+    return {
+      status: 'error',
+      message: error.code === '23505' ? 'email_taken' : error.message
+    };
+  }
+
+  refresh();
+  return { status: 'saved' };
+}

@@ -441,7 +441,9 @@
       "manualPayment": "Record payment (Bit)",
       "manualAmount": "Amount",
       "manualReference": "Transfer reference or note",
-      "confirm": "Confirm"
+      "confirm": "Confirm",
+      "editContacts": "Contacts",
+      "savedToast": "Saved"
     },
     "enrollments": {
       "title": "Enrollments",
@@ -466,7 +468,15 @@
       "seatsHint": "Seats taken are counted from payments automatically — never typed in.",
       "inviteLimitHint": "How many people one invite admits. Use 2 for children’s groups so a parent can come along.",
       "startConfirmed": "Start date is confirmed",
-      "startConfirmedHint": "While this is unchecked the site says \"starts once the group fills\" instead of showing the date. A date is still required — the paid period is measured from it."
+      "startConfirmedHint": "While this is unchecked the site says \"starts once the group fills\" instead of showing the date. A date is still required — the paid period is measured from it.",
+      "endDate": "End date",
+      "timezone": "Timezone",
+      "inviteSeats": "Seats per invite",
+      "chatTypeLabel": "Chat type",
+      "chatType": {
+        "channel": "Channel — announcements only",
+        "supergroup": "Supergroup — students can talk"
+      }
     },
     "content": {
       "title": "Site copy",
@@ -541,6 +551,27 @@
       "saved": "Saved",
       "cancel": "Cancel",
       "demoMode": "Demo mode: teachers currently come from code, so saving is unavailable."
+    },
+    "studentForm": {
+      "title": "Student contact details",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "phone": "Phone",
+      "emailHint": "The Telegram invite goes to this address, and the bot's /grant finds people by it. Correcting it does not resend anything — the enrollment has a “New invite” button for that.",
+      "locale": "Email language",
+      "localeRu": "Русский",
+      "localeEn": "English",
+      "localeHint": "The language of the emails they get — the invite and the past-due notice.",
+      "notes": "Notes",
+      "notesHint": "Admin only. Never shown on the site, never sent in an email.",
+      "enrollmentsTitle": "Their enrollments",
+      "emailTaken": "Another student already has this email. That usually means one person has two records, which needs merging rather than overwriting.",
+      "save": "Save",
+      "saving": "Saving…",
+      "saved": "Saved",
+      "cancel": "Cancel",
+      "demoMode": "Demo mode: no database connected, nothing is saved."
     }
   },
   "notFound": {

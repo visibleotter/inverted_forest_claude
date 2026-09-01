@@ -18,6 +18,7 @@ import type {
   PaymentRow,
   RegistrationInput,
   RegistrationResult,
+  Student,
   StudentRow,
   StudyGroup,
   Teacher,
@@ -530,6 +531,7 @@ export class SupabaseProvider implements DataProvider {
         email: row.students.email,
         phone: row.students.phone,
         locale: row.students.locale,
+        notes: row.students.notes ?? null,
         createdAt: row.created_at,
         courseTitle: collectString(
           row.courses?.course_translations ?? [],
@@ -544,7 +546,7 @@ export class SupabaseProvider implements DataProvider {
     const { data, error } = await this.db
       .from('enrollments')
       .select(
-        'id, status, plan, group_id, course_id, participant_name, paid_through, grace_until, telegram_access_status, order_id, created_at, students(first_name, last_name, email, phone), courses(course_translations(locale, title))'
+        'id, status, plan, group_id, course_id, participant_name, paid_through, grace_until, telegram_access_status, order_id, created_at, students(id, first_name, last_name, email, phone), courses(course_translations(locale, title))'
       )
       .order('created_at', { ascending: false })
       .limit(500);
@@ -553,6 +555,7 @@ export class SupabaseProvider implements DataProvider {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return (data ?? []).map((row: any) => ({
       id: row.id,
+      studentId: row.students?.id ?? '',
       studentName: row.students
         ? `${row.students.first_name} ${row.students.last_name}`
         : '—',
@@ -573,6 +576,27 @@ export class SupabaseProvider implements DataProvider {
       orderId: row.order_id,
       createdAt: row.created_at
     }));
+  }
+
+  async getStudentById(id: string): Promise<Student | null> {
+    const { data, error } = await this.db
+      .from('students')
+      .select('id, first_name, last_name, email, phone, locale, notes, created_at')
+      .eq('id', id)
+      .maybeSingle();
+    if (error) throw error;
+    if (!data) return null;
+
+    return {
+      id: data.id as string,
+      firstName: data.first_name as string,
+      lastName: data.last_name as string,
+      email: data.email as string,
+      phone: (data.phone as string | null) ?? null,
+      locale: (data.locale === 'en' ? 'en' : 'ru') as Locale,
+      notes: (data.notes as string | null) ?? null,
+      createdAt: data.created_at as string
+    };
   }
 
   async getOrphanPayments(): Promise<OrphanPaymentRow[]> {

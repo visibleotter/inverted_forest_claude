@@ -1,13 +1,17 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useFormState, useFormStatus } from 'react-dom';
 import { Link } from '@/i18n/navigation';
+import {
+  SavedToast,
+  useSavedRedirect
+} from '@/components/admin/save-feedback';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { adminSaveGroup, type GroupFormState } from '@/lib/admin-actions';
-import type { StudyGroup } from '@/lib/types';
-import { cn } from '@/lib/utils';
+import type { Locale, StudyGroup } from '@/lib/types';
+import { cn, weekdayName } from '@/lib/utils';
 
 interface Props {
   group: StudyGroup | null;
@@ -47,15 +51,22 @@ function SubmitButton() {
 export function GroupForm({ group, courses }: Props) {
   const t = useTranslations('admin.groupForm');
   const tAdmin = useTranslations('admin');
+  const tCourses = useTranslations('courses');
+  const locale = useLocale() as Locale;
   const [state, formAction] = useFormState<GroupFormState, FormData>(
     adminSaveGroup,
     { status: 'idle' }
   );
 
+  // Confirm, then return to the list — see save-feedback.tsx.
+  const savedToast = useSavedRedirect(state.status === 'saved', '/admin/groups');
+
   const isNew = group === null;
 
   return (
-    <form action={formAction} className="max-w-2xl space-y-6">
+    <>
+      <SavedToast show={savedToast} />
+      <form action={formAction} className="max-w-2xl space-y-6">
       <div>
         <label htmlFor="id" className={field}>
           ID
@@ -115,9 +126,11 @@ export function GroupForm({ group, courses }: Props) {
             defaultValue={group?.audience ?? 'adults'}
             className={select}
           >
-            <option value="children">children</option>
-            <option value="teens">teens</option>
-            <option value="adults">adults</option>
+            {(['children', 'teens', 'adults'] as const).map((value) => (
+              <option key={value} value={value}>
+                {tCourses(`ageGroup.${value}`)}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -131,13 +144,13 @@ export function GroupForm({ group, courses }: Props) {
             defaultValue={group?.status ?? 'enrolling'}
             className={select}
           >
-            {['enrolling', 'full', 'in_progress', 'completed', 'cancelled'].map(
-              (value) => (
-                <option key={value} value={value}>
-                  {value}
-                </option>
-              )
-            )}
+            {(
+              ['enrolling', 'full', 'in_progress', 'completed', 'cancelled'] as const
+            ).map((value) => (
+              <option key={value} value={value}>
+                {tAdmin(`status.${value}`)}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -151,13 +164,11 @@ export function GroupForm({ group, courses }: Props) {
             defaultValue={String(group?.weekday ?? 2)}
             className={select}
           >
-            {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(
-              (day, index) => (
-                <option key={day} value={index}>
-                  {index} · {day}
-                </option>
-              )
-            )}
+            {[0, 1, 2, 3, 4, 5, 6].map((index) => (
+              <option key={index} value={index}>
+                {weekdayName(index, locale)}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -204,7 +215,7 @@ export function GroupForm({ group, courses }: Props) {
 
         <div>
           <label htmlFor="endDate" className={field}>
-            End date
+            {t('endDate')}
           </label>
           <Input
             id="endDate"
@@ -230,7 +241,7 @@ export function GroupForm({ group, courses }: Props) {
 
         <div>
           <label htmlFor="timezone" className={field}>
-            Timezone
+            {t('timezone')}
           </label>
           <Input
             id="timezone"
@@ -255,7 +266,7 @@ export function GroupForm({ group, courses }: Props) {
 
         <div>
           <label htmlFor="telegramChatType" className={field}>
-            Chat type
+            {t('chatTypeLabel')}
           </label>
           <select
             id="telegramChatType"
@@ -263,14 +274,17 @@ export function GroupForm({ group, courses }: Props) {
             defaultValue={group?.telegramChatType ?? 'channel'}
             className={select}
           >
-            <option value="channel">channel</option>
-            <option value="supergroup">supergroup</option>
+            {(['channel', 'supergroup'] as const).map((value) => (
+              <option key={value} value={value}>
+                {t(`chatType.${value}`)}
+              </option>
+            ))}
           </select>
         </div>
 
         <div>
           <label htmlFor="inviteMemberLimit" className={field}>
-            Invite seats
+            {t('inviteSeats')}
           </label>
           <Input
             id="inviteMemberLimit"
@@ -327,5 +341,6 @@ export function GroupForm({ group, courses }: Props) {
         </Link>
       </div>
     </form>
+    </>
   );
 }

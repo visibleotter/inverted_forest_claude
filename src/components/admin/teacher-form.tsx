@@ -4,6 +4,10 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useFormState, useFormStatus } from 'react-dom';
 import { Link } from '@/i18n/navigation';
+import {
+  SavedToast,
+  useSavedRedirect
+} from '@/components/admin/save-feedback';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { adminSaveTeacher, type TeacherFormState } from '@/lib/admin-actions';
@@ -95,12 +99,17 @@ export function TeacherForm({ teacher }: { teacher: Teacher | null }) {
     { status: 'idle' }
   );
 
+  // Confirm, then return to the list — see save-feedback.tsx.
+  const savedToast = useSavedRedirect(state.status === 'saved', '/admin/teachers');
+
   const isNew = teacher === null;
   const set = <K extends keyof Teacher>(key: K, value: Teacher[K]) =>
     setDraft((current) => ({ ...current, [key]: value }));
 
   return (
-    <form action={formAction} className="max-w-4xl space-y-8">
+    <>
+      <SavedToast show={savedToast} />
+      <form action={formAction} className="max-w-4xl space-y-8">
       <input type="hidden" name="payload" value={JSON.stringify(draft)} />
 
       <div className="grid gap-5 sm:grid-cols-2">
@@ -209,5 +218,6 @@ export function TeacherForm({ teacher }: { teacher: Teacher | null }) {
         )}
       </div>
     </form>
+    </>
   );
 }

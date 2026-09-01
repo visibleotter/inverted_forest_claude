@@ -168,6 +168,8 @@ export interface Student {
   email: string;
   phone: string | null;
   locale: Locale;
+  /** Admin-only. Never rendered on the public site. */
+  notes: string | null;
   createdAt: string;
 }
 
@@ -299,6 +301,7 @@ export interface StudentRow extends Student {
  */
 export interface EnrollmentAdminRow {
   id: string;
+  studentId: string;
   studentName: string;
   email: string;
   phone: string | null;

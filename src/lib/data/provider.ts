@@ -6,6 +6,7 @@ import type {
   PaymentRow,
   RegistrationInput,
   RegistrationResult,
+  Student,
   StudentRow,
   StudyGroup,
   Teacher,
@@ -39,6 +40,7 @@ export interface DataProvider {
   /* Admin */
   getDashboardStats(): Promise<DashboardStats>;
   getStudents(): Promise<StudentRow[]>;
+  getStudentById(id: string): Promise<Student | null>;
   getEnrollments(): Promise<EnrollmentAdminRow[]>;
   getOrphanPayments(): Promise<OrphanPaymentRow[]>;
   getPayments(): Promise<PaymentRow[]>;
