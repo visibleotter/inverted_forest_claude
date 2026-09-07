@@ -488,7 +488,16 @@
       "saving": "Saving…",
       "savedCount": "Saved: {changed}. Reset to default: {reset}.",
       "placeholderProblem": "Not saved — placeholders went missing. They have to stay exactly as they are or the page stops loading:",
-      "demoMode": "Demo mode: no database connected, edits are not saved."
+      "demoMode": "Demo mode: no database connected, edits are not saved.",
+      "openPage": "Open this page on the site",
+      "jumpTo": "Blocks",
+      "notShown": "not on the site",
+      "nothingFound": "Nothing found. Try another word, or another page.",
+      "keepTokens": "keep as is: {tokens}",
+      "areaSite": "Site pages",
+      "areaService": "Service pages",
+      "areaAdmin": "Admin panel",
+      "unmapped": "These strings are not on the site map yet."
     },
     "courseForm": {
       "new": "New course",
