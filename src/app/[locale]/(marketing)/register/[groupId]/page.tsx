@@ -1,9 +1,7 @@
-import { ArrowLeft, Check } from 'lucide-react';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
-import { Card, CardContent } from '@/components/ui/card';
 import { RegistrationForm } from '@/components/forms/registration-form';
 import { getData } from '@/lib/data';
 import type { Locale } from '@/lib/types';
@@ -12,6 +10,7 @@ import { formatDate, formatPrice, lt, weekdayName } from '@/lib/utils';
 
 interface Props {
   params: { locale: string; groupId: string };
+  searchParams: { payment?: string };
 }
 
 export async function generateMetadata({
@@ -21,8 +20,21 @@ export async function generateMetadata({
   return { title: t('register.title'), robots: { index: false } };
 }
 
+/**
+ * Step two of three: Group → Details → Payment.
+ *
+ * What is being bought sits above the form on every screen size — the old
+ * page put it after the form on phones, so people typed their details
+ * before seeing what they were signing up for. "Change" goes back to the
+ * course with this group still selected.
+ *
+ * Allpay sends a payer who did not finish back here with
+ * `?payment=cancelled`; the form then says so and, from the draft it keeps
+ * in the browser, comes back filled in.
+ */
 export default async function RegisterPage({
-  params: { locale, groupId }
+  params: { locale, groupId },
+  searchParams
 }: Props) {
   setRequestLocale(locale);
   const l = locale as Locale;
@@ -35,113 +47,112 @@ export default async function RegisterPage({
   // thing and a bookmarked registration link says another.
   if (!course || course.status !== 'published') notFound();
 
-  const [t, tCourses] = await Promise.all([
+  const [t, tCourses, tSchedule] = await Promise.all([
     getTranslations('register'),
-    getTranslations('courses')
+    getTranslations('courses'),
+    getTranslations('schedule')
   ]);
 
   const isOpen = group.status === 'enrolling' && seatsRemaining(group) > 0;
+  const title = lt(course.title, l);
+  const day = weekdayName(group.weekday, l);
+  const when = `${day.charAt(0).toLocaleUpperCase(l)}${day.slice(1)}, ${group.time}`;
+  const price = formatPrice(course.monthlyPrice, course.currency, l);
+  const backHref = `/courses/${course.slug}?group=${group.id}`;
+  const start = group.startDateConfirmed
+    ? formatDate(group.startDate, l)
+    : tSchedule('startsWhenFull');
+
+  const steps = [t('stepGroup'), t('stepDetails'), t('stepPayment')];
+
+  const summary: [string, string][] = [
+    [t('course'), title],
+    [t('group'), tCourses(`ageGroup.${group.audience}`)],
+    [t('schedule'), when],
+    [t('start'), start],
+    [t('duration'), tCourses('months', { count: course.durationMonths })],
+    [t('price'), `${price} ${tCourses('perMonth')}`]
+  ];
 
   return (
-    <div className="container-content py-14 sm:py-20">
-      <Link
-        href={`/courses/${course.slug}`}
-        className="mb-8 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
-      >
-        <ArrowLeft className="h-4 w-4" aria-hidden />
-        {t('backToCourse')}
-      </Link>
-
-      <div className="grid gap-10 lg:grid-cols-[1fr_420px]">
-        <div>
-          <h1 className="text-balance text-4xl font-semibold">{t('title')}</h1>
-          <p className="mt-3 text-muted-foreground">{t('subtitle')}</p>
-
-          <div className="mt-8">
-            {isOpen ? (
-              <RegistrationForm
-                groupId={group.id}
-                audience={group.audience}
-                durationMonths={course.durationMonths}
-                monthlyPrice={course.monthlyPrice}
-                currency={course.currency}
-              />
-            ) : (
-              <div className="rounded-card border border-border bg-card p-8">
-                <p className="font-medium">{t('groupFull')}</p>
-                <Link
-                  href={`/courses/${course.slug}#schedule`}
-                  className="mt-3 inline-block text-sm font-medium text-accent hover:underline"
-                >
-                  {t('backToCourse')}
+    <div className="container-content pb-20 pt-8 sm:pt-12">
+      <nav aria-label={t('stepsLabel')}>
+        <ol className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
+          {steps.map((step, i) => (
+            <li key={step} className="flex items-center gap-3">
+              {i === 0 ? (
+                <Link href={backHref} className="underline underline-offset-4 hover:text-foreground">
+                  {step}
                 </Link>
-              </div>
-            )}
-          </div>
+              ) : (
+                <span
+                  aria-current={i === 1 ? 'step' : undefined}
+                  className={i === 1 ? 'font-medium text-foreground' : undefined}
+                >
+                  {step}
+                </span>
+              )}
+              {i < steps.length - 1 && <span aria-hidden>→</span>}
+            </li>
+          ))}
+        </ol>
+      </nav>
+
+      <h1 className="mt-6 text-balance text-[34px] leading-[1.15] sm:text-[44px]">
+        {t('title')}
+      </h1>
+
+      <p className="mt-4 max-w-prose border-l-2 border-fern bg-card px-4 py-3 text-[15px] leading-relaxed">
+        <span className="font-serif text-[17px] font-medium">{title}</span>
+        <span className="text-muted-foreground">
+          {' '}· {when} · {tCourses(`ageGroup.${group.audience}`)} · {price} {tCourses('perMonth')}
+        </span>{' '}
+        <Link href={backHref} className="whitespace-nowrap text-accent underline underline-offset-4">
+          {t('change')}
+        </Link>
+      </p>
+
+      <div className="mt-10 grid gap-12 lg:grid-cols-[1fr_340px] lg:gap-16">
+        <div className="min-w-0 max-w-prose">
+          {isOpen ? (
+            <RegistrationForm
+              groupId={group.id}
+              audience={group.audience}
+              paymentCancelled={searchParams.payment === 'cancelled'}
+            />
+          ) : (
+            <div className="border border-border bg-card p-6">
+              <p className="text-body">{t('groupFull')}</p>
+              <Link
+                href={`/courses/${course.slug}#schedule`}
+                className="mt-4 inline-block text-accent underline underline-offset-4"
+              >
+                {t('backToCourse')}
+              </Link>
+            </div>
+          )}
         </div>
 
-        <aside>
-          <Card>
-            <CardContent className="sm:p-7">
-              <h2 className="text-lg font-semibold">{t('summaryTitle')}</h2>
-              <dl className="mt-5 space-y-4 text-sm">
-                <div>
-                  <dt className="text-muted-foreground">{t('course')}</dt>
-                  <dd className="mt-0.5 font-medium">{lt(course.title, l)}</dd>
+        <aside className="min-w-0">
+          <div className="border border-border bg-card p-6">
+            <h2 className="text-[21px]">{t('summaryTitle')}</h2>
+            <dl className="mt-5 grid gap-3 text-[15px]">
+              {summary.map(([label, value]) => (
+                <div key={label}>
+                  <dt className="text-sm text-muted-foreground">{label}</dt>
+                  <dd className="mt-0.5">{value}</dd>
                 </div>
-                <div>
-                  <dt className="text-muted-foreground">{t('group')}</dt>
-                  <dd className="mt-0.5 font-medium">
-                    {tCourses(`ageGroup.${group.audience}`)}
-                  </dd>
-                </div>
-                <div>
-                  <dt className="text-muted-foreground">{t('schedule')}</dt>
-                  <dd className="mt-0.5 font-medium capitalize">
-                    {weekdayName(group.weekday, l)} · {group.time}
-                  </dd>
-                </div>
-                <div>
-                  <dt className="text-muted-foreground">{t('start')}</dt>
-                  <dd className="mt-0.5 font-medium">
-                    {formatDate(group.startDate, l)}
-                  </dd>
-                </div>
-                <div>
-                  <dt className="text-muted-foreground">{t('duration')}</dt>
-                  <dd className="mt-0.5 font-medium">
-                    {tCourses('months', { count: course.durationMonths })}
-                  </dd>
-                </div>
-                <div className="border-t border-border pt-4">
-                  <dt className="text-muted-foreground">{t('price')}</dt>
-                  <dd className="mt-0.5">
-                    <span className="font-display text-2xl font-semibold">
-                      {formatPrice(course.monthlyPrice, course.currency, l)}
-                    </span>{' '}
-                    <span className="text-muted-foreground">
-                      / {t('priceNote')}
-                    </span>
-                  </dd>
-                </div>
-              </dl>
-
-              <div className="mt-6 rounded-btn bg-muted/60 p-4">
-                <p className="text-sm font-semibold">{t('afterPayment')}</p>
-                <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-                  {[1, 2].map((i) => (
-                    <li key={i} className="flex items-start gap-2.5">
-                      <Check
-                        className="mt-0.5 h-4 w-4 shrink-0 text-accent"
-                        aria-hidden
-                      />
-                      {t(`afterPayment${i}` as 'afterPayment1')}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </CardContent>
-          </Card>
+              ))}
+            </dl>
+            <div className="mt-6 border-t border-border pt-5">
+              <p className="text-[15px] font-medium">{t('afterPayment')}</p>
+              <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-muted-foreground marker:text-muted-foreground">
+                {[1, 2].map((i) => (
+                  <li key={i}>{t(`afterPayment${i}` as 'afterPayment1')}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </aside>
       </div>
     </div>

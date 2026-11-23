@@ -256,7 +256,7 @@ export const contentPlaces: ContentPlace[] = [
       {
         id: 'header',
         title: s('Заголовок страницы', 'Page header'),
-        keys: ['title', 'subtitle', 'backToCourse', 'groupFull']
+        keys: ['stepsLabel', 'stepGroup', 'stepDetails', 'stepPayment', 'title', 'change', 'backToCourse', 'groupFull', 'cancelledNotice', 'draftNotice']
       },
       {
         id: 'summary',
@@ -266,8 +266,10 @@ export const contentPlaces: ContentPlace[] = [
       },
       {
         id: 'plan',
-        title: s('Выбор способа оплаты', 'Payment plan choice'),
-        keys: ['planTitle', 'planMonthly', 'planMonthlyNote', 'planFull', 'planFullNote']
+        title: s('Убрано из формы', 'Removed from the form'),
+        hint: s('Выбор «весь курс сразу» и телефон убраны в ноябре 2026; вернутся, когда Allpay будет подключён напрямую', 'The pay-in-full choice and the phone field were removed in November 2026; they return once Allpay is connected directly'),
+        keys: ['planTitle', 'planMonthly', 'planMonthlyNote', 'planFull', 'planFullNote', 'phone', 'phonePlaceholder', 'subtitle', 'priceNote', 'successTitle', 'successText'],
+        hidden: true
       },
       {
         id: 'participant',
@@ -278,7 +280,7 @@ export const contentPlaces: ContentPlace[] = [
       {
         id: 'fields',
         title: s('Поля формы', 'Form fields'),
-        keys: ['firstName', 'lastName', 'email', 'phone', 'phonePlaceholder', 'telegramContact', 'telegramContactPlaceholder', 'telegramContactHint', 'agreement', 'refundNote', 'submit', 'submitting']
+        keys: ['firstName', 'lastName', 'email', 'telegramContact', 'telegramContactPlaceholder', 'telegramContactHint', 'agreement', 'refundNote', 'submit', 'submitting']
       },
       {
         id: 'errors',
@@ -289,7 +291,7 @@ export const contentPlaces: ContentPlace[] = [
       {
         id: 'success',
         title: s('Экран перед переходом к оплате', 'The screen before payment'),
-        keys: ['successTitle', 'successText', 'successManual', 'goToPayment', 'afterPayment', 'afterPayment1', 'afterPayment2']
+        keys: ['redirecting', 'successManual', 'goToPayment', 'afterPayment', 'afterPayment1', 'afterPayment2']
       },
       {
         id: 'noPayment',

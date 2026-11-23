@@ -187,7 +187,7 @@
     "afterPayment2": "In the channel: the class link before each session, and notice of any reschedules"
   },
   "register": {
-    "title": "Registration",
+    "title": "Join a group",
     "subtitle": "Check the details and fill in the form — payment is the next step.",
     "summaryTitle": "Your selection",
     "course": "Course",
@@ -219,7 +219,7 @@
     "backToCourse": "Back to the course",
     "successTitle": "You're almost in the forest!",
     "successText": "We have your registration. You will now be redirected to the payment page. After payment we will message you on Telegram with an invite to the group’s private channel.",
-    "successManual": "If the redirect didn't work, use the button below.",
+    "successManual": "If the payment page did not open, use the button.",
     "goToPayment": "Go to payment",
     "afterPayment": "What happens after payment?",
     "afterPayment1": "We message you on Telegram with a link to the group’s private channel",
@@ -238,7 +238,15 @@
     "telegramContactHint": "No username? Give the phone number your Telegram account uses. We use it to find you if the invite link does not work.",
     "refundNote": "Changed your mind after the first lesson? Write to us within 24 hours of it and we will refund your payment minus the cost of one lesson. Other cancellation terms are in the <terms>Terms and Conditions</terms>.",
     "successNoPaymentTitle": "You are registered!",
-    "successNoPaymentText": "We have your registration. We will be in touch shortly to arrange payment, and after that we will send your invitation to the group’s private Telegram channel. Questions? Write to us:"
+    "successNoPaymentText": "We have your registration. We will be in touch shortly to arrange payment, and after that we will send your invitation to the group’s private Telegram channel. Questions? Write to us:",
+    "stepsLabel": "Registration steps",
+    "stepGroup": "Group",
+    "stepDetails": "Details",
+    "stepPayment": "Payment",
+    "change": "change",
+    "cancelledNotice": "The payment was not completed and nothing was charged. Your details are saved — you can try again.",
+    "draftNotice": "You did not finish registering. What you entered is saved in this browser.",
+    "redirecting": "Taking you to payment…"
   },
   "teachers": {
     "title": "Teachers",
