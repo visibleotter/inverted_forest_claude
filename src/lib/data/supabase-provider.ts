@@ -30,6 +30,20 @@ import { createSupabaseAdminClient } from '../supabase/server';
 /* Row shapes as returned by PostgREST (snake_case). */
 type TranslationRow = { locale: Locale } & Record<string, unknown>;
 
+/**
+ * PostgREST's "column is not in the schema cache".
+ *
+ * Migration 0006 adds the Telegram contact and consent columns, and the
+ * site is deployed before anyone has run it. Writes that include those
+ * columns retry without them on this error rather than turning every
+ * registration into a failure. The values still reach Make and
+ * domain_events, so nothing is lost meanwhile. Once 0006 has run
+ * everywhere, the retries are dead code and can go.
+ */
+export function isMissingColumn(error: { code?: string } | null): boolean {
+  return error?.code === 'PGRST204';
+}
+
 function collectString(
   rows: TranslationRow[],
   field: string
@@ -296,21 +310,29 @@ export class SupabaseProvider implements DataProvider {
     if (!group) throw new Error(`Unknown study group: ${input.groupId}`);
 
     // Upsert the student by email.
-    const { data: student, error: studentError } = await db
-      .from('students')
-      .upsert(
-        {
-          first_name: input.firstName,
-          last_name: input.lastName,
-          email: input.email.toLowerCase(),
-          phone: input.phone ?? null,
-          locale: input.locale
-        },
-        { onConflict: 'email' }
-      )
-      .select('id')
-      .single();
+    const studentRow = {
+      first_name: input.firstName,
+      last_name: input.lastName,
+      email: input.email.toLowerCase(),
+      phone: input.phone ?? null,
+      locale: input.locale
+    };
+    const upsertStudent = (row: Record<string, unknown>) =>
+      db
+        .from('students')
+        .upsert(row, { onConflict: 'email' })
+        .select('id')
+        .single();
+
+    let { data: student, error: studentError } = await upsertStudent({
+      ...studentRow,
+      telegram_contact: input.telegramContact
+    });
+    if (isMissingColumn(studentError)) {
+      ({ data: student, error: studentError } = await upsertStudent(studentRow));
+    }
     if (studentError) throw studentError;
+    if (!student) throw new Error('Student upsert returned no row');
 
     const participantName = input.participantName?.trim() || null;
     const settings = await getNumericSettings();
@@ -322,44 +344,69 @@ export class SupabaseProvider implements DataProvider {
     // hour later is the common case, not an edge one. Reuse their unpaid
     // enrollment rather than colliding with the uniqueness rule — the old
     // code hit a 23505 here and showed a bare "something went wrong".
-    const { data: open } = await db
+    //
+    // `is` only takes null or a boolean. Given a child's name it produced a
+    // filter PostgREST rejects, the error went unread, no open enrollment
+    // was found, and the insert below then collided with the unique index:
+    // a parent coming back to pay for the same child saw "unknown error".
+    let openQuery = db
       .from('enrollments')
       .select('id')
       .eq('student_id', student.id)
       .eq('group_id', group.id)
-      .eq('status', 'pending_payment')
-      .is('participant_name', participantName)
-      .maybeSingle();
+      .eq('status', 'pending_payment');
+    openQuery =
+      participantName === null
+        ? openQuery.is('participant_name', null)
+        : openQuery.eq('participant_name', participantName);
+    const { data: open, error: openError } = await openQuery.maybeSingle();
+    if (openError) throw openError;
+
+    // Recorded on the enrollment, not the student: consent is to the terms
+    // in force for this purchase, and a returning student agrees again.
+    const consent = {
+      terms_accepted_at: new Date().toISOString(),
+      terms_version: input.termsVersion
+    };
 
     let enrollmentId: string;
 
     if (open) {
       enrollmentId = open.id as string;
-      const { error } = await db
-        .from('enrollments')
-        .update({
-          plan: input.plan,
-          participant_birth_year: input.participantBirthYear ?? null,
-          pending_expires_at: pendingExpiresAt
-        })
-        .eq('id', enrollmentId);
+      const changes = {
+        plan: input.plan,
+        participant_birth_year: input.participantBirthYear ?? null,
+        pending_expires_at: pendingExpiresAt
+      };
+      const update = (row: Record<string, unknown>) =>
+        db.from('enrollments').update(row).eq('id', enrollmentId);
+
+      let { error } = await update({ ...changes, ...consent });
+      if (isMissingColumn(error)) ({ error } = await update(changes));
       if (error) throw error;
     } else {
-      const { data: created, error: enrollmentError } = await db
-        .from('enrollments')
-        .insert({
-          student_id: student.id,
-          group_id: group.id,
-          course_id: group.courseId,
-          status: 'pending_payment',
-          plan: input.plan,
-          participant_name: participantName,
-          participant_birth_year: input.participantBirthYear ?? null,
-          pending_expires_at: pendingExpiresAt
-        })
-        .select('id')
-        .single();
+      const row = {
+        student_id: student.id,
+        group_id: group.id,
+        course_id: group.courseId,
+        status: 'pending_payment',
+        plan: input.plan,
+        participant_name: participantName,
+        participant_birth_year: input.participantBirthYear ?? null,
+        pending_expires_at: pendingExpiresAt
+      };
+      const insert = (values: Record<string, unknown>) =>
+        db.from('enrollments').insert(values).select('id').single();
+
+      let { data: created, error: enrollmentError } = await insert({
+        ...row,
+        ...consent
+      });
+      if (isMissingColumn(enrollmentError)) {
+        ({ data: created, error: enrollmentError } = await insert(row));
+      }
       if (enrollmentError) throw enrollmentError;
+      if (!created) throw new Error('Enrollment insert returned no row');
       enrollmentId = created.id as string;
     }
 
@@ -386,10 +433,14 @@ export class SupabaseProvider implements DataProvider {
       detail: `${group.id} · enrollment ${enrollmentId} · ${input.plan}`
     });
 
+    // The consent is repeated here on purpose: domain_events is append-only,
+    // so this copy survives an enrollment being edited or deleted later.
     await emit('enrollment.created', enrollmentId, {
       group_id: group.id,
       course_id: group.courseId,
-      plan: input.plan
+      plan: input.plan,
+      terms_version: consent.terms_version,
+      terms_accepted_at: consent.terms_accepted_at
     });
 
     return { enrollmentId, paymentUrl };
@@ -532,6 +583,7 @@ export class SupabaseProvider implements DataProvider {
         phone: row.students.phone,
         locale: row.students.locale,
         notes: row.students.notes ?? null,
+        telegramContact: row.students.telegram_contact ?? null,
         createdAt: row.created_at,
         courseTitle: collectString(
           row.courses?.course_translations ?? [],
@@ -546,7 +598,7 @@ export class SupabaseProvider implements DataProvider {
     const { data, error } = await this.db
       .from('enrollments')
       .select(
-        'id, status, plan, group_id, course_id, participant_name, paid_through, grace_until, telegram_access_status, order_id, created_at, students(id, first_name, last_name, email, phone), courses(course_translations(locale, title))'
+        'id, status, plan, group_id, course_id, participant_name, paid_through, grace_until, telegram_access_status, order_id, created_at, students(*), courses(course_translations(locale, title))'
       )
       .order('created_at', { ascending: false })
       .limit(500);
@@ -561,6 +613,7 @@ export class SupabaseProvider implements DataProvider {
         : '—',
       email: row.students?.email ?? '—',
       phone: row.students?.phone ?? null,
+      telegramContact: row.students?.telegram_contact ?? null,
       participantName: row.participant_name,
       courseTitle: collectString(
         row.courses?.course_translations ?? [],
@@ -581,7 +634,9 @@ export class SupabaseProvider implements DataProvider {
   async getStudentById(id: string): Promise<Student | null> {
     const { data, error } = await this.db
       .from('students')
-      .select('id, first_name, last_name, email, phone, locale, notes, created_at')
+      // `*` rather than a column list: telegram_contact arrives with
+      // migration 0006, and naming it here would fail until that has run.
+      .select('*')
       .eq('id', id)
       .maybeSingle();
     if (error) throw error;
@@ -595,6 +650,7 @@ export class SupabaseProvider implements DataProvider {
       phone: (data.phone as string | null) ?? null,
       locale: (data.locale === 'en' ? 'en' : 'ru') as Locale,
       notes: (data.notes as string | null) ?? null,
+      telegramContact: (data.telegram_contact as string | null) ?? null,
       createdAt: data.created_at as string
     };
   }

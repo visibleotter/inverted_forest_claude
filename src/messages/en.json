@@ -128,7 +128,7 @@
     "formatTitle": "Teaching format",
     "format1": "Live Zoom sessions once a week, 60–90 minutes",
     "format2": "Private group Telegram channel: recordings, materials, discussion",
-    "format3": "Small groups — up to 15 people, everyone has a voice",
+    "format3": "Small groups — up to 7 people, everyone has a voice",
     "format4": "Monthly billing through a secure payment page",
     "scheduleTitle": "Schedule & groups",
     "scheduleSubtitle": "Pick a group — registration takes two minutes",
@@ -196,7 +196,8 @@
       "agreement": "You need to accept the terms",
       "rateLimited": "Too many registration attempts. Please wait a few minutes or contact us directly.",
       "generic": "Something went wrong. Please try again or contact us.",
-      "participantName": "Please enter the student's name"
+      "participantName": "Please enter the student's name",
+      "telegramContact": "Enter your Telegram username (e.g. @username) or phone number"
     },
     "groupFull": "Unfortunately this group is already full. Please choose another group.",
     "backToCourse": "Back to the course",
@@ -216,7 +217,13 @@
     "participantTitle": "Who is attending",
     "participantName": "Student's full name",
     "participantNameHint": "Filled in by the adult who pays. The Telegram invite goes to your inbox.",
-    "participantBirthYear": "Year of birth"
+    "participantBirthYear": "Year of birth",
+    "telegramContact": "Telegram — username or phone number",
+    "telegramContactPlaceholder": "@username or +972 54 123 4567",
+    "telegramContactHint": "No username? Give the phone number your Telegram account uses. We use it to find you if the invite link does not work.",
+    "refundNote": "Changed your mind after the first lesson? Write to us within 24 hours of it and we will refund your payment minus the cost of one lesson. Other cancellation terms are in the <terms>Terms and Conditions</terms>.",
+    "successNoPaymentTitle": "You are registered!",
+    "successNoPaymentText": "We have your registration and your place in the group is held. We will be in touch shortly to arrange payment, and after that we will send your invitation to the group’s private Telegram channel. Questions? Write to us:"
   },
   "teachers": {
     "title": "Teachers",
@@ -235,7 +242,7 @@
     "value1Title": "Depth without snobbery",
     "value1Text": "We read primary sources and serious literature, but we speak a human language.",
     "value2Title": "Small groups",
-    "value2Text": "Up to 15 people per group — so everyone has a voice and every question is heard.",
+    "value2Text": "Up to 7 people per group — so everyone has a voice and every question is heard.",
     "value3Title": "A living community",
     "value3Text": "Learning doesn't end with the bell: discussions continue in the groups' Telegram channels.",
     "ctaTitle": "Join us",
@@ -276,7 +283,7 @@
       },
       {
         "q": "Can I cancel and get a refund?",
-        "a": "Cancellation and refunds are governed by the Israeli Consumer Protection Law and are set out in full in the “Cancellation and Refund Policy” section of our Terms and Conditions. If you have questions, write to us and we'll walk you through it."
+        "a": "Cancellation and refunds are governed by the Israeli Consumer Protection Law and are set out in full in the “Cancellation and Refund Policy” section of our Terms and Conditions. If you have questions, write to us and we'll walk you through it. In addition, if the course is not for you, write to us within 24 hours of the first lesson and we will refund your payment minus the cost of one lesson."
       }
     ]
   },
@@ -580,7 +587,11 @@
       "saving": "Saving…",
       "saved": "Saved",
       "cancel": "Cancel",
-      "demoMode": "Demo mode: no database connected, nothing is saved."
+      "demoMode": "Demo mode: no database connected, nothing is saved.",
+      "telegramContact": "Telegram",
+      "telegramContactHint": "Username (@username) or the phone number the account is on. Use it to find the person if an invite link goes astray.",
+      "telegramInvalid": "Telegram: enter a username like @username or a phone number.",
+      "needsMigration": "Everything saved except Telegram: the database does not have the column yet (migration 0006)."
     }
   },
   "notFound": {

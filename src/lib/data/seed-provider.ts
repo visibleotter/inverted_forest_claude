@@ -126,6 +126,7 @@ export class SeedProvider implements DataProvider {
           studentName: `${student.firstName} ${student.lastName}`,
           email: student.email,
           phone: student.phone,
+          telegramContact: student.telegramContact,
           participantName: enr.participantName,
           courseTitle: course.title,
           courseId: course.id,

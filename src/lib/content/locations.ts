@@ -310,7 +310,7 @@ export const contentPlaces: ContentPlace[] = [
       {
         id: 'fields',
         title: s('Поля формы', 'Form fields'),
-        keys: ['firstName', 'lastName', 'email', 'phone', 'phonePlaceholder', 'agreement', 'submit', 'submitting']
+        keys: ['firstName', 'lastName', 'email', 'phone', 'phonePlaceholder', 'telegramContact', 'telegramContactPlaceholder', 'telegramContactHint', 'agreement', 'refundNote', 'submit', 'submitting']
       },
       {
         id: 'errors',
@@ -322,6 +322,12 @@ export const contentPlaces: ContentPlace[] = [
         id: 'success',
         title: s('Экран перед переходом к оплате', 'The screen before payment'),
         keys: ['successTitle', 'successText', 'successManual', 'goToPayment', 'afterPayment', 'afterPayment1', 'afterPayment2', 'afterPayment3']
+      },
+      {
+        id: 'noPayment',
+        title: s('Экран, если у группы нет ссылки на оплату', 'The screen when a group has no payment link'),
+        hint: s('Вместо перехода к оплате: запись принята, мы свяжемся. Под текстом — кнопки Telegram, WhatsApp и почта', 'Instead of the payment redirect: registered, we will be in touch. Telegram, WhatsApp and email buttons follow'),
+        keys: ['successNoPaymentTitle', 'successNoPaymentText']
       }
     ]
   },

@@ -2,10 +2,12 @@
 
 import { headers } from 'next/headers';
 import { z } from 'zod';
+import { legalLastUpdated } from './config';
 import { getData } from './data';
 import { clientIpFrom, maskEmail, rateLimit } from './security';
 import type { Locale } from './types';
 import { seatsRemaining } from './types';
+import { normalizeTelegramContact } from './telegram-contact';
 
 const registrationSchema = z.object({
   groupId: z.string().min(1).max(64),
@@ -13,6 +15,15 @@ const registrationSchema = z.object({
   lastName: z.string().trim().min(1).max(100),
   email: z.string().trim().max(320).email(),
   phone: z.string().trim().max(30).optional().or(z.literal('')),
+  // Required: it is how the admin finds someone whose invite went astray.
+  telegramContact: z
+    .string()
+    .max(100)
+    .transform((value) => normalizeTelegramContact(value))
+    .refine((value): value is string => value !== null),
+  // Enforced here and not only in the browser: a form can be posted
+  // without the page, and consent nobody gave is not consent.
+  agreement: z.literal('on'),
   locale: z.enum(['ru', 'en']),
   // Monthly is the default so a form that omits the field still works.
   plan: z.enum(['monthly', 'full']).default('monthly'),
@@ -63,6 +74,8 @@ export async function submitRegistration(
     lastName: formData.get('lastName'),
     email: formData.get('email'),
     phone: formData.get('phone'),
+    telegramContact: formData.get('telegramContact') ?? '',
+    agreement: formData.get('agreement'),
     locale: formData.get('locale'),
     plan: formData.get('plan') ?? 'monthly',
     participantName: formData.get('participantName') ?? '',
@@ -88,12 +101,20 @@ export async function submitRegistration(
       return { status: 'error', code: 'group_full' };
     }
 
+    // The browser asks for the child's name in these groups; the server
+    // has to insist too, or the group list fills with nameless entries.
+    if (group.audience !== 'adults' && !input.participantName) {
+      return { status: 'error', code: 'validation' };
+    }
+
     const result = await data.createRegistration({
       groupId: input.groupId,
       firstName: input.firstName,
       lastName: input.lastName,
       email: input.email,
       phone: input.phone || undefined,
+      telegramContact: input.telegramContact,
+      termsVersion: legalLastUpdated,
       locale: input.locale as Locale,
       plan: input.plan,
       participantName: input.participantName || undefined,
@@ -110,6 +131,8 @@ export async function submitRegistration(
       last_name: input.lastName,
       email: input.email,
       phone: input.phone || null,
+      telegram_contact: input.telegramContact,
+      terms_version: legalLastUpdated,
       locale: input.locale,
       plan: input.plan,
       participant_name: input.participantName || null

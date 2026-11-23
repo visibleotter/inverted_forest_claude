@@ -403,6 +403,13 @@ export const termsAndConditions: LegalDocument = {
         {
           ru: 'В случае правомерной отмены мы вправе удержать плату за отмену в размере до 5% от стоимости сделки или 100 шекелей, в зависимости от того, что меньше, как это разрешено Законом о защите прав потребителей, если только закон не требует возврата без удержания платы за отмену.',
           en: 'In the event of a lawful cancellation, we may charge a cancellation fee of up to 5% of the transaction value or 100 NIS, whichever is lower, as permitted under the Consumer Protection Law, unless a refund without a cancellation fee is required by law.'
+        },
+        // ADAPTED (2026-11-23): a commercial guarantee added on top of the
+        // statutory rights above, at the business's request. It does not
+        // replace them. See docs/LEGAL-REVIEW.md.
+        {
+          ru: 'Дополнительно к правам, предусмотренным законом: если после первого занятия курс вам не подошёл, вы можете запросить возврат, направив письменное уведомление на {email} в течение 24 часов после окончания первого занятия. В этом случае мы вернём уплаченную сумму за вычетом стоимости одного занятия. Это условие не ограничивает ваши права по Закону о защите прав потребителей.',
+          en: 'In addition to your statutory rights: if, after the first lesson, the course is not right for you, you may request a refund by sending a written notice to {email} within 24 hours of the end of the first lesson. We will then refund the amount paid, less the cost of one lesson. This term does not limit your rights under the Consumer Protection Law.'
         }
       ]
     },

@@ -79,9 +79,19 @@ export default async function AdminEnrollmentsPage({
               </Link>
             </div>,
             row.participantName ?? '—',
-            <span key="e" className="text-xs">
-              {row.email}
-            </span>,
+            <div key="e" className="text-xs">
+              <p>{row.email}</p>
+              {/* How to reach someone whose registration came in without a
+                  payment link — and whose invite later goes astray. */}
+              {row.telegramContact && (
+                <p className="mt-0.5 text-muted-foreground">
+                  TG {row.telegramContact}
+                </p>
+              )}
+              {row.phone && (
+                <p className="mt-0.5 text-muted-foreground">{row.phone}</p>
+              )}
+            </div>,
             lt(row.courseTitle, l),
             <code key="g" className="text-xs">
               {row.groupId}

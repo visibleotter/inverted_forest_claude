@@ -12,12 +12,14 @@ import {
   placeholdersMatch
 } from './content/messages';
 import { isDemoMode } from './data';
+import { isMissingColumn } from './data/supabase-provider';
 import { sendInviteEmail } from './email/notify';
 import { emit } from './events';
 import { getCheckoutProvider } from './payments';
 import { getNumericSettings } from './settings';
 import { createSupabaseAdminClient } from './supabase/server';
 import { revokeChatInviteLink } from './telegram/client';
+import { normalizeTelegramContact } from './telegram-contact';
 
 /**
  * Admin operations.
@@ -897,7 +899,16 @@ const studentSchema = z.object({
   email: z.string().trim().max(320).email(),
   phone: z.string().trim().max(30).optional().or(z.literal('')),
   locale: z.enum(['ru', 'en']),
-  notes: z.string().trim().max(4000).optional().or(z.literal(''))
+  notes: z.string().trim().max(4000).optional().or(z.literal('')),
+  // Optional here, unlike on the public form: older students registered
+  // before the field existed, and an admin may not know it either.
+  telegramContact: z
+    .string()
+    .max(100)
+    .refine(
+      (value) => value.trim() === '' || normalizeTelegramContact(value) !== null,
+      'telegram_invalid'
+    )
 });
 
 export type StudentFormState =
@@ -933,11 +944,15 @@ export async function adminSaveStudent(
     email: formData.get('email'),
     phone: formData.get('phone') ?? '',
     locale: formData.get('locale'),
-    notes: formData.get('notes') ?? ''
+    notes: formData.get('notes') ?? '',
+    telegramContact: formData.get('telegramContact') ?? ''
   });
 
   if (!parsed.success) {
     const issue = parsed.error.issues[0];
+    if (issue?.message === 'telegram_invalid') {
+      return { status: 'error', message: 'telegram_invalid' };
+    }
     return {
       status: 'error',
       message: issue ? `${issue.path.join('.')}: ${issue.message}` : 'validation'
@@ -947,18 +962,30 @@ export async function adminSaveStudent(
   const student = parsed.data;
   const db = createSupabaseAdminClient();
 
-  const { error } = await db
-    .from('students')
-    .update({
-      first_name: student.firstName,
-      last_name: student.lastName,
-      // Stored lowercase, because that is how every lookup asks for it.
-      email: student.email.toLowerCase(),
-      phone: student.phone || null,
-      locale: student.locale,
-      notes: student.notes || null
-    })
-    .eq('id', student.id);
+  const changes = {
+    first_name: student.firstName,
+    last_name: student.lastName,
+    // Stored lowercase, because that is how every lookup asks for it.
+    email: student.email.toLowerCase(),
+    phone: student.phone || null,
+    locale: student.locale,
+    notes: student.notes || null
+  };
+  const update = (row: Record<string, unknown>) =>
+    db.from('students').update(row).eq('id', student.id);
+
+  let { error } = await update({
+    ...changes,
+    telegram_contact: normalizeTelegramContact(student.telegramContact)
+  });
+  if (isMissingColumn(error)) {
+    // Everything else is saved; the Telegram contact needs migration 0006.
+    ({ error } = await update(changes));
+    if (!error) {
+      refresh();
+      return { status: 'error', message: 'needs_migration' };
+    }
+  }
 
   if (error) {
     return {

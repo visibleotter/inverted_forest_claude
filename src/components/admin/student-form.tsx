@@ -104,6 +104,21 @@ export function StudentForm({ student }: { student: Student }) {
         </div>
 
         <div>
+          <label htmlFor="telegramContact" className={field}>
+            {t('telegramContact')}
+          </label>
+          <Input
+            id="telegramContact"
+            name="telegramContact"
+            autoCapitalize="none"
+            spellCheck={false}
+            defaultValue={student.telegramContact ?? ''}
+            placeholder="@username"
+          />
+          <p className={hint}>{t('telegramContactHint')}</p>
+        </div>
+
+        <div>
           <label htmlFor="locale" className={field}>
             {t('locale')}
           </label>
@@ -148,7 +163,11 @@ export function StudentForm({ student }: { student: Student }) {
               ? t('demoMode')
               : state.message === 'email_taken'
                 ? t('emailTaken')
-                : state.message}
+                : state.message === 'telegram_invalid'
+                  ? t('telegramInvalid')
+                  : state.message === 'needs_migration'
+                    ? t('needsMigration')
+                    : state.message}
           </p>
         )}
         {state.status === 'saved' && (

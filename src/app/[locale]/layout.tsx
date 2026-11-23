@@ -46,12 +46,15 @@ export async function generateMetadata({
     alternates: {
       languages: Object.fromEntries(locales.map((l) => [l, `/${l}`]))
     },
+    // The fallback preview: without an image, a link to the home page
+    // posted in Telegram renders as bare text. Course pages set their own.
     openGraph: {
       type: 'website',
       siteName: t('siteName'),
-      locale: locale === 'ru' ? 'ru_RU' : 'en_US'
+      locale: locale === 'ru' ? 'ru_RU' : 'en_US',
+      images: [{ url: '/images/og-home.jpg', width: 1200, height: 630 }]
     },
-    twitter: { card: 'summary_large_image' }
+    twitter: { card: 'summary_large_image', images: ['/images/og-home.jpg'] }
   };
 }
 

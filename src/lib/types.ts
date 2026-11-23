@@ -170,6 +170,8 @@ export interface Student {
   locale: Locale;
   /** Admin-only. Never rendered on the public site. */
   notes: string | null;
+  /** `@username` or the phone number the Telegram account is on. */
+  telegramContact: string | null;
   createdAt: string;
 }
 
@@ -273,6 +275,10 @@ export interface RegistrationInput {
   lastName: string;
   email: string;
   phone?: string;
+  /** Normalised by `normalizeTelegramContact`. */
+  telegramContact: string;
+  /** The `legalLastUpdated` the student agreed to. */
+  termsVersion: string;
   locale: Locale;
   /** Set only when the participant is not the payer (children's groups). */
   participantName?: string;
@@ -305,6 +311,7 @@ export interface EnrollmentAdminRow {
   studentName: string;
   email: string;
   phone: string | null;
+  telegramContact: string | null;
   /** Set when the payer is not the person attending. */
   participantName: string | null;
   courseTitle: LocalizedString;

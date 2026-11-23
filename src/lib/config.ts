@@ -38,15 +38,15 @@ export const siteConfig = {
   url: resolveSiteUrl(),
   contactEmail: envOr(
     process.env.NEXT_PUBLIC_CONTACT_EMAIL,
-    'hello@invertedforest.com'
+    'markovisrl@gmail.com'
   ),
   telegramUrl: envOr(
     process.env.NEXT_PUBLIC_TELEGRAM_URL,
-    'https://t.me/invertedforest'
+    'https://t.me/galileantales'
   ),
   whatsappUrl: envOr(
     process.env.NEXT_PUBLIC_WHATSAPP_URL,
-    'https://wa.me/972000000000'
+    'https://wa.me/972549811838'
   )
 };
 
@@ -72,8 +72,14 @@ export function legalEntityLine(): string {
     .join(', ');
 }
 
-/** Last revision date shown under each legal document's title. */
-export const legalLastUpdated = '2026-08-26';
+/**
+ * Last revision date shown under each legal document's title.
+ *
+ * Also the terms version recorded with each registration's consent, so
+ * bump it whenever the wording a student agrees to changes: a consent
+ * record is only evidence if it says which text was agreed to.
+ */
+export const legalLastUpdated = '2026-11-23';
 
 export function isSupabaseConfigured(): boolean {
   return Boolean(

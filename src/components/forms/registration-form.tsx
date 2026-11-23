@@ -9,6 +9,8 @@ import { Link } from '@/i18n/navigation';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { submitRegistration, type RegistrationState } from '@/lib/actions';
+import { siteConfig } from '@/lib/config';
+import { normalizeTelegramContact } from '@/lib/telegram-contact';
 import type { AgeGroup } from '@/lib/types';
 import { cn, formatPrice } from '@/lib/utils';
 
@@ -46,6 +48,12 @@ export function RegistrationForm({
     lastName: z.string().trim().min(1, t('errors.lastName')),
     email: z.string().trim().email(t('errors.email')),
     phone: z.string().trim().optional(),
+    telegramContact: z
+      .string()
+      .refine(
+        (value) => normalizeTelegramContact(value) !== null,
+        t('errors.telegramContact')
+      ),
     participantName: separateParticipant
       ? z.string().trim().min(1, t('errors.participantName'))
       : z.string().trim().optional(),
@@ -70,6 +78,8 @@ export function RegistrationForm({
     formData.set('lastName', values.lastName);
     formData.set('email', values.email);
     formData.set('phone', values.phone ?? '');
+    formData.set('telegramContact', values.telegramContact);
+    formData.set('agreement', values.agreement ? 'on' : '');
     formData.set('locale', locale);
     formData.set('plan', plan);
     formData.set('participantName', values.participantName ?? '');
@@ -94,10 +104,39 @@ export function RegistrationForm({
         className="rounded-card border border-border bg-card p-8"
         role="status"
       >
-        <h2 className="text-2xl font-semibold">{t('successTitle')}</h2>
+        <h2 className="text-2xl font-semibold">
+          {result.paymentUrl ? t('successTitle') : t('successNoPaymentTitle')}
+        </h2>
         <p className="mt-3 leading-relaxed text-muted-foreground">
-          {t('successText')}
+          {result.paymentUrl ? t('successText') : t('successNoPaymentText')}
         </p>
+        {/*
+          No payment link yet for this group. The old screen promised a
+          redirect that never came; this one says what actually happens
+          and how to reach a person.
+        */}
+        {!result.paymentUrl && (
+          <div className="mt-5 flex flex-wrap gap-3">
+            <a
+              href={siteConfig.telegramUrl}
+              className={buttonVariants({ variant: 'accent' })}
+            >
+              Telegram
+            </a>
+            <a
+              href={siteConfig.whatsappUrl}
+              className={buttonVariants({ variant: 'outline' })}
+            >
+              WhatsApp
+            </a>
+            <a
+              href={`mailto:${siteConfig.contactEmail}`}
+              className={buttonVariants({ variant: 'outline' })}
+            >
+              {siteConfig.contactEmail}
+            </a>
+          </div>
+        )}
         {result.paymentUrl && (
           <>
             <p className="mt-3 text-sm text-muted-foreground">
@@ -197,6 +236,36 @@ export function RegistrationForm({
             placeholder={t('phonePlaceholder')}
             {...register('phone')}
           />
+        </div>
+
+        <div className="sm:col-span-2">
+          <label
+            htmlFor="telegramContact"
+            className="mb-1.5 block text-sm font-medium"
+          >
+            {t('telegramContact')}
+          </label>
+          <Input
+            id="telegramContact"
+            autoComplete="off"
+            autoCapitalize="none"
+            spellCheck={false}
+            placeholder={t('telegramContactPlaceholder')}
+            aria-invalid={Boolean(errors.telegramContact)}
+            aria-describedby="telegramContact-hint"
+            {...register('telegramContact')}
+          />
+          <p
+            id="telegramContact-hint"
+            className="mt-1.5 text-sm text-muted-foreground"
+          >
+            {t('telegramContactHint')}
+          </p>
+          {errors.telegramContact && (
+            <p role="alert" className="mt-1.5 text-sm text-red-500">
+              {errors.telegramContact.message}
+            </p>
+          )}
         </div>
       </div>
 
@@ -322,6 +391,15 @@ export function RegistrationForm({
             {errors.agreement.message}
           </p>
         )}
+        <p className="mt-3 pl-7 text-sm leading-relaxed text-muted-foreground">
+          {t.rich('refundNote', {
+            terms: (chunks) => (
+              <Link href="/terms" className="underline hover:text-foreground" target="_blank">
+                {chunks}
+              </Link>
+            )
+          })}
+        </p>
       </div>
 
       {result.status === 'error' && (

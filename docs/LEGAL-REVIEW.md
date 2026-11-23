@@ -80,6 +80,27 @@ since the site does not collect one. The cancellation clause (A4) still
 asks for an identification number in a *cancellation notice*, which is
 left as drafted.
 
+### A4. 24-hour refund after the first lesson (Terms → "Cancellation and Refund Policy")
+
+**Added 2026-11-23 at the business's request.** A student who finds the
+course is not for them may ask for a refund in writing within 24 hours of
+the end of the first lesson, and gets the amount paid back less the cost
+of one lesson.
+
+**How it is framed:** as a commercial guarantee *on top of* the statutory
+cancellation rights, which stay word for word as before. It explicitly
+says it does not limit the Consumer Protection Law.
+
+**For counsel:** (1) whether "the cost of one lesson" needs to be a stated
+figure rather than derivable from the monthly price; (2) how it interacts
+with the 7-business-days-before-start condition for scheduled services —
+this guarantee runs *after* the start, so the two do not overlap, but a
+reader may read them as contradicting; (3) whether the same sentence on
+the registration form and in the FAQ is sufficient disclosure.
+
+Registrations now record the terms version agreed to (`legalLastUpdated`
+in `src/lib/config.ts`), so bump that date whenever this text changes.
+
 ---
 
 ## B. Placeholders you must fill

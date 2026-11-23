@@ -89,7 +89,7 @@ export const courses: Course[] = [
     currency: 'ILS',
     imageUrl:
       'https://images.unsplash.com/photo-1547448415-e9f5b28e570d?w=1200&q=80',
-    publicTelegramUrl: 'https://t.me/invertedforest',
+    publicTelegramUrl: null,
     status: 'published',
     featured: true,
     title: { ru: 'Средневековая Россия', en: 'Medieval Russia' },
@@ -188,7 +188,7 @@ export const courses: Course[] = [
     currency: 'ILS',
     imageUrl:
       'https://images.unsplash.com/photo-1555993539-1732b0258235?w=1200&q=80',
-    publicTelegramUrl: 'https://t.me/invertedforest',
+    publicTelegramUrl: null,
     status: 'published',
     featured: true,
     title: { ru: 'Древняя Греция', en: 'Ancient Greece' },
@@ -287,7 +287,7 @@ export const courses: Course[] = [
     currency: 'ILS',
     imageUrl:
       'https://images.unsplash.com/photo-1564399579883-451a5d44ec08?w=1200&q=80',
-    publicTelegramUrl: 'https://t.me/invertedforest',
+    publicTelegramUrl: null,
     status: 'published',
     featured: true,
     title: { ru: 'Греческая философия', en: 'Greek Philosophy' },
@@ -386,7 +386,7 @@ export const courses: Course[] = [
     currency: 'ILS',
     imageUrl:
       'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=1200&q=80',
-    publicTelegramUrl: 'https://t.me/invertedforest',
+    publicTelegramUrl: null,
     status: 'published',
     featured: false,
     title: { ru: 'Рассвет человечества', en: 'The Dawn of Humanity' },
@@ -485,7 +485,7 @@ export const courses: Course[] = [
     currency: 'ILS',
     imageUrl:
       'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1200&q=80',
-    publicTelegramUrl: 'https://t.me/invertedforest',
+    publicTelegramUrl: null,
     status: 'published',
     featured: false,
     title: {
@@ -587,7 +587,7 @@ export const courses: Course[] = [
     currency: 'ILS',
     imageUrl:
       'https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=1200&q=80',
-    publicTelegramUrl: 'https://t.me/invertedforest',
+    publicTelegramUrl: null,
     status: 'published',
     featured: true,
     title: {
@@ -689,7 +689,7 @@ export const courses: Course[] = [
     currency: 'ILS',
     imageUrl:
       'https://images.unsplash.com/photo-1520106212299-d99c443e4568?w=1200&q=80',
-    publicTelegramUrl: 'https://t.me/invertedforest',
+    publicTelegramUrl: null,
     status: 'published',
     featured: false,
     title: {
@@ -791,7 +791,7 @@ export const courses: Course[] = [
     currency: 'ILS',
     imageUrl:
       'https://images.unsplash.com/photo-1547989453-2b26e4c85d2b?w=1200&q=80',
-    publicTelegramUrl: 'https://t.me/invertedforest',
+    publicTelegramUrl: null,
     status: 'published',
     featured: false,
     title: {
@@ -893,7 +893,7 @@ export const courses: Course[] = [
     currency: 'ILS',
     imageUrl:
       'https://images.unsplash.com/photo-1513326738677-b964603b136d?w=1200&q=80',
-    publicTelegramUrl: 'https://t.me/invertedforest',
+    publicTelegramUrl: null,
     status: 'published',
     featured: false,
     title: {
@@ -1335,6 +1335,7 @@ export const demoStudents: Student[] = [
     phone: '+972 50 000 0001',
     locale: 'ru',
     notes: null,
+    telegramContact: null,
     createdAt: '2026-06-28T10:15:00Z'
   },
   {
@@ -1345,6 +1346,7 @@ export const demoStudents: Student[] = [
     phone: null,
     locale: 'en',
     notes: null,
+    telegramContact: null,
     createdAt: '2026-06-30T18:40:00Z'
   },
   {
@@ -1355,6 +1357,7 @@ export const demoStudents: Student[] = [
     phone: '+972 54 000 0003',
     locale: 'ru',
     notes: null,
+    telegramContact: null,
     createdAt: '2026-07-02T09:05:00Z'
   },
   {
@@ -1365,6 +1368,7 @@ export const demoStudents: Student[] = [
     phone: '+972 52 000 0004',
     locale: 'ru',
     notes: null,
+    telegramContact: null,
     createdAt: '2026-07-05T20:22:00Z'
   }
 ];
