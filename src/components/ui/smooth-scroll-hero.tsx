@@ -41,7 +41,7 @@ interface SmoothScrollHeroProps {
   mobileImage?: string;
   initialClipPercentage?: number;
   finalClipPercentage?: number;
-  /** Small nudge in the corner, shown before the reader has scrolled. */
+  /** Shown at the centre, where the image is about to open, until scrolling starts. */
   scrollHint?: string;
   children?: React.ReactNode;
   className?: string;
@@ -110,8 +110,17 @@ export function SmoothScrollHero({
   );
   const veilOpacity = useTransform(scrollY, [copyFrom, copyTo], [0, 1]);
 
-  // The hint has done its job as soon as scrolling starts.
-  const hintOpacity = useTransform(scrollY, [0, 200], [1, 0]);
+  /*
+   * The hint sits at the exact point the image opens from, wrapped in a
+   * faint glow — the light on the water the palette is named after. It
+   * melts while the window opens rather than vanishing at the first
+   * pixel: fading, growing a little and blurring over the first half of
+   * the opening, so the glow reads as becoming the picture.
+   */
+  const hintEnd = imageDone * 0.55;
+  const hintOpacity = useTransform(scrollY, [0, hintEnd], [1, 0]);
+  const hintScale = useTransform(scrollY, [0, hintEnd], [1, 1.12]);
+  const hintBlur = useTransform(scrollY, [0, hintEnd], ['blur(0px)', 'blur(8px)']);
 
   const mobile = mobileImage ?? desktopImage;
 
@@ -174,21 +183,31 @@ export function SmoothScrollHero({
         {scrollHint && !reduce && (
           <motion.div
             aria-hidden
-            style={{ opacity: hintOpacity }}
-            /*
-             * bottom-24, not bottom-8: the sticky header occupies 4rem of
-             * normal flow, so before the hero sticks its foot sits that far
-             * below the fold. Clearing the header height keeps the hint on
-             * screen at rest, which is the only moment it is needed.
-             */
-            className="pointer-events-none absolute bottom-24 right-8 flex items-center gap-3 text-xs uppercase tracking-widest text-paper/60"
+            style={{ opacity: hintOpacity, scale: hintScale, filter: hintBlur }}
+            className="pointer-events-none absolute inset-0 flex items-center justify-center"
           >
-            {scrollHint}
-            <motion.span
-              className="block h-8 w-px origin-top bg-paper/40"
-              animate={{ scaleY: [0.3, 1, 0.3], opacity: [0.3, 1, 0.3] }}
-              transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
-            />
+            <div className="relative flex flex-col items-center">
+              {/* The glow: a soft ellipse of warm light that slowly breathes.
+                  Centred through x/y rather than translate classes, which
+                  the breathing scale would otherwise overwrite. */}
+              <motion.span
+                className="absolute left-1/2 top-1/2 h-56 w-80 rounded-full bg-[radial-gradient(ellipse_at_center,rgb(199_187_116/0.28),rgb(199_187_116/0.08)_45%,transparent_70%)] blur-2xl"
+                style={{ x: '-50%', y: '-50%' }}
+                animate={{ opacity: [0.6, 1, 0.6], scale: [0.94, 1.06, 0.94] }}
+                transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
+              />
+              {/* pl- balances the trailing letter-spacing, so the word
+                  centres on its letters rather than on its box. */}
+              <span className="relative pl-[0.4em] text-xs font-medium uppercase tracking-[0.4em] text-glow/90 [text-shadow:0_0_16px_rgb(199_187_116/0.55)]">
+                {scrollHint}
+              </span>
+              {/* The trail: a thread of light running down from the word. */}
+              <motion.span
+                className="relative mt-4 block h-12 w-px origin-top bg-gradient-to-b from-glow/80 to-transparent"
+                animate={{ scaleY: [0.35, 1, 0.35], opacity: [0.4, 1, 0.4] }}
+                transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
+              />
+            </div>
           </motion.div>
         )}
       </div>
