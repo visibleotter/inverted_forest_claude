@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Inter, Playfair_Display } from 'next/font/google';
+import { Inter, Literata } from 'next/font/google';
 import { notFound } from 'next/navigation';
 import { NextIntlClientProvider } from 'next-intl';
 import {
@@ -18,10 +18,13 @@ const inter = Inter({
   display: 'swap'
 });
 
-const playfair = Playfair_Display({
+// A book face drawn for long reading on screens, with a proper Cyrillic.
+// Variable, so the optical-size axis tightens headings and opens text.
+const literata = Literata({
   subsets: ['latin', 'cyrillic'],
-  variable: '--font-display',
-  display: 'swap'
+  variable: '--font-serif',
+  display: 'swap',
+  axes: ['opsz']
 });
 
 export function generateStaticParams() {
@@ -73,7 +76,7 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
-      className={`${inter.variable} ${playfair.variable}`}
+      className={`${inter.variable} ${literata.variable}`}
     >
       <body>
         <NextIntlClientProvider messages={messages}>

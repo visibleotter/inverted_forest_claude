@@ -13,6 +13,10 @@ const config: Config = {
         moss: '#3D6552',    // mid willow green — secondary text on light
         fern: '#2A4A3A',    // deeper willow — primary and accent on light
         forest: '#16281F',  // darkest willow shadow — dark surfaces, body text
+        // The one approved exception (2026-11-23): form errors only.
+        // The palette has no colour that reads as "wrong", and stock red
+        // failed contrast at 3.5:1. Brick on paper is 6.4:1.
+        brick: '#8E3B2F',
 
         // Semantic tokens (CSS-variable driven)
         background: 'rgb(var(--background) / <alpha-value>)',
@@ -25,18 +29,26 @@ const config: Config = {
         primary: 'rgb(var(--primary) / <alpha-value>)',
         'primary-foreground': 'rgb(var(--primary-foreground) / <alpha-value>)',
         accent: 'rgb(var(--accent) / <alpha-value>)',
-        'accent-foreground': 'rgb(var(--accent-foreground) / <alpha-value>)'
+        'accent-foreground': 'rgb(var(--accent-foreground) / <alpha-value>)',
+        input: 'rgb(var(--input) / <alpha-value>)',
+        destructive: 'rgb(var(--destructive) / <alpha-value>)'
       },
       fontFamily: {
-        display: ['var(--font-display)', 'Georgia', 'serif'],
+        // Literata for headings and running text, Inter for interface.
+        // `display` stays as an alias so older markup keeps resolving.
+        serif: ['var(--font-serif)', '"PT Serif"', 'Georgia', 'serif'],
+        display: ['var(--font-serif)', '"PT Serif"', 'Georgia', 'serif'],
         sans: ['var(--font-sans)', 'system-ui', 'sans-serif']
       },
       maxWidth: {
-        content: '1200px'
+        content: '1120px',
+        // Running text: about 64 characters of Literata at 18px.
+        prose: '40rem'
       },
       borderRadius: {
-        card: '12px',
-        btn: '8px'
+        // Squared, bookish: buttons and fields 2px, artwork none.
+        card: '2px',
+        btn: '2px'
       },
       keyframes: {
         'fade-up': {

@@ -16,6 +16,7 @@ and do not carry brand colours in from copied components — adapt them.
 | `moss`   | `#3D6552` | Mid willow. Secondary text **on light** |
 | `fern`   | `#2A4A3A` | Deeper willow. Primary and accent **on light** |
 | `forest` | `#16281F` | Darkest willow shadow. Dark surfaces; body text on light |
+| `brick`  | `#8E3B2F` | **Form errors only.** The one approved exception (2026-11-23): the palette has no colour that reads as "wrong". 6.4:1 on paper |
 
 ### Contrast rules that follow from the palette
 
@@ -27,6 +28,17 @@ Measured, not opinion:
 - Safe pairings: `forest` on `paper` (13.4), `paper` on `forest` (13.4),
   `fern` on `paper` (8.5), `glow` on `forest` (8.0), `sage` on `forest`
   (6.6), `moss` on `paper` (5.7).
+
+### Typography and surfaces
+
+Two faces, both with full Cyrillic: **Literata** for headings and running
+text, **Inter** for interface (buttons, fields, prices, captions). No
+capitals for labels, no gradients, no shadows, no decorative icons. Radius
+2px on buttons and fields, none on artwork. Spacing on an 8px step.
+Course images are public-domain paintings shown in a paper mat with a
+museum-style caption (`CourseArt`). Tokens live in
+`src/styles/globals.css` and `tailwind.config.ts`; nothing else defines a
+colour.
 
 ### How the surface flip is implemented
 
