@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { FadeIn } from '@/components/ui/fade-in';
 import { CourseCard } from '@/components/marketing/course-card';
 import { getData } from '@/lib/data';
 
@@ -26,22 +25,26 @@ export default async function CoursesPage({
   const courses = await getData().getCourses();
 
   return (
-    <div className="container-content py-16 sm:py-20">
-      <FadeIn className="max-w-2xl">
-        <h1 className="text-balance text-4xl font-semibold sm:text-5xl">
+    <div className="container-content pb-20 pt-10 sm:pt-16">
+      <div className="max-w-prose">
+        <h1 className="text-balance text-[34px] leading-[1.15] sm:text-[46px]">
           {t('title')}
         </h1>
-        <p className="mt-4 text-lg text-muted-foreground">{t('intro')}</p>
-      </FadeIn>
+        <p className="text-body mt-4 text-muted-foreground">{t('intro')}</p>
+      </div>
 
       {courses.length === 0 ? (
-        <p className="mt-16 text-muted-foreground">{t('empty')}</p>
+        <p className="mt-12 text-muted-foreground">{t('empty')}</p>
       ) : (
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-12 grid gap-16 border-t border-border pt-12 sm:grid-cols-2 sm:gap-x-12">
           {courses.map((course, i) => (
-            <FadeIn key={course.id} delay={(i % 3) * 0.08}>
-              <CourseCard course={course} />
-            </FadeIn>
+            <CourseCard
+              key={course.id}
+              course={course}
+              priority={i < 2}
+              withDescription
+              sizes="(max-width: 720px) 100vw, 50vw"
+            />
           ))}
         </div>
       )}

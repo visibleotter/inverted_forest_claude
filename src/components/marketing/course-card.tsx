@@ -15,10 +15,15 @@ import { formatPrice, lt } from '@/lib/utils';
  */
 export async function CourseCard({
   course,
-  priority
+  priority,
+  withDescription,
+  sizes = '(max-width: 720px) 100vw, (max-width: 1120px) 50vw, 25vw'
 }: {
   course: Course;
   priority?: boolean;
+  /** The catalogue has room for the one-line summary; the home page not. */
+  withDescription?: boolean;
+  sizes?: string;
 }) {
   const locale = (await getLocale()) as Locale;
   const t = await getTranslations('courses');
@@ -41,7 +46,7 @@ export async function CourseCard({
         alt={title}
         locale={locale}
         priority={priority}
-        sizes="(max-width: 720px) 100vw, (max-width: 1120px) 50vw, 25vw"
+        sizes={sizes}
       />
       <h3 className="mt-4 text-[21px] leading-snug underline-offset-4 group-hover:underline">
         {title}
@@ -50,6 +55,11 @@ export async function CourseCard({
         {ages} · {t('months', { count: course.durationMonths })} ·{' '}
         {formatPrice(course.monthlyPrice, course.currency, locale)} {t('perMonth')}
       </p>
+      {withDescription && (
+        <p className="text-body mt-2 text-muted-foreground">
+          {lt(course.shortDescription, locale)}
+        </p>
+      )}
     </Link>
   );
 }
