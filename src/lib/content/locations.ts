@@ -266,8 +266,8 @@ export const contentPlaces: ContentPlace[] = [
       {
         id: 'after',
         title: s('Что будет после оплаты', 'What happens after payment'),
-        hint: s('Три пункта под расписанием. Тот же смысл повторяется на странице регистрации', 'Three points below the schedule. The same promise is repeated on the registration page'),
-        keys: ['afterPaymentTitle', 'afterPayment1', 'afterPayment2', 'afterPayment3']
+        hint: s('Два пункта под расписанием. Тот же смысл повторяется на странице регистрации', 'Two points below the schedule. The same promise is repeated on the registration page'),
+        keys: ['afterPaymentTitle', 'afterPayment1', 'afterPayment2']
       },
       {
         id: 'legacy',
@@ -321,7 +321,7 @@ export const contentPlaces: ContentPlace[] = [
       {
         id: 'success',
         title: s('Экран перед переходом к оплате', 'The screen before payment'),
-        keys: ['successTitle', 'successText', 'successManual', 'goToPayment', 'afterPayment', 'afterPayment1', 'afterPayment2', 'afterPayment3']
+        keys: ['successTitle', 'successText', 'successManual', 'goToPayment', 'afterPayment', 'afterPayment1', 'afterPayment2']
       },
       {
         id: 'noPayment',

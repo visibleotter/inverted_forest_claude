@@ -129,7 +129,7 @@ export default async function RegisterPage({
               <div className="mt-6 rounded-btn bg-muted/60 p-4">
                 <p className="text-sm font-semibold">{t('afterPayment')}</p>
                 <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-                  {[1, 2, 3].map((i) => (
+                  {[1, 2].map((i) => (
                     <li key={i} className="flex items-start gap-2.5">
                       <Check
                         className="mt-0.5 h-4 w-4 shrink-0 text-accent"

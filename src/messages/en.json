@@ -3,11 +3,11 @@
     "siteName": "Inverted Forest",
     "home": {
       "title": "Inverted Forest — History & Philosophy Online",
-      "description": "Live online courses in history, philosophy and literature, in Russian and English. From Ancient Greece to Medieval Russia."
+      "description": "Live online courses in history, philosophy and mythology, taught in Russian. From the first myths to Greek philosophy."
     },
     "courses": {
       "title": "Courses",
-      "description": "All Inverted Forest courses: history, philosophy, literature and anthropology. Live classes in small groups."
+      "description": "All Inverted Forest courses: history, philosophy and mythology. Live classes in small groups."
     },
     "about": {
       "title": "About",
@@ -47,7 +47,7 @@
   "home": {
     "heroEyebrow": "History & philosophy courses online",
     "heroTitle": "Explore History & Philosophy",
-    "heroSubtitle": "Live courses for adults and children — from Ancient Greece to Medieval Russia. Learn to think deeper, question more, and see the past anew.",
+    "heroSubtitle": "Live courses for adults and teens — from the first myths to Greek philosophy. Learn to think deeper, question more, and see the past anew.",
     "heroCtaPrimary": "Explore Courses",
     "scrollHint": "Scroll",
     "manifestoTitle": "A quiet library in the middle of a forest",
@@ -59,11 +59,11 @@
     "why1Title": "Expert-Led",
     "why1Text": "Each course is crafted and taught by a passionate historian and philosopher with years of teaching experience.",
     "why2Title": "For All Ages",
-    "why2Text": "Separate groups for adults, teens and children — everyone explores history and ideas at their own level.",
+    "why2Text": "Separate groups for adults and teens — everyone explores history and ideas at their own level.",
     "why3Title": "Live & Interactive",
-    "why3Text": "Classes happen live on Zoom, with questions and discussion. Recordings are yours to keep.",
+    "why3Text": "Classes happen live on Google Meet, with questions and discussion.",
     "why4Title": "Community",
-    "why4Text": "Every group has its own private Telegram channel with materials, recordings and lively discussion between classes.",
+    "why4Text": "A private Telegram channel for each group: class links and announcements.",
     "howTitle": "How learning works",
     "how1Title": "Choose a course and a group",
     "how1Text": "Each course runs 2–3 months in several groups — pick the day and time that suit you.",
@@ -72,7 +72,7 @@
     "how3Title": "Get Telegram access",
     "how3Text": "Right after payment you automatically receive a personal invite to your group's private channel.",
     "how4Title": "Learn live",
-    "how4Text": "We meet on Zoom every week. Missed a class? The recording is already waiting in the channel.",
+    "how4Text": "We meet on Google Meet every week. Missed a class? We will send you the recording on request.",
     "testimonialsTitle": "What our students say",
     "testimonial1": "These aren't lectures — they're journeys. After the Ancient Greece course I went to Athens and saw the city with completely different eyes.",
     "testimonial1Author": "Anna, “Ancient Greece”",
@@ -92,7 +92,7 @@
   },
   "courses": {
     "title": "Our Courses",
-    "intro": "Thoughtfully designed courses in history, philosophy, literature and anthropology. Live classes in small groups, monthly billing, recordings for all participants.",
+    "intro": "Thoughtfully designed courses in history, philosophy and mythology. Live classes in small groups, monthly billing.",
     "viewCourse": "View Course",
     "close": "Close",
     "perMonth": "per month",
@@ -126,8 +126,8 @@
     "moduleLabel": "Module {number}",
     "teacherTitle": "Your teacher",
     "formatTitle": "Teaching format",
-    "format1": "Live Zoom sessions once a week, 60–90 minutes",
-    "format2": "Private group Telegram channel: recordings, materials, discussion",
+    "format1": "Live Google Meet sessions once a week, 60–90 minutes",
+    "format2": "Private group Telegram channel: class links and announcements",
     "format3": "Small groups — up to 7 people, everyone has a voice",
     "format4": "Monthly billing through a secure payment page",
     "scheduleTitle": "Schedule & groups",
@@ -161,14 +161,13 @@
     "timezoneNote": "Times are given in Israel time.",
     "holidaysNote": "Classes move around public holidays — the change is announced in the group channel.",
     "audience": {
-      "children": "For children and teens",
-      "childrenNote": "An adult signs up. The Telegram invite goes to their inbox.",
+      "children": "For teens",
+      "childrenNote": "An adult signs up. We send the channel invite to them on Telegram.",
       "adults": "For adults"
     },
     "afterPaymentTitle": "What happens after payment",
-    "afterPayment1": "A confirmation email",
-    "afterPayment2": "A personal link to your group’s private Telegram channel",
-    "afterPayment3": "The class link — in the channel, before every session"
+    "afterPayment1": "We message you on Telegram with a link to the group’s private channel",
+    "afterPayment2": "In the channel: the class link before each session, and notice of any reschedules"
   },
   "register": {
     "title": "Registration",
@@ -202,13 +201,12 @@
     "groupFull": "Unfortunately this group is already full. Please choose another group.",
     "backToCourse": "Back to the course",
     "successTitle": "You're almost in the forest!",
-    "successText": "We've received your registration. You will now be redirected to the payment page. Right after payment, a personal Telegram invite will arrive in your inbox.",
+    "successText": "We have your registration. You will now be redirected to the payment page. After payment we will message you on Telegram with an invite to the group’s private channel.",
     "successManual": "If the redirect didn't work, use the button below.",
     "goToPayment": "Go to payment",
     "afterPayment": "What happens after payment?",
-    "afterPayment1": "Payment confirmation by email",
-    "afterPayment2": "A personal one-time invite link to your group's private Telegram channel",
-    "afterPayment3": "Zoom link and all materials — inside the channel",
+    "afterPayment1": "We message you on Telegram with a link to the group’s private channel",
+    "afterPayment2": "In the channel: the class link before each session, and notice of any reschedules",
     "planTitle": "How would you like to pay",
     "planMonthly": "Monthly",
     "planMonthlyNote": "Charged once a month, {months} times. Card entered once; the subscription ends with the course on its own.",
@@ -216,7 +214,7 @@
     "planFullNote": "One payment for all {months} months. Nothing to remember later.",
     "participantTitle": "Who is attending",
     "participantName": "Student's full name",
-    "participantNameHint": "Filled in by the adult who pays. The Telegram invite goes to your inbox.",
+    "participantNameHint": "Filled in by the adult who pays. We send the channel invite to them on Telegram.",
     "participantBirthYear": "Year of birth",
     "telegramContact": "Telegram — username or phone number",
     "telegramContactPlaceholder": "@username or +972 54 123 4567",
@@ -236,7 +234,7 @@
     "intro": "Inverted Forest offers online courses in history and philosophy for Russian-speaking students around the world.",
     "storyTitle": "Our story",
     "story1": "Inverted Forest began with a simple idea: serious humanities education can be alive, accessible and engaging — without dumbing down and without academic dryness.",
-    "story2": "Today it is a set of courses in history, philosophy, literature and anthropology, where adults, teens and children study in small groups, read primary sources and learn to ask questions.",
+    "story2": "Today it is a set of courses in history, philosophy and mythology, where adults and teens study in small groups, read primary sources and learn to ask questions.",
     "story3": "The name refers to an inverted forest — a literary image of trees whose roots reach for the sky: knowledge grows from the depths of the past and nourishes the present.",
     "valuesTitle": "Our principles",
     "value1Title": "Depth without snobbery",
@@ -255,11 +253,11 @@
     "items": [
       {
         "q": "How are classes held?",
-        "a": "Classes are held live on Zoom or Google Meet, once a week, 60–90 minutes. These are not pre-recorded lectures: you can ask questions and join the discussion."
+        "a": "Classes are held live on Google Meet, once a week, 60–90 minutes. These are not pre-recorded lectures: you can ask questions and join the discussion."
       },
       {
         "q": "What if I miss a class?",
-        "a": "All sessions are recorded. Recordings are posted in your group's private Telegram channel within 24 hours and stay available until the end of the course."
+        "a": "Write to us and we will send you the recording of that class."
       },
       {
         "q": "How does payment work?",
@@ -267,15 +265,15 @@
       },
       {
         "q": "How do I get access to the group's Telegram channel?",
-        "a": "Automatically: right after payment, a personal one-time invite link arrives by email. The link is valid for 7 days and works only once."
+        "a": "After payment we message you on Telegram with a personal link to the group’s private channel."
       },
       {
         "q": "What language are classes taught in?",
         "a": "The main language of instruction is Russian. Selected groups and materials are available in English — this is indicated on the course page."
       },
       {
-        "q": "Is the course suitable for my child?",
-        "a": "We run separate children's and teens' groups with an adapted programme. Age groups are listed on each course page."
+        "q": "Is the course suitable for a teenager?",
+        "a": "We run separate teens’ groups with an adapted programme. Age groups are listed on each course page."
       },
       {
         "q": "Do I need any prior knowledge?",
@@ -342,7 +340,7 @@
   "portal": {
     "title": "Student Portal",
     "comingSoon": "The student portal is coming soon",
-    "comingSoonText": "Your courses, payments, Zoom and Telegram links, homework and certificates will live here. For now, everything you need is in your group's Telegram channel.",
+    "comingSoonText": "Your courses, payments and class links will live here. For now, everything you need is in your group’s Telegram channel.",
     "backHome": "Back home"
   },
   "admin": {

@@ -1,0 +1,270 @@
+[   14076ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://inverted-forest-claude.vercel.app/_next/image?url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1518709268805-4e9042af2176%3Fw%3D1200%26q%3D80&w=384&q=75:1
+[   24930ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://inverted-forest-claude.vercel.app/_next/image?url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1518709268805-4e9042af2176%3Fw%3D1200%26q%3D80&w=640&q=75:1
+[   85876ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://inverted-forest-claude.vercel.app/api/enroll/00000000-0000-0000-0000-000000000000/status:1
+[   88134ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://inverted-forest-claude.vercel.app/api/enroll/00000000-0000-0000-0000-000000000000/status:1
+[   88965ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://inverted-forest-claude.vercel.app/ru/nope:1
+[   89002ms] Error: Minified React error #418; visit https://react.dev/errors/418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at t5 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:24671)
+    at iZ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:120536)
+    at ia (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:95163)
+    at https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91089
+    at https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91096
+    at oZ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91201)
+    at MessagePort.M (https://inverted-forest-claude.vercel.app/_next/static/chunks/2117-f61cba34d30d139a.js:1:84771)
+[   89002ms] Error: Minified React error #418; visit https://react.dev/errors/418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at t5 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:24671)
+    at iZ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:120536)
+    at ia (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:95163)
+    at https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91089
+    at https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91096
+    at oZ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91201)
+    at MessagePort.M (https://inverted-forest-claude.vercel.app/_next/static/chunks/2117-f61cba34d30d139a.js:1:84771)
+[   89004ms] Error: Minified React error #418; visit https://react.dev/errors/418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at t5 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:24671)
+    at iZ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:120536)
+    at ia (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:95163)
+    at https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91089
+    at https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91096
+    at oZ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91201)
+    at MessagePort.M (https://inverted-forest-claude.vercel.app/_next/static/chunks/2117-f61cba34d30d139a.js:1:84771)
+[   89004ms] Error: Minified React error #418; visit https://react.dev/errors/418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at t5 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:24671)
+    at iZ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:120536)
+    at ia (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:95163)
+    at https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91089
+    at https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91096
+    at oZ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91201)
+    at MessagePort.M (https://inverted-forest-claude.vercel.app/_next/static/chunks/2117-f61cba34d30d139a.js:1:84771)
+[   89004ms] Error: Minified React error #418; visit https://react.dev/errors/418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at t5 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:24671)
+    at iZ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:120536)
+    at ia (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:95163)
+    at https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91089
+    at https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91096
+    at oZ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91201)
+    at MessagePort.M (https://inverted-forest-claude.vercel.app/_next/static/chunks/2117-f61cba34d30d139a.js:1:84771)
+[   89004ms] Error: Minified React error #418; visit https://react.dev/errors/418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at t5 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:24671)
+    at iZ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:120536)
+    at ia (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:95163)
+    at https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91089
+    at https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91096
+    at oZ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91201)
+    at MessagePort.M (https://inverted-forest-claude.vercel.app/_next/static/chunks/2117-f61cba34d30d139a.js:1:84771)
+[   89004ms] Error: Minified React error #423; visit https://react.dev/errors/423 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at iZ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:118350)
+    at ia (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:95163)
+    at https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:94985
+    at il (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:94992)
+    at oJ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:92348)
+    at oZ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91767)
+    at MessagePort.M (https://inverted-forest-claude.vercel.app/_next/static/chunks/2117-f61cba34d30d139a.js:1:84771)
+[   88999ms] [ERROR] HierarchyRequestError: Failed to execute 'appendChild' on 'Node': Only one element on document allowed.
+    at e (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:84279)
+    at e (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:84438)
+    at e (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:84407)
+    at e (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:84407)
+    at e (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:84407)
+    at e (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:84407)
+    at e (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:84407)
+    at e (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:84407)
+    at e (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:84407)
+    at e (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:84407) @ https://inverted-forest-claude.vercel.app/_next/static/chunks/2117-f61cba34d30d139a.js:1
+[   88999ms] [ERROR] NotFoundError: Failed to execute 'removeChild' on 'Node': The node to be removed is not a child of this node.
+    at a2 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:76619)
+    at a1 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:76043)
+    at a2 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:77356)
+    at a1 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:76043)
+    at a2 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:77356)
+    at a1 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:76043)
+    at a2 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:77356)
+    at a1 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:76043)
+    at a2 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:77132)
+    at a1 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:76043) @ https://inverted-forest-claude.vercel.app/_next/static/chunks/2117-f61cba34d30d139a.js:1
+[   89004ms] AggregateError
+    at nb (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:27117)
+    at https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:108298
+    at is (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:108306)
+    at o1 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:92998)
+    at oZ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:92153)
+    at MessagePort.M (https://inverted-forest-claude.vercel.app/_next/static/chunks/2117-f61cba34d30d139a.js:1:84771)
+[   90963ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://inverted-forest-claude.vercel.app/favicon.ico:1
+[   93563ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://inverted-forest-claude.vercel.app/_next/image?url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1518709268805-4e9042af2176%3Fw%3D1200%26q%3D80&w=384&q=75:1
+[  101655ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://inverted-forest-claude.vercel.app/_next/image?url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1518709268805-4e9042af2176%3Fw%3D1200%26q%3D80&w=640&q=75:1
+[  140754ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://inverted-forest-claude.vercel.app/api/enroll/00000000-0000-0000-0000-000000000000/status:1
+[  142813ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://inverted-forest-claude.vercel.app/ru/nope:1
+[  142844ms] Error: Minified React error #418; visit https://react.dev/errors/418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at t5 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:24671)
+    at iZ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:120536)
+    at ia (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:95163)
+    at https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91089
+    at https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91096
+    at oZ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91201)
+    at MessagePort.M (https://inverted-forest-claude.vercel.app/_next/static/chunks/2117-f61cba34d30d139a.js:1:84771)
+[  142844ms] Error: Minified React error #418; visit https://react.dev/errors/418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at t5 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:24671)
+    at iZ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:120536)
+    at ia (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:95163)
+    at https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91089
+    at https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91096
+    at oZ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91201)
+    at MessagePort.M (https://inverted-forest-claude.vercel.app/_next/static/chunks/2117-f61cba34d30d139a.js:1:84771)
+[  142847ms] Error: Minified React error #418; visit https://react.dev/errors/418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at t5 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:24671)
+    at iZ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:120536)
+    at ia (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:95163)
+    at https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91089
+    at https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91096
+    at oZ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91201)
+    at MessagePort.M (https://inverted-forest-claude.vercel.app/_next/static/chunks/2117-f61cba34d30d139a.js:1:84771)
+[  142847ms] Error: Minified React error #418; visit https://react.dev/errors/418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at t5 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:24671)
+    at iZ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:120536)
+    at ia (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:95163)
+    at https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91089
+    at https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91096
+    at oZ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91201)
+    at MessagePort.M (https://inverted-forest-claude.vercel.app/_next/static/chunks/2117-f61cba34d30d139a.js:1:84771)
+[  142848ms] Error: Minified React error #418; visit https://react.dev/errors/418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at t5 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:24671)
+    at iZ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:120536)
+    at ia (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:95163)
+    at https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91089
+    at https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91096
+    at oZ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91201)
+    at MessagePort.M (https://inverted-forest-claude.vercel.app/_next/static/chunks/2117-f61cba34d30d139a.js:1:84771)
+[  142848ms] Error: Minified React error #418; visit https://react.dev/errors/418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at t5 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:24671)
+    at iZ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:120536)
+    at ia (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:95163)
+    at https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91089
+    at https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91096
+    at oZ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91201)
+    at MessagePort.M (https://inverted-forest-claude.vercel.app/_next/static/chunks/2117-f61cba34d30d139a.js:1:84771)
+[  142848ms] Error: Minified React error #423; visit https://react.dev/errors/423 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at iZ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:118350)
+    at ia (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:95163)
+    at https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:94985
+    at il (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:94992)
+    at oJ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:92348)
+    at oZ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91767)
+    at MessagePort.M (https://inverted-forest-claude.vercel.app/_next/static/chunks/2117-f61cba34d30d139a.js:1:84771)
+[  142837ms] [ERROR] HierarchyRequestError: Failed to execute 'appendChild' on 'Node': Only one element on document allowed.
+    at e (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:84279)
+    at e (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:84438)
+    at e (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:84407)
+    at e (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:84407)
+    at e (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:84407)
+    at e (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:84407)
+    at e (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:84407)
+    at e (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:84407)
+    at e (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:84407)
+    at e (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:84407) @ https://inverted-forest-claude.vercel.app/_next/static/chunks/2117-f61cba34d30d139a.js:1
+[  142839ms] [ERROR] NotFoundError: Failed to execute 'removeChild' on 'Node': The node to be removed is not a child of this node.
+    at a2 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:76619)
+    at a1 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:76043)
+    at a2 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:77356)
+    at a1 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:76043)
+    at a2 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:77356)
+    at a1 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:76043)
+    at a2 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:77356)
+    at a1 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:76043)
+    at a2 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:77132)
+    at a1 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:76043) @ https://inverted-forest-claude.vercel.app/_next/static/chunks/2117-f61cba34d30d139a.js:1
+[  142849ms] AggregateError
+    at nb (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:27117)
+    at https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:108298
+    at is (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:108306)
+    at o1 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:92998)
+    at oZ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:92153)
+    at MessagePort.M (https://inverted-forest-claude.vercel.app/_next/static/chunks/2117-f61cba34d30d139a.js:1:84771)
+[  160512ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://inverted-forest-claude.vercel.app/_next/image?url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1518709268805-4e9042af2176%3Fw%3D1200%26q%3D80&w=640&q=75:1
+[  166176ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://inverted-forest-claude.vercel.app/_next/image?url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1518709268805-4e9042af2176%3Fw%3D1200%26q%3D80&w=640&q=75:1
+[  175707ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://inverted-forest-claude.vercel.app/ru/nope:1
+[  175753ms] Error: Minified React error #418; visit https://react.dev/errors/418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at t5 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:24671)
+    at iZ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:120536)
+    at ia (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:95163)
+    at https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91089
+    at https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91096
+    at oZ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91201)
+    at MessagePort.M (https://inverted-forest-claude.vercel.app/_next/static/chunks/2117-f61cba34d30d139a.js:1:84771)
+[  175754ms] Error: Minified React error #418; visit https://react.dev/errors/418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at t5 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:24671)
+    at iZ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:120536)
+    at ia (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:95163)
+    at https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91089
+    at https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91096
+    at oZ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91201)
+    at MessagePort.M (https://inverted-forest-claude.vercel.app/_next/static/chunks/2117-f61cba34d30d139a.js:1:84771)
+[  175755ms] Error: Minified React error #418; visit https://react.dev/errors/418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at t5 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:24671)
+    at iZ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:120536)
+    at ia (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:95163)
+    at https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91089
+    at https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91096
+    at oZ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91201)
+    at MessagePort.M (https://inverted-forest-claude.vercel.app/_next/static/chunks/2117-f61cba34d30d139a.js:1:84771)
+[  175755ms] Error: Minified React error #418; visit https://react.dev/errors/418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at t5 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:24671)
+    at iZ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:120536)
+    at ia (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:95163)
+    at https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91089
+    at https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91096
+    at oZ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91201)
+    at MessagePort.M (https://inverted-forest-claude.vercel.app/_next/static/chunks/2117-f61cba34d30d139a.js:1:84771)
+[  175755ms] Error: Minified React error #418; visit https://react.dev/errors/418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at t5 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:24671)
+    at iZ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:120536)
+    at ia (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:95163)
+    at https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91089
+    at https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91096
+    at oZ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91201)
+    at MessagePort.M (https://inverted-forest-claude.vercel.app/_next/static/chunks/2117-f61cba34d30d139a.js:1:84771)
+[  175755ms] Error: Minified React error #418; visit https://react.dev/errors/418 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at t5 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:24671)
+    at iZ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:120536)
+    at ia (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:95163)
+    at https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91089
+    at https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91096
+    at oZ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91201)
+    at MessagePort.M (https://inverted-forest-claude.vercel.app/_next/static/chunks/2117-f61cba34d30d139a.js:1:84771)
+[  175755ms] Error: Minified React error #423; visit https://react.dev/errors/423 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at iZ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:118350)
+    at ia (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:95163)
+    at https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:94985
+    at il (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:94992)
+    at oJ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:92348)
+    at oZ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:91767)
+    at MessagePort.M (https://inverted-forest-claude.vercel.app/_next/static/chunks/2117-f61cba34d30d139a.js:1:84771)
+[  175741ms] [ERROR] HierarchyRequestError: Failed to execute 'appendChild' on 'Node': Only one element on document allowed.
+    at e (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:84279)
+    at e (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:84438)
+    at e (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:84407)
+    at e (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:84407)
+    at e (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:84407)
+    at e (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:84407)
+    at e (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:84407)
+    at e (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:84407)
+    at e (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:84407)
+    at e (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:84407) @ https://inverted-forest-claude.vercel.app/_next/static/chunks/2117-f61cba34d30d139a.js:1
+[  175741ms] [ERROR] NotFoundError: Failed to execute 'removeChild' on 'Node': The node to be removed is not a child of this node.
+    at a2 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:76619)
+    at a1 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:76043)
+    at a2 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:77356)
+    at a1 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:76043)
+    at a2 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:77356)
+    at a1 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:76043)
+    at a2 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:77356)
+    at a1 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:76043)
+    at a2 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:77132)
+    at a1 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:76043) @ https://inverted-forest-claude.vercel.app/_next/static/chunks/2117-f61cba34d30d139a.js:1
+[  175756ms] AggregateError
+    at nb (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:27117)
+    at https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:108298
+    at is (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:108306)
+    at o1 (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:92998)
+    at oZ (https://inverted-forest-claude.vercel.app/_next/static/chunks/fd9d1056-99fa35ef89615e3a.js:1:92153)
+    at MessagePort.M (https://inverted-forest-claude.vercel.app/_next/static/chunks/2117-f61cba34d30d139a.js:1:84771)
+[  211182ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://inverted-forest-claude.vercel.app/_next/image?url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1518709268805-4e9042af2176%3Fw%3D1200%26q%3D80&w=384&q=75:1
+[  219831ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://inverted-forest-claude.vercel.app/_next/image?url=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1518709268805-4e9042af2176%3Fw%3D1200%26q%3D80&w=384&q=75:1
