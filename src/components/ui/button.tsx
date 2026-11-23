@@ -16,7 +16,9 @@ const buttonVariants = cva(
           'border border-input bg-transparent hover:bg-muted text-foreground',
         ghost: 'hover:bg-muted text-foreground',
         // The secondary action: a quiet underlined link, not a second button.
-        link: 'h-auto px-0 text-accent underline underline-offset-4 decoration-1 hover:decoration-2'
+        // `!` because sizes are applied after variants and would otherwise
+        // give a link a button's height and padding.
+        link: '!h-auto !px-0 text-accent underline underline-offset-4 decoration-1 hover:decoration-2'
       },
       size: {
         sm: 'h-10 px-4 text-sm',
@@ -24,13 +26,6 @@ const buttonVariants = cva(
         lg: 'h-12 px-8 text-base'
       }
     },
-    // A link has no box: undo the size's height and padding, which would
-    // otherwise win because sizes are applied after variants.
-    compoundVariants: [
-      { variant: 'link', size: 'sm', class: 'h-auto px-0' },
-      { variant: 'link', size: 'md', class: 'h-auto px-0' },
-      { variant: 'link', size: 'lg', class: 'h-auto px-0' }
-    ],
     defaultVariants: {
       variant: 'primary',
       size: 'md'

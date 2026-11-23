@@ -48,11 +48,11 @@
     "heroEyebrow": "History & philosophy courses online",
     "heroTitle": "Explore History & Philosophy",
     "heroSubtitle": "Live courses for adults and teens — from the first myths to Greek philosophy. Learn to think deeper, question more, and see the past anew.",
-    "heroCtaPrimary": "Explore Courses",
+    "heroCtaPrimary": "Choose a course",
     "scrollHint": "Scroll",
     "manifestoTitle": "A quiet library in the middle of a forest",
     "manifesto": "We believe history and philosophy are not luxuries but essential tools for understanding ourselves and the world. Our classes are a slow, attentive reading of the past among kindred spirits: no rush, no shallowness, with respect for the sources and for your questions.",
-    "featuredTitle": "Featured Courses",
+    "featuredTitle": "Courses",
     "featuredSubtitle": "Enrollment is open — join the next cohorts",
     "allCourses": "All Courses",
     "whyTitle": "Why study with us",
@@ -88,7 +88,13 @@
     "newsletterButton": "Subscribe",
     "newsletterSuccess": "Thank you! You're subscribed.",
     "newsletterError": "Subscription failed. Please try again.",
-    "newsletterRateLimited": "Too many attempts. Please try again later."
+    "newsletterRateLimited": "Too many attempts. Please try again later.",
+    "heroCtaSecondary": "How classes work",
+    "heroImageAlt": "Claude Monet, Morning on the Seine: willows over water in the morning mist",
+    "factCourses": "{count, plural, one {# course} other {# courses}}",
+    "factGroup": "groups of up to {capacity}",
+    "factPrice": "{price} a month",
+    "factFormat": "weekly on Google Meet"
   },
   "courses": {
     "title": "Our Courses",

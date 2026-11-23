@@ -98,44 +98,33 @@ export const contentPlaces: ContentPlace[] = [
     sections: [
       {
         id: 'hero',
-        title: s('1. Первый экран', '1. Hero'),
-        hint: s('Крупная картинка, которая раскрывается при прокрутке', 'The large image that opens as you scroll'),
-        keys: ['heroEyebrow', 'heroTitle', 'heroSubtitle', 'heroCtaPrimary', 'scrollHint']
-      },
-      {
-        id: 'manifesto',
-        title: s('2. Манифест', '2. Manifesto'),
-        hint: s('Один абзац по центру, сразу под первым экраном', 'A single centred paragraph below the hero'),
-        keys: ['manifestoTitle', 'manifesto']
+        title: s('1. Первый экран', '1. First screen'),
+        hint: s('Заголовок, строка фактов и две кнопки слева, картина Моне справа. Факты (число курсов, размер группы, цена) сайт считает сам', 'Headline, a line of facts and two actions on the left, the Monet on the right. The facts (course count, group size, price) are computed'),
+        keys: ['heroEyebrow', 'heroTitle', 'heroSubtitle', 'factCourses', 'factGroup', 'factPrice', 'factFormat', 'heroCtaPrimary', 'heroCtaSecondary', 'heroImageAlt']
       },
       {
         id: 'featured',
-        title: s('3. Избранные курсы', '3. Featured courses'),
-        hint: s('Заголовок блока с карточками курсов и кнопка под ними', 'Heading above the course cards and the button below them'),
-        keys: ['featuredTitle', 'featuredSubtitle', 'allCourses']
+        title: s('2. Курсы', '2. Courses'),
+        hint: s('Заголовок над четырьмя карточками курсов', 'The heading above the four course cards'),
+        keys: ['featuredTitle']
       },
       {
-        id: 'why',
-        title: s('4. Почему мы — четыре карточки', '4. Why us — four cards'),
-        hint: s('Карточки стоят в ряд: тексты лучше держать примерно одной длины', 'The cards sit in a row: keep the texts about the same length'),
-        keys: ['whyTitle', 'why1Title', 'why1Text', 'why2Title', 'why2Text', 'why3Title', 'why3Text', 'why4Title', 'why4Text']
-      },
-      {
-        id: 'how',
-        title: s('5. Как всё устроено — четыре шага', '5. How it works — four steps'),
-        hint: s('Тёмная полоса с пронумерованными шагами', 'The dark band with numbered steps'),
-        keys: ['howTitle', 'how1Title', 'how1Text', 'how2Title', 'how2Text', 'how3Title', 'how3Text', 'how4Title', 'how4Text']
-      },
-      {
-        id: 'testimonials',
-        title: s('6. Отзывы', '6. Testimonials'),
-        keys: ['testimonialsTitle', 'testimonial1', 'testimonial1Author', 'testimonial2', 'testimonial2Author', 'testimonial3', 'testimonial3Author']
+        id: 'manifesto',
+        title: s('3. О проекте', '3. About the project'),
+        keys: ['manifestoTitle', 'manifesto']
       },
       {
         id: 'faq',
-        title: s('7. Вопросы на главной', '7. FAQ preview'),
+        title: s('4. Вопросы на главной', '4. FAQ preview'),
         hint: s('Показываются первые четыре вопроса из раздела «Вопросы и ответы»', 'Shows the first four questions from the FAQ page'),
         keys: ['faqTitle', 'faqMore']
+      },
+      {
+        id: 'retired',
+        title: s('Блоки старой главной', 'Blocks from the old home page'),
+        hint: s('Убраны при редизайне в ноябре 2026: «почему мы», шаги, отзывы, подзаголовок курсов, подсказка прокрутки', 'Removed in the November 2026 redesign: why us, steps, testimonials, courses subtitle, scroll hint'),
+        keys: ['scrollHint', 'featuredSubtitle', 'allCourses', 'why*', 'how*', 'testimonial*'],
+        hidden: true
       },
       {
         id: 'newsletter',
