@@ -173,96 +173,75 @@ export const contentPlaces: ContentPlace[] = [
   {
     namespace: 'course',
     title: s('Страница курса', 'Course page'),
-    where: s('Подписи разделов на странице любого курса. Сами тексты курса правятся в «Курсах»', 'Section headings on any course page. The course text itself is edited under Courses'),
+    where: s('Подписи на странице любого курса. Сами тексты курса правятся в «Курсах»', 'Labels on any course page. The course text itself is edited under Courses'),
     path: '/courses/{slug}',
     area: 'site',
     sections: [
       {
         id: 'top',
-        title: s('Шапка курса', 'Course header'),
-        keys: ['backToCourses', 'registerCta']
+        title: s('1. Шапка курса', '1. Course header'),
+        hint: s('Ссылка назад и строки фактов под описанием: длительность, занятия, группа, кто ведёт', 'Back link and the facts under the summary: length, classes, group, teacher'),
+        keys: ['backToCourses', 'factDuration', 'factClasses', 'factClassesValue', 'factGroup', 'factGroupValue', 'factTeacher']
+      },
+      {
+        id: 'choose',
+        title: s('2. Выбор группы и цена', '2. Group choice and price'),
+        hint: s('Заголовок над списком групп и блок цены рядом с кнопкой. На телефоне кнопка закреплена внизу экрана', 'The heading above the groups and the price box beside the button. On phones the button is pinned to the bottom'),
+        keys: ['scheduleTitle', 'priceTerms', 'priceRefund', 'joinGroup', 'registerCta', 'contactUs']
       },
       {
         id: 'about',
-        title: s('Заголовки описания', 'Description headings'),
+        title: s('3. О курсе', '3. About the course'),
         keys: ['aboutTitle', 'outcomesTitle', 'audienceTitle']
       },
       {
         id: 'format',
-        title: s('Формат обучения', 'Format block'),
+        title: s('Формат обучения', 'Format'),
         hint: s('Четыре пункта списка — одинаковые для всех курсов', 'Four bullet points — the same on every course'),
         keys: ['formatTitle', 'format1', 'format2', 'format3', 'format4', 'telegramPublic']
       },
       {
-        id: 'schedule',
-        title: s('Заголовок расписания', 'Schedule heading'),
-        hint: s('Сами карточки групп — в разделе «Расписание и слоты»', 'The slot cards themselves are in the Schedule namespace'),
-        keys: ['scheduleTitle', 'scheduleSubtitle']
-      },
-      {
-        id: 'pricing',
-        title: s('Стоимость', 'Pricing'),
-        keys: ['pricingNote']
-      },
-      {
         id: 'curriculum',
-        title: s('Программа и преподаватель', 'Curriculum and teacher'),
+        title: s('4. Программа и преподаватель', '4. Curriculum and teacher'),
         keys: ['curriculumTitle', 'moduleLabel', 'teacherTitle']
       },
       {
         id: 'faq',
-        title: s('Вопросы о курсе', 'Course FAQ'),
+        title: s('5. Вопросы о курсе', '5. Course FAQ'),
         keys: ['faqTitle']
       },
       {
         id: 'parked',
-        title: s('Заголовок «Стоимость»', 'Pricing heading'),
-        hint: s('Сейчас не выводится: у блока цены нет отдельного заголовка', 'Not rendered today: the price block has no separate heading'),
-        keys: ['pricingTitle'],
+        title: s('Не используется', 'Not in use'),
+        hint: s('Остались от старой страницы курса', 'Left over from the old course page'),
+        keys: ['pricingTitle', 'pricingNote', 'scheduleSubtitle'],
         hidden: true
       }
     ]
   },
   {
     namespace: 'schedule',
-    title: s('Расписание и слоты', 'Schedule and slots'),
-    where: s('Карточки групп на странице курса — то, из чего человек выбирает время', 'The group cards on a course page — where a student picks a time'),
+    title: s('Группы курса', 'Course groups'),
+    where: s('Строки внутри списка групп на странице курса', 'The lines inside the group list on a course page'),
     path: '/courses/{slug}',
     area: 'site',
     sections: [
       {
-        id: 'audience',
-        title: s('Разделение на детей и взрослых', 'Children and adults'),
-        hint: s('Заголовки над двумя списками слотов', 'Headings above the two lists of slots'),
-        keys: ['audience.*']
-      },
-      {
         id: 'slot',
-        title: s('Карточка слота', 'Slot card'),
-        hint: s('Кнопка, статус и подписи внутри одной карточки времени', 'The button, status and labels inside one time card'),
-        keys: ['join', 'full', 'running', 'seatsLeft', 'groupSize', 'startsOn', 'startsWhenFull', 'runningSince', 'yourTime']
-      },
-      {
-        id: 'empty',
-        title: s('Когда мест нет', 'When nothing is open'),
-        keys: ['tryInstead', 'noneOpen', 'noSlots']
+        title: s('Строка группы', 'A group row'),
+        hint: s('Под днём и временем: возраст и статус. «У вас» — время зрителя, если он не в Израиле', 'Under the day and time: audience and status. "Your time" appears for viewers outside Israel'),
+        keys: ['startsOn', 'startsWhenFull', 'runningSince', 'full', 'yourTime', 'audience.childrenNote']
       },
       {
         id: 'notes',
-        title: s('Примечания под расписанием', 'Notes under the schedule'),
-        keys: ['timezoneNote', 'holidaysNote']
-      },
-      {
-        id: 'after',
-        title: s('Что будет после оплаты', 'What happens after payment'),
-        hint: s('Два пункта под расписанием. Тот же смысл повторяется на странице регистрации', 'Two points below the schedule. The same promise is repeated on the registration page'),
-        keys: ['afterPaymentTitle', 'afterPayment1', 'afterPayment2']
+        title: s('Под списком групп', 'Under the group list'),
+        keys: ['timezoneNote', 'holidaysNote', 'noneOpen']
       },
       {
         id: 'legacy',
-        title: s('Старая таблица расписания', 'The old schedule table'),
-        hint: s('Расписание давно нарисовано карточками, эти заголовки столбцов нигде не выводятся', 'The schedule has been cards for a while; these column headings are not rendered anywhere'),
-        keys: ['group', 'day', 'time', 'starts', 'seats', 'action'],
+        title: s('От старого расписания', 'From the old schedule'),
+        hint: s('Таблица и карточки слотов заменены выбором группы; эти строки нигде не выводятся', 'The table and slot cards were replaced by the group choice; these strings are not shown anywhere'),
+        keys: ['group', 'day', 'time', 'starts', 'seats', 'action', 'join', 'running', 'seatsLeft', 'groupSize', 'tryInstead', 'noSlots', 'audience.children', 'audience.adults', 'afterPaymentTitle', 'afterPayment1', 'afterPayment2'],
         hidden: true
       }
     ]

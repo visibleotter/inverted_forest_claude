@@ -72,25 +72,18 @@ export function SlotTime({
 }: Props) {
   const t = useTranslations('schedule');
   const [local, setLocal] = useState<string | null>(null);
-  const [zoneLabel, setZoneLabel] = useState<string | null>(null);
 
   useEffect(() => {
     try {
       const viewerZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
       const tag = locale === 'ru' ? 'ru-RU' : 'en-US';
 
-      // The reference date is a date the course runs on, so the offset is
-      // the one that will actually apply — not today's.
-      const instant = instantOf(referenceDate, time, timezone);
-
-      setZoneLabel(
-        new Intl.DateTimeFormat(tag, {
-          timeZone: timezone,
-          timeZoneName: 'short'
-        })
-          .formatToParts(instant)
-          .find((part) => part.type === 'timeZoneName')?.value ?? null
-      );
+      // A date the course actually runs on, so the offset is the one that
+      // will apply. A start date already behind us says nothing about the
+      // coming weeks (it put "GMT+3" on winter classes), so use today then.
+      const today = new Date().toISOString().slice(0, 10);
+      const reference = referenceDate > today ? referenceDate : today;
+      const instant = instantOf(reference, time, timezone);
 
       if (!viewerZone || viewerZone === timezone) return;
 
@@ -121,13 +114,9 @@ export function SlotTime({
   return (
     <span>
       <span className="tabular-nums">{time}</span>
-      {zoneLabel && (
-        <span className="ml-1.5 text-xs text-muted-foreground">
-          {zoneLabel}
-        </span>
-      )}
+      {/* The zone itself is said once, under the list: "Israel time". */}
       {local && (
-        <span className="mt-1 block text-xs text-muted-foreground">
+        <span className="mt-1 block font-sans text-sm font-normal text-muted-foreground">
           {t('yourTime', { time: local })}
         </span>
       )}
