@@ -6,6 +6,7 @@ import { useEffect, useId, useRef, useState } from 'react';
 import { Link, usePathname } from '@/i18n/navigation';
 import { Portal } from '@/components/ui/portal';
 import { cn } from '@/lib/utils';
+import { LocaleSwitcher } from './locale-switcher';
 
 /**
  * Full-height navigation drawer.
@@ -110,10 +111,12 @@ export function NavDrawer() {
         aria-controls={panelId}
         aria-label={open ? t('closeMenu') : t('menu')}
         className={cn(
-          'group flex select-none items-center gap-3 rounded-btn border px-3 py-2 text-xs font-medium uppercase tracking-widest transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent',
+          // Glow never sits on paper (1.7:1): the trigger lives on the light
+          // header, so its states use fern.
+          'group flex h-10 select-none items-center gap-3 rounded-btn border px-3 text-sm font-medium transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent',
           open
-            ? 'border-glow/60 bg-glow/10 text-glow'
-            : 'border-border hover:border-glow/50 hover:text-glow'
+            ? 'border-fern text-fern'
+            : 'border-input hover:border-fern hover:text-fern'
         )}
       >
         {/* Two stacked labels sliding on one axis. The invisible copy of the
@@ -205,7 +208,7 @@ export function NavDrawer() {
                     delay: reduce ? 0 : i * 0.1,
                     ease: MAIN_EASE
                   }}
-                  className="fixed bottom-0 right-0 top-0 z-[42] w-full rounded-l-2xl sm:w-[32em]"
+                  className="fixed bottom-0 right-0 top-0 z-[42] w-full sm:w-[32em]"
                   style={{ backgroundColor: color }}
                 />
               ))}
@@ -276,7 +279,7 @@ export function NavDrawer() {
                                   ease: 'linear'
                                 }}
                                 className={cn(
-                                  'block font-display text-3xl font-semibold tracking-tight transition-transform duration-[550ms] ease-[cubic-bezier(.65,.05,0,1)] group-hover:-translate-y-[1em] group-focus-visible:-translate-y-[1em] md:text-4xl',
+                                  'block font-serif text-3xl font-medium transition-transform duration-[550ms] ease-[cubic-bezier(.65,.05,0,1)] group-hover:-translate-y-[1em] group-focus-visible:-translate-y-[1em] md:text-4xl',
                                   isActive ? 'text-glow' : 'text-paper'
                                 )}
                                 style={{
@@ -295,6 +298,11 @@ export function NavDrawer() {
 
                 <div className="pointer-events-auto space-y-4 pt-10">
                   <div className="h-px bg-paper/10" />
+                  {/* On phones the header has no room for the language;
+                      it lives here instead. */}
+                  <div className="surface-dark">
+                    <LocaleSwitcher label={t('switchLocale')} />
+                  </div>
                   <motion.div
                     initial={{ opacity: 0, y: 24 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -307,7 +315,7 @@ export function NavDrawer() {
                     <Link
                       href="/courses"
                       onClick={() => setOpen(false)}
-                      className="flex w-full items-center justify-center rounded-btn bg-glow px-4 py-3 text-sm font-semibold text-forest transition-all duration-300 hover:bg-glow hover:shadow-[0_0_20px_rgba(200,146,42,0.3)]"
+                      className="flex h-12 w-full items-center justify-center rounded-btn bg-glow px-4 text-base font-medium text-forest transition-opacity hover:opacity-90"
                     >
                       {t('explore')}
                     </Link>

@@ -162,7 +162,7 @@ export const contentPlaces: ContentPlace[] = [
         id: 'card',
         title: s('Карточка курса', 'Course card'),
         hint: s('Эти же подписи используются на главной и на странице курса', 'The same labels are used on the home page and on a course page'),
-        keys: ['viewCourse', 'close', 'perMonth', 'months', 'nextCohort', 'seatsLeft', 'noSeats']
+        keys: ['viewCourse', 'close', 'perMonth', 'months', 'and', 'nextCohort', 'seatsLeft', 'noSeats']
       },
       {
         id: 'category',
