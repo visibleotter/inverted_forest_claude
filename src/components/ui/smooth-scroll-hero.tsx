@@ -92,7 +92,32 @@ export function SmoothScrollHero({
     [0, imageDone],
     [finalClipPercentage, 100]
   );
-  const clipPath = useMotionTemplate`polygon(${clipStart}% ${clipStart}%, ${clipEnd}% ${clipStart}%, ${clipEnd}% ${clipEnd}%, ${clipStart}% ${clipEnd}%)`;
+  /*
+   * The window the picture opens through: rounded corners from the clip,
+   * and a soft edge from a mask — two crossed linear ramps, so the
+   * painting dissolves into the dark ground instead of ending on a line.
+   *
+   * The feather is in pixels, the same on all four sides — a percentage
+   * made the long edges of a phone soft and its short ones hard. It is a
+   * quarter of the window's shorter side, up to 48px: a fixed width would
+   * be wider than the window in the first moments and the ramps would
+   * cross into a hard step. Everything is derived from scrollY alone, so
+   * the four stops can never come from different frames.
+   */
+  const clipPath = useMotionTemplate`inset(${clipStart}% round 24px)`;
+  const edgeMask = useTransform(scrollY, (v) => {
+    const p = Math.min(1, Math.max(0, v / imageDone));
+    const s = initialClipPercentage * (1 - p);
+    const e = finalClipPercentage + (100 - finalClipPercentage) * p;
+    const shorter =
+      typeof window === 'undefined'
+        ? 0
+        : Math.min(window.innerWidth, window.innerHeight);
+    const f = Math.min(48, (((e - s) / 100) * shorter) / 4);
+    const ramp = (dir: string) =>
+      `linear-gradient(to ${dir}, transparent ${s}%, #000 calc(${s}% + ${f}px), #000 calc(${e}% - ${f}px), transparent ${e}%)`;
+    return `${ramp('right')}, ${ramp('bottom')}`;
+  });
 
   // A whisper of settle rather than the original zoom.
   const backgroundSize = useTransform(scrollY, [0, imageDone], ['112%', '100%']);
@@ -132,7 +157,19 @@ export function SmoothScrollHero({
       <div className="sticky top-0 h-screen w-full overflow-hidden bg-forest">
         <motion.div
           className="absolute inset-0"
-          style={reduce ? undefined : { clipPath, willChange: 'clip-path' }}
+          style={
+            reduce
+              ? undefined
+              : {
+                  clipPath,
+                  maskImage: edgeMask,
+                  WebkitMaskImage: edgeMask,
+                  // Visible only where both ramps are: the four soft edges.
+                  maskComposite: 'intersect',
+                  WebkitMaskComposite: 'source-in',
+                  willChange: 'clip-path, mask-image'
+                }
+          }
         >
           <motion.div
             aria-hidden
