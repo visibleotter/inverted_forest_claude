@@ -1,7 +1,11 @@
+import { Mail, MessageCircle, Send } from 'lucide-react';
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { buttonVariants } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { FadeIn } from '@/components/ui/fade-in';
 import { siteConfig } from '@/lib/config';
+import { cn } from '@/lib/utils';
 
 export async function generateMetadata({
   params: { locale }
@@ -15,25 +19,6 @@ export async function generateMetadata({
   };
 }
 
-/** `https://t.me/name` → `@name`; anything else is shown as it is. */
-function telegramHandle(url: string): string {
-  const match = url.match(/t\.me\/([A-Za-z0-9_]+)/);
-  return match ? `@${match[1]}` : url;
-}
-
-/** `https://wa.me/972549811838` → `+972 54-981-1838`. */
-function whatsappNumber(url: string): string | null {
-  const digits = url.match(/wa\.me\/(\d+)/)?.[1];
-  if (!digits) return null;
-  const israeli = digits.match(/^972(\d{2})(\d{3})(\d{4})$/);
-  return israeli ? `+972 ${israeli[1]}-${israeli[2]}-${israeli[3]}` : `+${digits}`;
-}
-
-/**
- * How to reach a person. Telegram first — it is where this audience
- * already is — then WhatsApp and email. The handle, number and address
- * are written out, so they can be copied or read aloud, not only tapped.
- */
 export default async function ContactsPage({
   params: { locale }
 }: {
@@ -41,59 +26,64 @@ export default async function ContactsPage({
 }) {
   setRequestLocale(locale);
   const t = await getTranslations('contacts');
-  const phone = whatsappNumber(siteConfig.whatsappUrl);
-
-  const rows: { label: string; value: string; href: string; primary?: boolean }[] = [
-    {
-      label: t('telegram'),
-      value: telegramHandle(siteConfig.telegramUrl),
-      href: siteConfig.telegramUrl,
-      primary: true
-    },
-    {
-      label: t('whatsapp'),
-      value: phone ?? siteConfig.whatsappUrl,
-      href: siteConfig.whatsappUrl
-    },
-    {
-      label: t('emailLabel'),
-      value: siteConfig.contactEmail,
-      href: `mailto:${siteConfig.contactEmail}`
-    }
-  ];
 
   return (
-    <div className="container-content pb-24 pt-10 sm:pt-16">
-      <div className="max-w-prose">
-        <h1 className="text-balance text-[34px] leading-[1.15] sm:text-[46px]">
+    <div className="container-content py-16 sm:py-20">
+      <FadeIn className="max-w-2xl">
+        <h1 className="text-balance text-4xl font-semibold sm:text-5xl">
           {t('title')}
         </h1>
-        <p className="text-body mt-4 text-muted-foreground">{t('intro')}</p>
+        <p className="mt-4 text-lg text-muted-foreground">{t('intro')}</p>
+      </FadeIn>
+
+      <div className="mt-12 max-w-xl">
+        <FadeIn>
+          <Card className="h-full">
+            <CardContent className="flex h-full flex-col gap-4 p-8">
+              <div className="flex flex-col gap-3">
+                <a
+                  href={siteConfig.whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={cn(
+                    buttonVariants({ variant: 'primary', size: 'lg' }),
+                    'w-full'
+                  )}
+                >
+                  <MessageCircle className="h-4 w-4" aria-hidden />
+                  {t('whatsapp')}
+                </a>
+                <a
+                  href={siteConfig.telegramUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={cn(
+                    buttonVariants({ variant: 'accent', size: 'lg' }),
+                    'w-full'
+                  )}
+                >
+                  <Send className="h-4 w-4" aria-hidden />
+                  {t('telegram')}
+                </a>
+              </div>
+              <div className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
+                <Mail className="h-4 w-4" aria-hidden />
+                <span>{t('emailLabel')}</span>
+                <a
+                  href={`mailto:${siteConfig.contactEmail}`}
+                  className="font-medium text-foreground hover:underline"
+                >
+                  {siteConfig.contactEmail}
+                </a>
+              </div>
+              <p className="mt-auto pt-4 text-sm text-muted-foreground">
+                {t('note')}
+              </p>
+            </CardContent>
+          </Card>
+        </FadeIn>
+
       </div>
-
-      <ul className="mt-10 max-w-prose border-t border-border">
-        {rows.map((row) => (
-          <li
-            key={row.href}
-            className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-b border-border py-5"
-          >
-            <div className="min-w-0">
-              <p className="text-sm text-muted-foreground">{row.label}</p>
-              <p className="mt-0.5 select-all font-serif text-[19px]">{row.value}</p>
-            </div>
-            <a
-              href={row.href}
-              target={row.href.startsWith('mailto:') ? undefined : '_blank'}
-              rel="noopener noreferrer"
-              className={buttonVariants({ variant: row.primary ? 'primary' : 'outline' })}
-            >
-              {t('write')}
-            </a>
-          </li>
-        ))}
-      </ul>
-
-      <p className="mt-6 max-w-prose text-[15px] text-muted-foreground">{t('note')}</p>
     </div>
   );
 }

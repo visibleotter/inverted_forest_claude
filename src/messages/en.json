@@ -48,11 +48,11 @@
     "heroEyebrow": "History & philosophy courses online",
     "heroTitle": "Explore History & Philosophy",
     "heroSubtitle": "Live courses for adults and teens — from the first myths to Greek philosophy. Learn to think deeper, question more, and see the past anew.",
-    "heroCtaPrimary": "Choose a course",
+    "heroCtaPrimary": "Explore Courses",
     "scrollHint": "Scroll",
     "manifestoTitle": "A quiet library in the middle of a forest",
     "manifesto": "We believe history and philosophy are not luxuries but essential tools for understanding ourselves and the world. Our classes are a slow, attentive reading of the past among kindred spirits: no rush, no shallowness, with respect for the sources and for your questions.",
-    "featuredTitle": "Courses",
+    "featuredTitle": "Featured Courses",
     "featuredSubtitle": "Enrollment is open — join the next cohorts",
     "allCourses": "All Courses",
     "whyTitle": "Why study with us",
@@ -88,13 +88,7 @@
     "newsletterButton": "Subscribe",
     "newsletterSuccess": "Thank you! You're subscribed.",
     "newsletterError": "Subscription failed. Please try again.",
-    "newsletterRateLimited": "Too many attempts. Please try again later.",
-    "heroCtaSecondary": "How classes work",
-    "heroImageAlt": "Claude Monet, Morning on the Seine: willows over water in the morning mist",
-    "factCourses": "{count, plural, one {# course} other {# courses}}",
-    "factGroup": "groups of up to {capacity}",
-    "factPrice": "{price} a month",
-    "factFormat": "weekly on Google Meet"
+    "newsletterRateLimited": "Too many attempts. Please try again later."
   },
   "courses": {
     "title": "Our Courses",
@@ -122,8 +116,7 @@
       "teens": "Teens",
       "adults": "Adults"
     },
-    "empty": "Courses are coming soon. Check back later!",
-    "and": "and"
+    "empty": "Courses are coming soon. Check back later!"
   },
   "course": {
     "aboutTitle": "About the course",
@@ -137,24 +130,14 @@
     "format2": "Private group Telegram channel: class links and announcements",
     "format3": "Small groups — up to 7 people, everyone has a voice",
     "format4": "Monthly billing through a secure payment page",
-    "scheduleTitle": "Choose a group",
+    "scheduleTitle": "Schedule & groups",
     "scheduleSubtitle": "Pick a group — registration takes two minutes",
     "pricingTitle": "Pricing",
     "pricingNote": "Billed per month of study. The course runs {months}.",
     "faqTitle": "Course FAQ",
     "registerCta": "Join",
     "backToCourses": "All courses",
-    "telegramPublic": "Public course channel",
-    "factDuration": "Length",
-    "factClasses": "Classes",
-    "factClassesValue": "once a week, 60–90 minutes, Google Meet",
-    "factGroup": "Group",
-    "factGroupValue": "up to {capacity} people",
-    "factTeacher": "Taught by",
-    "priceTerms": "{months}, paid monthly",
-    "priceRefund": "Changed your mind? We refund within 24 hours of the first lesson, less the cost of one lesson",
-    "joinGroup": "Join this group",
-    "contactUs": "Write to us"
+    "telegramPublic": "Public course channel"
   },
   "schedule": {
     "group": "Group",
@@ -187,7 +170,7 @@
     "afterPayment2": "In the channel: the class link before each session, and notice of any reschedules"
   },
   "register": {
-    "title": "Join a group",
+    "title": "Registration",
     "subtitle": "Check the details and fill in the form — payment is the next step.",
     "summaryTitle": "Your selection",
     "course": "Course",
@@ -219,7 +202,7 @@
     "backToCourse": "Back to the course",
     "successTitle": "You're almost in the forest!",
     "successText": "We have your registration. You will now be redirected to the payment page. After payment we will message you on Telegram with an invite to the group’s private channel.",
-    "successManual": "If the payment page did not open, use the button.",
+    "successManual": "If the redirect didn't work, use the button below.",
     "goToPayment": "Go to payment",
     "afterPayment": "What happens after payment?",
     "afterPayment1": "We message you on Telegram with a link to the group’s private channel",
@@ -238,15 +221,7 @@
     "telegramContactHint": "No username? Give the phone number your Telegram account uses. We use it to find you if the invite link does not work.",
     "refundNote": "Changed your mind after the first lesson? Write to us within 24 hours of it and we will refund your payment minus the cost of one lesson. Other cancellation terms are in the <terms>Terms and Conditions</terms>.",
     "successNoPaymentTitle": "You are registered!",
-    "successNoPaymentText": "We have your registration. We will be in touch shortly to arrange payment, and after that we will send your invitation to the group’s private Telegram channel. Questions? Write to us:",
-    "stepsLabel": "Registration steps",
-    "stepGroup": "Group",
-    "stepDetails": "Details",
-    "stepPayment": "Payment",
-    "change": "change",
-    "cancelledNotice": "The payment was not completed and nothing was charged. Your details are saved — you can try again.",
-    "draftNotice": "You did not finish registering. What you entered is saved in this browser.",
-    "redirecting": "Taking you to payment…"
+    "successNoPaymentText": "We have your registration. We will be in touch shortly to arrange payment, and after that we will send your invitation to the group’s private Telegram channel. Questions? Write to us:"
   },
   "teachers": {
     "title": "Teachers",
@@ -313,11 +288,10 @@
   "contacts": {
     "title": "Contacts",
     "intro": "Have a question about a course, need help choosing a group, or simply want to say hello — write to us, we reply quickly.",
-    "whatsapp": "WhatsApp",
-    "telegram": "Telegram",
-    "emailLabel": "Email",
-    "note": "We teach in Russian and English. Classes are online, from anywhere in the world.",
-    "write": "Write"
+    "whatsapp": "Message on WhatsApp",
+    "telegram": "Message on Telegram",
+    "emailLabel": "Or by email:",
+    "note": "We teach in Russian and English. Classes are online, from anywhere in the world."
   },
   "legal": {
     "lastUpdated": "Last updated"
@@ -629,7 +603,7 @@
     "readyTitle": "Payment received",
     "readyText": "Here is your personal link to the group's private Telegram channel. It works once and expires in 7 days.",
     "join": "Open the group channel",
-    "emailedToo": "The link is personal and works once. If it does not let you in, write to us.",
+    "emailedToo": "We've emailed you the same link, in case now isn't a good moment.",
     "pendingTitle": "Payment not confirmed yet",
     "pendingText": "If you've just paid, give it a minute. If the payment failed, try again or write to us.",
     "manualTitle": "Something went wrong",
@@ -653,13 +627,5 @@
     "badCredentials": "Wrong email or password.",
     "useLink": "Forgot the password? Email me a link instead",
     "usePassword": "Sign in with a password"
-  },
-  "thanks": {
-    "title": "Thank you — payment received",
-    "next": "Within a day we will message you on Telegram with a link to the group’s private channel.",
-    "start": "The group starts once it fills. We will tell you the date of the first lesson in advance.",
-    "noMessageTitle": "If you have not heard from us",
-    "noMessageText": "If a day has passed with no message, write to us and we will look into it.",
-    "refund": "Changed your mind? Within 24 hours of the first lesson we refund your payment less the cost of one lesson. Full terms are in the <terms>Terms and Conditions</terms>."
   }
 }

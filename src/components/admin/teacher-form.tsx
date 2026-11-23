@@ -202,7 +202,7 @@ export function TeacherForm({ teacher }: { teacher: Teacher | null }) {
           {t('cancel')}
         </Link>
         {state.status === 'error' && (
-          <p role="alert" className="text-sm text-destructive">
+          <p role="alert" className="text-sm text-red-500">
             {state.message === 'demo_mode' ? t('demoMode') : state.message}
           </p>
         )}

@@ -1,23 +1,31 @@
+import {
+  ArrowLeft,
+  Check,
+  CircleDollarSign,
+  MessagesSquare,
+  Send,
+  Users,
+  Video
+} from 'lucide-react';
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import { AccordionItem } from '@/components/ui/accordion';
+import { Badge } from '@/components/ui/badge';
+import { buttonVariants } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { FadeIn } from '@/components/ui/fade-in';
 import { Section } from '@/components/ui/section';
-import { CourseArt } from '@/components/marketing/course-art';
-import {
-  GroupPicker,
-  type PickerGroup
-} from '@/components/marketing/group-picker';
+import { ScheduleSlots } from '@/components/marketing/schedule-slots';
 import { siteConfig } from '@/lib/config';
 import { getData } from '@/lib/data';
-import type { Locale, StudyGroup } from '@/lib/types';
-import { seatsRemaining } from '@/lib/types';
-import { formatDate, formatPrice, lt, weekdayName } from '@/lib/utils';
+import type { Locale } from '@/lib/types';
+import { formatPrice, lt } from '@/lib/utils';
 
 interface Props {
   params: { locale: string; slug: string };
-  searchParams: { group?: string };
 }
 
 export async function generateMetadata({
@@ -41,19 +49,7 @@ export async function generateMetadata({
   };
 }
 
-/**
- * One course: what it is, then the choice of group with the price beside
- * the single button, then everything a careful reader wants to check.
- *
- * The decision comes before the detail on purpose. People arrive here from
- * a Telegram post that already sold them the subject; what they need next
- * is the time, the price and the button. The description, programme and
- * teacher follow for those who read before they commit.
- */
-export default async function CoursePage({
-  params: { locale, slug },
-  searchParams
-}: Props) {
+export default async function CoursePage({ params: { locale, slug } }: Props) {
   setRequestLocale(locale);
   const l = locale as Locale;
   const data = getData();
@@ -61,63 +57,24 @@ export default async function CoursePage({
   const course = await data.getCourseBySlug(slug);
   if (!course || course.status !== 'published') notFound();
 
-  const [teacher, groups, t, tCourses, tSchedule] = await Promise.all([
+  const [teacher, groups, t, tCourses] = await Promise.all([
     data.getTeacherById(course.teacherId),
     data.getGroupsForCourse(course.id),
     getTranslations('course'),
-    getTranslations('courses'),
-    getTranslations('schedule')
+    getTranslations('courses')
   ]);
 
-  const title = lt(course.title, l);
-  const price = formatPrice(course.monthlyPrice, course.currency, l);
-  const months = tCourses('months', { count: course.durationMonths });
-
-  const visible = groups.filter((group) =>
-    ['enrolling', 'full', 'in_progress'].includes(group.status)
-  );
-  const isOpen = (group: StudyGroup) =>
-    group.status === 'enrolling' && seatsRemaining(group) > 0;
-  const capacity = visible.length
-    ? Math.max(...visible.map((group) => group.capacity))
-    : null;
-
-  const capitalise = (value: string) =>
-    value.charAt(0).toLocaleUpperCase(l) + value.slice(1);
-
-  const pickerGroups: PickerGroup[] = visible.map((group) => ({
-    id: group.id,
-    day: capitalise(weekdayName(group.weekday, l)),
-    time: group.time,
-    timezone: group.timezone,
-    weekday: group.weekday,
-    referenceDate: group.startDate,
-    audience: tCourses(`ageGroup.${group.audience}`),
-    status: !group.startDateConfirmed
-      ? tSchedule('startsWhenFull')
-      : tSchedule('startsOn', { date: formatDate(group.startDate, l) }),
-    note:
-      group.audience === 'adults' ? undefined : tSchedule('audience.childrenNote'),
-    open: isOpen(group),
-    closedLabel:
-      group.status === 'in_progress'
-        ? tSchedule('runningSince', { date: formatDate(group.startDate, l) })
-        : tSchedule('full')
-  }));
-
-  // `?group=` from a Telegram post or the Back button preselects a group,
-  // but only one that can actually be joined.
-  const requested = searchParams.group;
-  const initialId =
-    requested &&
-    pickerGroups.some((group) => group.id === requested && group.open)
-      ? requested
-      : null;
+  const format = [
+    { icon: Video, text: t('format1') },
+    { icon: MessagesSquare, text: t('format2') },
+    { icon: Users, text: t('format3') },
+    { icon: CircleDollarSign, text: t('format4') }
+  ];
 
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Course',
-    name: title,
+    name: lt(course.title, l),
     description: lt(course.shortDescription, l),
     inLanguage: locale,
     provider: {
@@ -133,152 +90,227 @@ export default async function CoursePage({
     }
   };
 
-  const facts: [string, string][] = [
-    [t('factDuration'), months],
-    [t('factClasses'), t('factClassesValue')]
-  ];
-  if (capacity) facts.push([t('factGroup'), t('factGroupValue', { capacity })]);
-  if (teacher) facts.push([t('factTeacher'), lt(teacher.name, l)]);
-
-  const list =
-    'mt-4 list-disc space-y-2 pl-5 text-[15px] text-muted-foreground marker:text-muted-foreground';
-
   return (
-    <div className="pb-24 lg:pb-0">
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <section className="container-content grid gap-10 pb-12 pt-8 sm:pt-12 lg:grid-cols-[1fr_380px] lg:gap-16">
-        <div className="min-w-0">
-          <Link
-            href="/courses"
-            className="text-[15px] text-accent underline-offset-4 hover:underline"
-          >
-            ← {t('backToCourses')}
-          </Link>
-          <h1 className="mt-5 text-balance text-[34px] leading-[1.15] sm:text-[44px]">
-            {title}
-          </h1>
-          <p className="text-body mt-4 max-w-prose text-muted-foreground">
-            {lt(course.shortDescription, l)}
-          </p>
-          <dl className="mt-8 grid max-w-prose grid-cols-[max-content_1fr] gap-x-6 gap-y-2 text-[15px]">
-            {facts.map(([label, value]) => (
-              <div key={label} className="contents">
-                <dt className="text-muted-foreground">{label}</dt>
-                <dd>{value}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-        <CourseArt
-          src={course.imageUrl}
-          alt={title}
-          locale={l}
-          priority
-          sizes="(max-width: 1024px) 100vw, 380px"
-        />
-      </section>
-
-      <section
-        id="schedule"
-        className="container-content grid scroll-mt-20 border-t border-border pb-12 pt-10 lg:grid-cols-[1fr_380px] lg:gap-16 lg:pb-[72px]"
-      >
-        <GroupPicker
-          groups={pickerGroups}
-          initialId={initialId}
-          locale={l}
-          labels={{
-            title: t('scheduleTitle'),
-            timezoneNote: tSchedule('timezoneNote'),
-            holidaysNote: tSchedule('holidaysNote'),
-            price,
-            perMonth: tCourses('perMonth'),
-            priceTerms: t('priceTerms', { months }),
-            refund: t('priceRefund'),
-            join: t('joinGroup'),
-            joinShort: t('registerCta'),
-            noneOpen: tSchedule('noneOpen'),
-            contact: t('contactUs')
-          }}
-        />
-      </section>
-
-      <Section title={t('aboutTitle')}>
-        <div className="grid gap-12 lg:grid-cols-[1fr_380px] lg:gap-16">
-          <div className="min-w-0">
-            <p className="text-body max-w-prose">{lt(course.description, l)}</p>
-            <h3 className="mt-10 text-[21px]">{t('outcomesTitle')}</h3>
-            <ul className="text-body mt-4 max-w-prose list-disc space-y-2 pl-5 marker:text-muted-foreground">
-              {course.outcomes[l].map((item) => (
-                <li key={item}>{item}</li>
+      {/* Hero */}
+      <section className="seam-bottom relative surface-dark ground-dark bg-forest text-paper">
+        <div className="container-content grid items-center gap-10 py-16 sm:py-20 lg:grid-cols-2">
+          <FadeIn>
+            <Link
+              href="/courses"
+              className="mb-6 inline-flex items-center gap-1.5 text-sm text-paper/70 transition-colors hover:text-paper"
+            >
+              <ArrowLeft className="h-4 w-4" aria-hidden />
+              {t('backToCourses')}
+            </Link>
+            <div className="mb-4 flex flex-wrap gap-2">
+              <Badge variant="accent">
+                {tCourses(`category.${course.category}`)}
+              </Badge>
+              <Badge className="bg-paper/10 text-paper/90">
+                {tCourses(`difficulty.${course.difficulty}`)}
+              </Badge>
+              {course.ageGroups.map((age) => (
+                <Badge key={age} className="bg-paper/10 text-paper/90">
+                  {tCourses(`ageGroup.${age}`)}
+                </Badge>
               ))}
-            </ul>
-          </div>
-          <div className="min-w-0">
-            <h3 className="text-[21px]">{t('audienceTitle')}</h3>
-            <ul className={list}>
-              {course.audience[l].map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-            <h3 className="mt-10 text-[21px]">{t('formatTitle')}</h3>
-            <ul className={list}>
-              {[t('format1'), t('format2'), t('format3'), t('format4')].map(
-                (item) => (
-                  <li key={item}>{item}</li>
-                )
-              )}
-            </ul>
-            {course.publicTelegramUrl && (
+            </div>
+            <h1 className="text-balance text-4xl font-semibold sm:text-5xl">
+              {lt(course.title, l)}
+            </h1>
+            <p className="mt-4 text-lg leading-relaxed text-paper/80">
+              {lt(course.shortDescription, l)}
+            </p>
+            <div className="mt-6 flex flex-wrap items-center gap-4">
               <a
-                href={course.publicTelegramUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-6 inline-block text-[15px] text-accent underline underline-offset-4"
+                href="#schedule"
+                className={buttonVariants({ variant: 'accent', size: 'lg' })}
               >
-                {t('telegramPublic')}
+                {t('registerCta')}
               </a>
-            )}
-          </div>
+              <p className="text-paper/80">
+                <span className="font-display text-2xl font-semibold text-paper">
+                  {formatPrice(course.monthlyPrice, course.currency, l)}
+                </span>{' '}
+                {tCourses('perMonth')} ·{' '}
+                {tCourses('months', { count: course.durationMonths })}
+              </p>
+            </div>
+          </FadeIn>
+          {course.imageUrl && (
+            <FadeIn delay={0.15}>
+              <div className="relative aspect-[4/3] overflow-hidden rounded-card shadow-2xl">
+                <Image
+                  src={course.imageUrl}
+                  alt={lt(course.title, l)}
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  className="object-cover"
+                />
+              </div>
+            </FadeIn>
+          )}
+        </div>
+      </section>
+
+      {/* Description + outcomes + audience */}
+      <Section title={t('aboutTitle')}>
+        <div className="grid gap-12 lg:grid-cols-[1.2fr_1fr]">
+          <FadeIn>
+            <p className="text-lg leading-relaxed text-muted-foreground">
+              {lt(course.description, l)}
+            </p>
+
+            <h3 className="mt-10 text-xl font-semibold">
+              {t('outcomesTitle')}
+            </h3>
+            <ul className="mt-4 space-y-3">
+              {course.outcomes[l].map((item) => (
+                <li key={item} className="flex items-start gap-3">
+                  <Check
+                    className="mt-1 h-4 w-4 shrink-0 text-accent"
+                    aria-hidden
+                  />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </FadeIn>
+
+          <FadeIn delay={0.1}>
+            <Card>
+              <CardContent>
+                <h3 className="text-lg font-semibold">{t('audienceTitle')}</h3>
+                <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
+                  {course.audience[l].map((item) => (
+                    <li key={item} className="flex items-start gap-3">
+                      <Users
+                        className="mt-0.5 h-4 w-4 shrink-0 text-accent"
+                        aria-hidden
+                      />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <h3 className="mt-8 text-lg font-semibold">
+                  {t('formatTitle')}
+                </h3>
+                <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
+                  {format.map((item) => (
+                    <li key={item.text} className="flex items-start gap-3">
+                      <item.icon
+                        className="mt-0.5 h-4 w-4 shrink-0 text-accent"
+                        aria-hidden
+                      />
+                      <span>{item.text}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                {course.publicTelegramUrl && (
+                  <a
+                    href={course.publicTelegramUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-accent hover:underline"
+                  >
+                    <Send className="h-4 w-4" aria-hidden />
+                    {t('telegramPublic')}
+                  </a>
+                )}
+              </CardContent>
+            </Card>
+          </FadeIn>
         </div>
       </Section>
 
-      <Section title={t('curriculumTitle')}>
-        <ol className="grid max-w-prose gap-8">
-          {course.curriculum.map((module, i) => (
-            <li key={i}>
-              <p className="text-sm text-muted-foreground">
-                {t('moduleLabel', { number: i + 1 })}
-              </p>
-              <h3 className="mt-1 text-[21px]">{lt(module.title, l)}</h3>
-              <ul className={list.replace('mt-4', 'mt-3')}>
-                {module.topics[l].map((topic) => (
-                  <li key={topic}>{topic}</li>
-                ))}
-              </ul>
-            </li>
-          ))}
-        </ol>
+      {/* Schedule */}
+      <Section
+        id="schedule"
+        className="scroll-mt-20 section-soft"
+        title={t('scheduleTitle')}
+        subtitle={t('scheduleSubtitle')}
+      >
+        <FadeIn>
+          <ScheduleSlots groups={groups} />
+        </FadeIn>
+        <FadeIn className="mt-8">
+          <p className="text-sm text-muted-foreground">
+            {t('pricingNote', {
+              months: tCourses('months', { count: course.durationMonths })
+            })}{' '}
+            <span className="font-semibold text-foreground">
+              {formatPrice(course.monthlyPrice, course.currency, l)}
+            </span>{' '}
+            {tCourses('perMonth')}.
+          </p>
+        </FadeIn>
       </Section>
 
+      {/* Curriculum */}
+      <Section className="section-soft" title={t('curriculumTitle')}>
+        <div className="grid gap-6 lg:grid-cols-3">
+          {course.curriculum.map((module, i) => (
+            <FadeIn key={i} delay={i * 0.08}>
+              <Card className="h-full">
+                <CardContent>
+                  <p className="text-xs font-semibold uppercase tracking-widest text-accent">
+                    {t('moduleLabel', { number: i + 1 })}
+                  </p>
+                  <h3 className="mt-2 text-lg font-semibold">
+                    {lt(module.title, l)}
+                  </h3>
+                  <ul className="mt-4 space-y-2.5 text-sm text-muted-foreground">
+                    {module.topics[l].map((topic) => (
+                      <li key={topic} className="flex items-start gap-2.5">
+                        <span
+                          className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent"
+                          aria-hidden
+                        />
+                        {topic}
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            </FadeIn>
+          ))}
+        </div>
+      </Section>
+
+      {/* Teacher */}
       {teacher && (
         <Section title={t('teacherTitle')}>
-          <div className="max-w-prose">
-            <h3 className="text-[24px]">{lt(teacher.name, l)}</h3>
-            <p className="mt-1 text-[15px] text-muted-foreground">
-              {lt(teacher.title, l)}
-            </p>
-            <p className="text-body mt-4">{lt(teacher.bio, l)}</p>
-          </div>
+          <FadeIn>
+            <Card className="max-w-3xl">
+              <CardContent className="sm:p-8">
+                <h3 className="text-2xl font-semibold">
+                  {lt(teacher.name, l)}
+                </h3>
+                <p className="mt-1 text-sm font-medium text-accent">
+                  {lt(teacher.title, l)}
+                </p>
+                <p className="mt-4 leading-relaxed text-muted-foreground">
+                  {lt(teacher.bio, l)}
+                </p>
+              </CardContent>
+            </Card>
+          </FadeIn>
         </Section>
       )}
 
+      {/* Course FAQ */}
       {course.faq.length > 0 && (
         <Section title={t('faqTitle')}>
-          <div className="max-w-prose border-t border-border">
+          <FadeIn className="max-w-3xl rounded-card border border-border bg-card px-6">
             {course.faq.map((item, i) => (
               <AccordionItem
                 key={i}
@@ -286,9 +318,9 @@ export default async function CoursePage({
                 answer={lt(item.answer, l)}
               />
             ))}
-          </div>
+          </FadeIn>
         </Section>
       )}
-    </div>
+    </>
   );
 }

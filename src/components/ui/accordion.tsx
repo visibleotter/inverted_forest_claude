@@ -11,10 +11,10 @@ interface AccordionItemProps {
 /** Native <details> accordion — accessible by default, zero JS state. */
 export function AccordionItem({ question, answer }: AccordionItemProps) {
   return (
-    <details className="group border-b border-border py-5">
+    <details className="group border-b border-border py-4 last:border-b-0">
       <summary
         className={cn(
-          'flex cursor-pointer list-none items-center justify-between gap-4 text-left font-serif text-[18px] font-medium leading-snug focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-4 focus-visible:ring-offset-background',
+          'flex cursor-pointer list-none items-center justify-between gap-4 text-left font-medium',
           '[&::-webkit-details-marker]:hidden'
         )}
       >
@@ -24,7 +24,7 @@ export function AccordionItem({ question, answer }: AccordionItemProps) {
           aria-hidden
         />
       </summary>
-      <p className="mt-3 pr-8 text-[15px] leading-relaxed text-muted-foreground">
+      <p className="mt-3 pr-8 text-sm leading-relaxed text-muted-foreground">
         {answer}
       </p>
     </details>

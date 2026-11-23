@@ -1,18 +1,35 @@
+'use client';
+
+import { BlurFade } from '@/components/magicui/blur-fade';
+
 interface FadeInProps {
   children: React.ReactNode;
   delay?: number;
   className?: string;
+  /**
+   * Reveal on scroll-into-view (default) or immediately on mount. The
+   * sticky hero needs the latter — it is already in view at load, and its
+   * position changes as the page scrolls.
+   */
   inView?: boolean;
 }
 
 /**
- * Formerly a scroll-reveal. Now renders its children as they are.
+ * Scroll-reveal used across the marketing pages.
  *
- * The redesign drops entrance animation everywhere: content that waits to
- * be scrolled into view is content a skimming reader, a screenshot or a
- * link preview never sees. Kept as a pass-through so the remaining call
- * sites need no edit; `delay` and `inView` are accepted and ignored.
+ * Delegates to MagicUI's BlurFade — same call signature as before, but the
+ * reveal now resolves a slight blur as well as opacity, which reads softer
+ * than a plain translate. Reduced motion is handled inside BlurFade.
  */
-export function FadeIn({ children, className }: FadeInProps) {
-  return className ? <div className={className}>{children}</div> : <>{children}</>;
+export function FadeIn({
+  children,
+  delay = 0,
+  className,
+  inView = true
+}: FadeInProps) {
+  return (
+    <BlurFade delay={delay} className={className} inView={inView}>
+      {children}
+    </BlurFade>
+  );
 }

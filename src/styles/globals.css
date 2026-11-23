@@ -2,21 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-/*
- * Design tokens — «Музейная этикетка» (approved 2026-11-23).
- *
- * One flat paper ground, dark ink, one accent. No gradients, no shadows:
- * the page should read like a well-made book or a museum wall, where the
- * only colour comes from the paintings. Every colour here is a palette
- * colour from CLAUDE.md or a measured mix of two of them, plus `brick`,
- * the single approved exception, for form errors.
- *
- * Spacing runs on an 8px step (Tailwind 2, 4, 6, 8, 12, 16, 24); type is
- * Literata for headings and running text, Inter for interface.
- */
 @layer base {
   :root {
-    /* Brand palette as raw triples, so tokens can mix them. */
+    /* Brand palette as raw triples, so grounds can mix them. */
     --c-paper: 240 239 227;
     --c-glow: 199 187 116;
     --c-sage: 143 176 160;
@@ -24,39 +12,44 @@
     --c-fern: 42 74 58;
     --c-forest: 22 40 31;
 
-    --background: 240 239 227;      /* paper                       */
-    --foreground: 22 40 31;         /* forest           13.4:1     */
-    --card: 247 246 238;            /* a tone lighter than paper   */
+    --background: 240 239 227;      /* paper  #F0EFE3 */
+    --foreground: 22 40 31;         /* forest         13.4:1 */
+    --card: 250 248 239;
     --card-foreground: 22 40 31;
     --muted: 226 228 210;
-    --muted-foreground: 61 101 82;  /* moss              5.7:1     */
-    --border: 210 211 200;          /* forest at 14% over paper    */
-    --input: 170 175 164;           /* forest at 32%: fields, frames */
-    --primary: 42 74 58;            /* fern              8.5:1     */
+    --muted-foreground: 61 101 82;  /* moss            5.7:1 */
+    --border: 205 210 188;
+    --primary: 42 74 58;            /* fern            8.5:1 */
     --primary-foreground: 240 239 227;
-    --accent: 42 74 58;             /* fern                        */
+    --accent: 42 74 58;             /* fern */
     --accent-foreground: 240 239 227;
-    --destructive: 142 59 47;       /* brick             6.4:1     */
   }
 
   html {
     scroll-behavior: smooth;
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    html {
-      scroll-behavior: auto;
-    }
-  }
-
   body {
     @apply bg-background text-foreground font-sans antialiased;
+    /*
+     * A slow wash down the page. Fixed attachment so it spans the document
+     * once rather than restarting per element, and the stops are only a
+     * few percent of muted — enough to stop the ground reading as one flat
+     * colour, not enough to notice as a gradient.
+     */
+    background-image: linear-gradient(
+      to bottom,
+      rgb(var(--background)) 0%,
+      rgb(var(--muted) / 0.35) 45%,
+      rgb(var(--background)) 100%
+    );
+    background-attachment: fixed;
   }
 
   h1,
   h2,
   h3 {
-    @apply font-serif font-medium;
+    @apply font-display;
   }
 
   ::selection {
@@ -69,51 +62,144 @@
     text-wrap: balance;
   }
   .container-content {
-    @apply mx-auto w-full max-w-content px-5 sm:px-12;
+    @apply mx-auto w-full max-w-content px-5 sm:px-8;
   }
 }
 
 @layer components {
-  /* Running text: Literata, sized for reading rather than scanning. */
-  .text-body {
-    @apply font-serif text-[17px] leading-[1.6] sm:text-lg;
+  /*
+   * Replaces a flat `bg-muted/40` block. The tint arrives and leaves
+   * gradually, so a section reads as a swell in the page rather than a
+   * panel laid on top of it. Both stops are light, so nothing here can
+   * affect text contrast.
+   */
+  /*
+   * Light ground. Two washes cross the section rather than filling it
+   * evenly — misty green entering top-left, the warm light off the water
+   * bleeding up from bottom-right. Strengths are set by measurement, not
+   * taste: at the point where every layer overlaps, the ground reaches
+   * rgb(218,222,201), where `moss` — the weakest text on it — still reads
+   * 4.78:1. Pushing either wash further drops secondary text below AA.
+   */
+  .ground-light {
+    background-image:
+      radial-gradient(
+        125% 85% at 8% -5%,
+        rgb(var(--c-sage) / 0.15),
+        transparent 62%
+      ),
+      radial-gradient(
+        100% 70% at 94% 105%,
+        rgb(var(--c-glow) / 0.1),
+        transparent 58%
+      );
   }
 
-  /* A small sentence-case label above a heading. Never capitals. */
-  .eyebrow {
-    @apply font-sans text-sm font-medium text-muted-foreground;
+  /* The same ground, over a band that fades in and out vertically. */
+  .section-soft {
+    background-image:
+      radial-gradient(
+        125% 85% at 8% -5%,
+        rgb(var(--c-sage) / 0.15),
+        transparent 62%
+      ),
+      radial-gradient(
+        100% 70% at 94% 105%,
+        rgb(var(--c-glow) / 0.1),
+        transparent 58%
+      ),
+      linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgb(var(--muted) / 0.45) 20%,
+        rgb(var(--muted) / 0.45) 80%,
+        transparent 100%
+      );
   }
 
   /*
-   * A section that is dark in its own right (the footer). Semantic tokens
-   * are redefined so anything nested stays readable: the accent flips to
-   * glow and secondary text to sage, as CLAUDE.md requires.
+   * Dark ground. Deeper willow lifting from top-left, a touch of mid green
+   * at bottom-right. At the lightest point this reaches rgb(36,64,50),
+   * where `sage` still reads 4.81:1 — the binding limit here, since sage
+   * is the palest text that sits on dark.
+   */
+  .ground-dark {
+    background-image:
+      radial-gradient(
+        115% 80% at 10% -5%,
+        rgb(var(--c-fern) / 0.45),
+        transparent 62%
+      ),
+      radial-gradient(
+        95% 65% at 92% 105%,
+        rgb(var(--c-moss) / 0.18),
+        transparent 58%
+      );
+  }
+
+  /*
+   * Softens the seam where a light section meets a dark one. Sits inside
+   * the dark section's own padding, above the content, so no copy ever
+   * lands on the blend.
+   */
+  .seam-top::before,
+  .seam-bottom::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 5rem;
+    pointer-events: none;
+  }
+
+  .seam-top::before {
+    top: 0;
+    background-image: linear-gradient(
+      to bottom,
+      rgb(var(--background)),
+      transparent
+    );
+  }
+
+  .seam-bottom::after {
+    bottom: 0;
+    background-image: linear-gradient(
+      to top,
+      rgb(var(--background)),
+      transparent
+    );
+  }
+
+  /*
+   * A section that is dark in BOTH themes (hero, footer, drawer). Semantic
+   * tokens are redefined here so anything nested inside stays readable —
+   * without this, `text-accent` resolves to teal on deep (2.9:1) in light
+   * mode.
    */
   .surface-dark {
     --card: 30 53 41;
     --card-foreground: 240 239 227;
     --muted: 38 64 47;
-    --muted-foreground: 143 176 160; /* sage           6.6:1 on forest */
+    --muted-foreground: 143 176 160; /* sage           5.6:1 on card */
     --border: 58 90 71;
-    --input: 88 120 101;
-    --primary: 199 187 116;         /* glow            7.9:1 */
+    --primary: 199 187 116;         /* glow            8.0:1 */
     --primary-foreground: 22 40 31;
     --accent: 199 187 116;
     --accent-foreground: 22 40 31;
   }
 
   .surface-card {
-    --background: 240 239 227;
-    --foreground: 22 40 31;
-    --card: 247 246 238;
+    --background: 240 239 227;      /* paper  #F0EFE3 */
+    --foreground: 22 40 31;         /* forest         13.4:1 */
+    --card: 250 248 239;
     --card-foreground: 22 40 31;
     --muted: 226 228 210;
-    --muted-foreground: 61 101 82;
-    --border: 210 211 200;
-    --input: 170 175 164;
-    --primary: 42 74 58;
+    --muted-foreground: 61 101 82;  /* moss            5.7:1 */
+    --border: 205 210 188;
+    --primary: 42 74 58;            /* fern            8.5:1 */
     --primary-foreground: 240 239 227;
-    --accent: 42 74 58;
+    --accent: 42 74 58;             /* fern */
     --accent-foreground: 240 239 227;
   }
+
 }

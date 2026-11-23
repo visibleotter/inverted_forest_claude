@@ -51,7 +51,7 @@ export function PaymentActions({
       {result && (
         <p
           role="status"
-          className={cn('text-xs', result.ok ? 'text-moss' : 'text-destructive')}
+          className={cn('text-xs', result.ok ? 'text-moss' : 'text-red-500')}
         >
           {result.ok
             ? t('done')

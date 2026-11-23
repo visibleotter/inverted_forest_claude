@@ -9,11 +9,11 @@ const badgeVariants = cva(
         default: 'bg-muted text-muted-foreground',
         accent: 'bg-accent/10 text-accent',
         outline: 'border border-border text-muted-foreground',
-        // Palette only: fern for fine, glow wash for attention, brick
-        // (the approved error colour) for trouble.
-        success: 'bg-fern/10 text-fern',
-        warning: 'bg-glow/30 text-forest',
-        danger: 'bg-brick/10 text-brick'
+        success:
+          'bg-emerald-100 text-emerald-800',
+        warning:
+          'bg-yellow-100 text-yellow-800',
+        danger: 'bg-red-100 text-red-800'
       }
     },
     defaultVariants: { variant: 'default' }

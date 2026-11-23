@@ -1,3 +1,4 @@
+import { TreePine } from 'lucide-react';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import { ManageCookiesLink } from '@/components/consent/manage-cookies-link';
@@ -13,15 +14,18 @@ export async function Footer() {
   const courses = await getData().getCourses();
 
   return (
-    <footer className="surface-dark bg-forest text-paper">
-      <div className="container-content grid gap-12 py-16 sm:grid-cols-2 lg:grid-cols-4">
+    <footer className="seam-top relative surface-dark ground-dark bg-forest text-paper">
+      <div className="container-content grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
         <div>
-          <p className="font-serif text-lg font-semibold">Inverted Forest</p>
+          <p className="flex items-center gap-2 font-display text-lg font-semibold">
+            <TreePine className="h-5 w-5 rotate-180 text-glow" aria-hidden />
+            Inverted Forest
+          </p>
           <p className="mt-3 max-w-xs text-sm text-paper/70">{t('tagline')}</p>
         </div>
 
         <nav aria-label={t('coursesTitle')}>
-          <p className="mb-4 text-sm font-medium text-glow">
+          <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-glow">
             {t('coursesTitle')}
           </p>
           <ul className="space-y-2 text-sm">
@@ -39,7 +43,7 @@ export async function Footer() {
         </nav>
 
         <nav aria-label={t('schoolTitle')}>
-          <p className="mb-4 text-sm font-medium text-glow">
+          <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-glow">
             {t('schoolTitle')}
           </p>
           <ul className="space-y-2 text-sm">
@@ -62,7 +66,7 @@ export async function Footer() {
         </nav>
 
         <nav aria-label={t('legalTitle')}>
-          <p className="mb-4 text-sm font-medium text-glow">
+          <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-glow">
             {t('legalTitle')}
           </p>
           <ul className="space-y-2 text-sm">

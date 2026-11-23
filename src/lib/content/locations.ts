@@ -98,33 +98,44 @@ export const contentPlaces: ContentPlace[] = [
     sections: [
       {
         id: 'hero',
-        title: s('1. Первый экран', '1. First screen'),
-        hint: s('Заголовок, строка фактов и две кнопки слева, картина Моне справа. Факты (число курсов, размер группы, цена) сайт считает сам', 'Headline, a line of facts and two actions on the left, the Monet on the right. The facts (course count, group size, price) are computed'),
-        keys: ['heroEyebrow', 'heroTitle', 'heroSubtitle', 'factCourses', 'factGroup', 'factPrice', 'factFormat', 'heroCtaPrimary', 'heroCtaSecondary', 'heroImageAlt']
-      },
-      {
-        id: 'featured',
-        title: s('2. Курсы', '2. Courses'),
-        hint: s('Заголовок над четырьмя карточками курсов', 'The heading above the four course cards'),
-        keys: ['featuredTitle']
+        title: s('1. Первый экран', '1. Hero'),
+        hint: s('Крупная картинка, которая раскрывается при прокрутке', 'The large image that opens as you scroll'),
+        keys: ['heroEyebrow', 'heroTitle', 'heroSubtitle', 'heroCtaPrimary', 'scrollHint']
       },
       {
         id: 'manifesto',
-        title: s('3. О проекте', '3. About the project'),
+        title: s('2. Манифест', '2. Manifesto'),
+        hint: s('Один абзац по центру, сразу под первым экраном', 'A single centred paragraph below the hero'),
         keys: ['manifestoTitle', 'manifesto']
       },
       {
-        id: 'faq',
-        title: s('4. Вопросы на главной', '4. FAQ preview'),
-        hint: s('Показываются первые четыре вопроса из раздела «Вопросы и ответы»', 'Shows the first four questions from the FAQ page'),
-        keys: ['faqTitle', 'faqMore']
+        id: 'featured',
+        title: s('3. Избранные курсы', '3. Featured courses'),
+        hint: s('Заголовок блока с карточками курсов и кнопка под ними', 'Heading above the course cards and the button below them'),
+        keys: ['featuredTitle', 'featuredSubtitle', 'allCourses']
       },
       {
-        id: 'retired',
-        title: s('Блоки старой главной', 'Blocks from the old home page'),
-        hint: s('Убраны при редизайне в ноябре 2026: «почему мы», шаги, отзывы, подзаголовок курсов, подсказка прокрутки', 'Removed in the November 2026 redesign: why us, steps, testimonials, courses subtitle, scroll hint'),
-        keys: ['scrollHint', 'featuredSubtitle', 'allCourses', 'why*', 'how*', 'testimonial*'],
-        hidden: true
+        id: 'why',
+        title: s('4. Почему мы — четыре карточки', '4. Why us — four cards'),
+        hint: s('Карточки стоят в ряд: тексты лучше держать примерно одной длины', 'The cards sit in a row: keep the texts about the same length'),
+        keys: ['whyTitle', 'why1Title', 'why1Text', 'why2Title', 'why2Text', 'why3Title', 'why3Text', 'why4Title', 'why4Text']
+      },
+      {
+        id: 'how',
+        title: s('5. Как всё устроено — четыре шага', '5. How it works — four steps'),
+        hint: s('Тёмная полоса с пронумерованными шагами', 'The dark band with numbered steps'),
+        keys: ['howTitle', 'how1Title', 'how1Text', 'how2Title', 'how2Text', 'how3Title', 'how3Text', 'how4Title', 'how4Text']
+      },
+      {
+        id: 'testimonials',
+        title: s('6. Отзывы', '6. Testimonials'),
+        keys: ['testimonialsTitle', 'testimonial1', 'testimonial1Author', 'testimonial2', 'testimonial2Author', 'testimonial3', 'testimonial3Author']
+      },
+      {
+        id: 'faq',
+        title: s('7. Вопросы на главной', '7. FAQ preview'),
+        hint: s('Показываются первые четыре вопроса из раздела «Вопросы и ответы»', 'Shows the first four questions from the FAQ page'),
+        keys: ['faqTitle', 'faqMore']
       },
       {
         id: 'newsletter',
@@ -151,7 +162,7 @@ export const contentPlaces: ContentPlace[] = [
         id: 'card',
         title: s('Карточка курса', 'Course card'),
         hint: s('Эти же подписи используются на главной и на странице курса', 'The same labels are used on the home page and on a course page'),
-        keys: ['viewCourse', 'close', 'perMonth', 'months', 'and', 'nextCohort', 'seatsLeft', 'noSeats']
+        keys: ['viewCourse', 'close', 'perMonth', 'months', 'nextCohort', 'seatsLeft', 'noSeats']
       },
       {
         id: 'category',
@@ -173,75 +184,96 @@ export const contentPlaces: ContentPlace[] = [
   {
     namespace: 'course',
     title: s('Страница курса', 'Course page'),
-    where: s('Подписи на странице любого курса. Сами тексты курса правятся в «Курсах»', 'Labels on any course page. The course text itself is edited under Courses'),
+    where: s('Подписи разделов на странице любого курса. Сами тексты курса правятся в «Курсах»', 'Section headings on any course page. The course text itself is edited under Courses'),
     path: '/courses/{slug}',
     area: 'site',
     sections: [
       {
         id: 'top',
-        title: s('1. Шапка курса', '1. Course header'),
-        hint: s('Ссылка назад и строки фактов под описанием: длительность, занятия, группа, кто ведёт', 'Back link and the facts under the summary: length, classes, group, teacher'),
-        keys: ['backToCourses', 'factDuration', 'factClasses', 'factClassesValue', 'factGroup', 'factGroupValue', 'factTeacher']
-      },
-      {
-        id: 'choose',
-        title: s('2. Выбор группы и цена', '2. Group choice and price'),
-        hint: s('Заголовок над списком групп и блок цены рядом с кнопкой. На телефоне кнопка закреплена внизу экрана', 'The heading above the groups and the price box beside the button. On phones the button is pinned to the bottom'),
-        keys: ['scheduleTitle', 'priceTerms', 'priceRefund', 'joinGroup', 'registerCta', 'contactUs']
+        title: s('Шапка курса', 'Course header'),
+        keys: ['backToCourses', 'registerCta']
       },
       {
         id: 'about',
-        title: s('3. О курсе', '3. About the course'),
+        title: s('Заголовки описания', 'Description headings'),
         keys: ['aboutTitle', 'outcomesTitle', 'audienceTitle']
       },
       {
         id: 'format',
-        title: s('Формат обучения', 'Format'),
+        title: s('Формат обучения', 'Format block'),
         hint: s('Четыре пункта списка — одинаковые для всех курсов', 'Four bullet points — the same on every course'),
         keys: ['formatTitle', 'format1', 'format2', 'format3', 'format4', 'telegramPublic']
       },
       {
+        id: 'schedule',
+        title: s('Заголовок расписания', 'Schedule heading'),
+        hint: s('Сами карточки групп — в разделе «Расписание и слоты»', 'The slot cards themselves are in the Schedule namespace'),
+        keys: ['scheduleTitle', 'scheduleSubtitle']
+      },
+      {
+        id: 'pricing',
+        title: s('Стоимость', 'Pricing'),
+        keys: ['pricingNote']
+      },
+      {
         id: 'curriculum',
-        title: s('4. Программа и преподаватель', '4. Curriculum and teacher'),
+        title: s('Программа и преподаватель', 'Curriculum and teacher'),
         keys: ['curriculumTitle', 'moduleLabel', 'teacherTitle']
       },
       {
         id: 'faq',
-        title: s('5. Вопросы о курсе', '5. Course FAQ'),
+        title: s('Вопросы о курсе', 'Course FAQ'),
         keys: ['faqTitle']
       },
       {
         id: 'parked',
-        title: s('Не используется', 'Not in use'),
-        hint: s('Остались от старой страницы курса', 'Left over from the old course page'),
-        keys: ['pricingTitle', 'pricingNote', 'scheduleSubtitle'],
+        title: s('Заголовок «Стоимость»', 'Pricing heading'),
+        hint: s('Сейчас не выводится: у блока цены нет отдельного заголовка', 'Not rendered today: the price block has no separate heading'),
+        keys: ['pricingTitle'],
         hidden: true
       }
     ]
   },
   {
     namespace: 'schedule',
-    title: s('Группы курса', 'Course groups'),
-    where: s('Строки внутри списка групп на странице курса', 'The lines inside the group list on a course page'),
+    title: s('Расписание и слоты', 'Schedule and slots'),
+    where: s('Карточки групп на странице курса — то, из чего человек выбирает время', 'The group cards on a course page — where a student picks a time'),
     path: '/courses/{slug}',
     area: 'site',
     sections: [
       {
+        id: 'audience',
+        title: s('Разделение на детей и взрослых', 'Children and adults'),
+        hint: s('Заголовки над двумя списками слотов', 'Headings above the two lists of slots'),
+        keys: ['audience.*']
+      },
+      {
         id: 'slot',
-        title: s('Строка группы', 'A group row'),
-        hint: s('Под днём и временем: возраст и статус. «У вас» — время зрителя, если он не в Израиле', 'Under the day and time: audience and status. "Your time" appears for viewers outside Israel'),
-        keys: ['startsOn', 'startsWhenFull', 'runningSince', 'full', 'yourTime', 'audience.childrenNote']
+        title: s('Карточка слота', 'Slot card'),
+        hint: s('Кнопка, статус и подписи внутри одной карточки времени', 'The button, status and labels inside one time card'),
+        keys: ['join', 'full', 'running', 'seatsLeft', 'groupSize', 'startsOn', 'startsWhenFull', 'runningSince', 'yourTime']
+      },
+      {
+        id: 'empty',
+        title: s('Когда мест нет', 'When nothing is open'),
+        keys: ['tryInstead', 'noneOpen', 'noSlots']
       },
       {
         id: 'notes',
-        title: s('Под списком групп', 'Under the group list'),
-        keys: ['timezoneNote', 'holidaysNote', 'noneOpen']
+        title: s('Примечания под расписанием', 'Notes under the schedule'),
+        keys: ['timezoneNote', 'holidaysNote']
+      },
+      {
+        id: 'after',
+        title: s('Что будет после оплаты', 'What happens after payment'),
+        hint: s('Два пункта под расписанием. Тот же смысл повторяется на странице регистрации', 'Two points below the schedule. The same promise is repeated on the registration page'),
+        keys: ['afterPaymentTitle', 'afterPayment1', 'afterPayment2']
       },
       {
         id: 'legacy',
-        title: s('От старого расписания', 'From the old schedule'),
-        hint: s('Таблица и карточки слотов заменены выбором группы; эти строки нигде не выводятся', 'The table and slot cards were replaced by the group choice; these strings are not shown anywhere'),
-        keys: ['group', 'day', 'time', 'starts', 'seats', 'action', 'join', 'running', 'seatsLeft', 'groupSize', 'tryInstead', 'noSlots', 'audience.children', 'audience.adults', 'afterPaymentTitle', 'afterPayment1', 'afterPayment2'],
+        title: s('Старая таблица расписания', 'The old schedule table'),
+        hint: s('Расписание давно нарисовано карточками, эти заголовки столбцов нигде не выводятся', 'The schedule has been cards for a while; these column headings are not rendered anywhere'),
+        keys: ['group', 'day', 'time', 'starts', 'seats', 'action'],
         hidden: true
       }
     ]
@@ -256,7 +288,7 @@ export const contentPlaces: ContentPlace[] = [
       {
         id: 'header',
         title: s('Заголовок страницы', 'Page header'),
-        keys: ['stepsLabel', 'stepGroup', 'stepDetails', 'stepPayment', 'title', 'change', 'backToCourse', 'groupFull', 'cancelledNotice', 'draftNotice']
+        keys: ['title', 'subtitle', 'backToCourse', 'groupFull']
       },
       {
         id: 'summary',
@@ -266,10 +298,8 @@ export const contentPlaces: ContentPlace[] = [
       },
       {
         id: 'plan',
-        title: s('Убрано из формы', 'Removed from the form'),
-        hint: s('Выбор «весь курс сразу» и телефон убраны в ноябре 2026; вернутся, когда Allpay будет подключён напрямую', 'The pay-in-full choice and the phone field were removed in November 2026; they return once Allpay is connected directly'),
-        keys: ['planTitle', 'planMonthly', 'planMonthlyNote', 'planFull', 'planFullNote', 'phone', 'phonePlaceholder', 'subtitle', 'priceNote', 'successTitle', 'successText'],
-        hidden: true
+        title: s('Выбор способа оплаты', 'Payment plan choice'),
+        keys: ['planTitle', 'planMonthly', 'planMonthlyNote', 'planFull', 'planFullNote']
       },
       {
         id: 'participant',
@@ -280,7 +310,7 @@ export const contentPlaces: ContentPlace[] = [
       {
         id: 'fields',
         title: s('Поля формы', 'Form fields'),
-        keys: ['firstName', 'lastName', 'email', 'telegramContact', 'telegramContactPlaceholder', 'telegramContactHint', 'agreement', 'refundNote', 'submit', 'submitting']
+        keys: ['firstName', 'lastName', 'email', 'phone', 'phonePlaceholder', 'telegramContact', 'telegramContactPlaceholder', 'telegramContactHint', 'agreement', 'refundNote', 'submit', 'submitting']
       },
       {
         id: 'errors',
@@ -291,7 +321,7 @@ export const contentPlaces: ContentPlace[] = [
       {
         id: 'success',
         title: s('Экран перед переходом к оплате', 'The screen before payment'),
-        keys: ['redirecting', 'successManual', 'goToPayment', 'afterPayment', 'afterPayment1', 'afterPayment2']
+        keys: ['successTitle', 'successText', 'successManual', 'goToPayment', 'afterPayment', 'afterPayment1', 'afterPayment2']
       },
       {
         id: 'noPayment',
@@ -353,7 +383,7 @@ export const contentPlaces: ContentPlace[] = [
     area: 'site',
     sections: [
       { id: 'header', title: s('Заголовок страницы', 'Page header'), keys: ['title', 'intro'] },
-      { id: 'links', title: s('Способы связи', 'Ways to reach us'), hint: s('Подписи строк и кнопка «Написать» у каждой; сами адреса — в настройках', 'Row labels and the Write button on each; the addresses live in settings'), keys: ['telegram', 'whatsapp', 'emailLabel', 'write'] },
+      { id: 'links', title: s('Кнопки связи', 'Contact buttons'), keys: ['whatsapp', 'telegram', 'emailLabel'] },
       { id: 'note', title: s('Примечание внизу', 'Closing note'), keys: ['note'] }
     ]
   },
@@ -426,17 +456,6 @@ export const contentPlaces: ContentPlace[] = [
         hint: s('Это видно, когда деньги получены, но Telegram не ответил. Человеку нужно понимать, что деньги не пропали', 'Shown when the money arrived but Telegram did not answer. The reader must understand the money is not lost'),
         keys: ['manualTitle', 'manualText', 'contact']
       }
-    ]
-  },
-  {
-    namespace: 'thanks',
-    title: s('Спасибо за оплату', 'Thank you page'),
-    where: s('Куда Allpay возвращает после оплаты по ручной ссылке. Номер записи сюда не приходит, поэтому страница общая', 'Where Allpay returns a payer after paying through a hand-made link. No enrollment number arrives, so the page is general'),
-    path: '/spasibo',
-    area: 'service',
-    sections: [
-      { id: 'main', title: s('Что произошло и что дальше', 'What happened and what next'), keys: ['title', 'next', 'start'] },
-      { id: 'help', title: s('Если не написали', 'If we have not written'), keys: ['noMessageTitle', 'noMessageText', 'refund'] }
     ]
   },
   {

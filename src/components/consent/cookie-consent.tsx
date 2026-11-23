@@ -135,7 +135,7 @@ export function CookieConsent() {
             transition={transition}
             className="fixed inset-x-0 bottom-0 z-[60] p-4 sm:p-6"
           >
-            <div className="container-content flex max-w-3xl flex-col gap-4 border border-input bg-card p-5 sm:p-6">
+            <div className="container-content flex max-w-3xl flex-col gap-4 rounded-card border border-border bg-card p-5 shadow-2xl sm:p-6">
               <div>
                 <h2 className="font-sans text-base font-semibold">
                   {t('title')}
@@ -191,11 +191,11 @@ export function CookieConsent() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={reduce ? { opacity: 0 } : { opacity: 0, y: 16, scale: 0.98 }}
               transition={transition}
-              className="fixed inset-0 z-[61] m-auto flex h-fit max-h-[88vh] w-[calc(100%-2rem)] max-w-lg flex-col overflow-y-auto border border-input bg-card p-6 sm:p-8"
+              className="fixed inset-0 z-[61] m-auto flex h-fit max-h-[88vh] w-[calc(100%-2rem)] max-w-lg flex-col overflow-y-auto rounded-card border border-border bg-card p-6 shadow-2xl sm:p-8"
             >
               <h2
                 id="cookie-panel-title"
-                className="font-serif text-2xl font-medium"
+                className="font-display text-2xl font-semibold"
               >
                 {t('panelTitle')}
               </h2>

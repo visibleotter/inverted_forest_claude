@@ -101,7 +101,7 @@ export default async function AdminDashboardPage({
             >
               <span
                 className={`h-2 w-2 rounded-full ${
-                  log.status === 'ok' ? 'bg-fern' : 'bg-brick'
+                  log.status === 'ok' ? 'bg-emerald-500' : 'bg-red-500'
                 }`}
                 aria-hidden
               />

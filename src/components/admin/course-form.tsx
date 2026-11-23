@@ -469,7 +469,7 @@ export function CourseForm({ course, teachers }: Props) {
               <button
                 type="button"
                 aria-label={t('remove')}
-                className="text-muted-foreground transition-colors hover:text-destructive"
+                className="text-muted-foreground transition-colors hover:text-red-500"
                 onClick={() =>
                   set(
                     'curriculum',
@@ -569,7 +569,7 @@ export function CourseForm({ course, teachers }: Props) {
               <button
                 type="button"
                 aria-label={t('remove')}
-                className="text-muted-foreground transition-colors hover:text-destructive"
+                className="text-muted-foreground transition-colors hover:text-red-500"
                 onClick={() =>
                   set(
                     'faq',
@@ -620,7 +620,7 @@ export function CourseForm({ course, teachers }: Props) {
           {t('cancel')}
         </Link>
         {state.status === 'error' && (
-          <p role="alert" className="text-sm text-destructive">
+          <p role="alert" className="text-sm text-red-500">
             {state.message === 'demo_mode' ? t('demoMode') : state.message}
           </p>
         )}

@@ -294,7 +294,7 @@ export function ContentEditor({ namespace, place, groups }: Props) {
         <input type="hidden" name="namespace" value={namespace} />
 
         {state.status === 'error' && (
-          <p role="alert" className="text-sm text-destructive">
+          <p role="alert" className="text-sm text-red-500">
             {state.message === 'demo_mode' ? t('demoMode') : state.message}
           </p>
         )}
@@ -304,7 +304,7 @@ export function ContentEditor({ namespace, place, groups }: Props) {
               {t('savedCount', { changed: state.changed, reset: state.reset })}
             </p>
             {state.problems.length > 0 && (
-              <div className="mt-1 text-destructive">
+              <div className="mt-1 text-red-500">
                 <p>{t('placeholderProblem')}</p>
                 <ul className="mt-1 space-y-0.5">
                   {state.problems.map((problem) => (

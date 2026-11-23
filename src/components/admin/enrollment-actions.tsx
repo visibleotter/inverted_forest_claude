@@ -218,8 +218,9 @@ export function EnrollmentActions({
           role="status"
           className={cn(
             'text-xs',
-            // Brick: the approved error colour, the same as the forms'.
-            result.ok ? 'text-moss' : 'text-destructive'
+            // red-500 matches the form errors already in the project; it is
+            // the one colour outside the palette this codebase uses.
+            result.ok ? 'text-moss' : 'text-red-500'
           )}
         >
           {result.ok

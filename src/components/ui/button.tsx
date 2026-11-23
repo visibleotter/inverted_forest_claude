@@ -3,26 +3,21 @@ import { forwardRef } from 'react';
 import { cn } from '@/lib/utils';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 rounded-btn font-sans font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50',
+  'inline-flex items-center justify-center gap-2 rounded-btn font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
       variant: {
-        // One main action per screen. No shadows: a flat block of fern is
-        // already the heaviest thing on a paper page.
-        primary: 'bg-primary text-primary-foreground hover:bg-forest',
-        // Fern on light, glow on dark — the surface classes swap it.
-        accent: 'bg-accent text-accent-foreground hover:opacity-90',
+        primary:
+          'bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm',
+        accent:
+          'bg-accent text-accent-foreground hover:opacity-90 shadow-sm font-semibold',
         outline:
-          'border border-input bg-transparent hover:bg-muted text-foreground',
-        ghost: 'hover:bg-muted text-foreground',
-        // The secondary action: a quiet underlined link, not a second button.
-        // `!` because sizes are applied after variants and would otherwise
-        // give a link a button's height and padding.
-        link: '!h-auto !px-0 text-accent underline underline-offset-4 decoration-1 hover:decoration-2'
+          'border border-border bg-transparent hover:bg-muted text-foreground',
+        ghost: 'hover:bg-muted text-foreground'
       },
       size: {
-        sm: 'h-10 px-4 text-sm',
-        md: 'h-12 px-6 text-base',
+        sm: 'h-9 px-4 text-sm',
+        md: 'h-11 px-6 text-sm',
         lg: 'h-12 px-8 text-base'
       }
     },

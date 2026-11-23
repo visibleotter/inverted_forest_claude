@@ -6,13 +6,6 @@ interface SectionProps extends React.HTMLAttributes<HTMLElement> {
   subtitle?: string;
 }
 
-/**
- * A page section: a hairline above, a heading, and room around it.
- *
- * Sections are told apart by the rule and the space, never by a change of
- * ground — every section sits on the same paper. 48px of air on phones,
- * 72px on wide screens, both on the 8px step.
- */
 export function Section({
   eyebrow,
   title,
@@ -22,26 +15,43 @@ export function Section({
   ...props
 }: SectionProps) {
   return (
-    <section className={cn('relative py-12 sm:py-[72px]', className)} {...props}>
+    <section
+      className={cn(
+        // Rhythm, not decoration: the sections after the hero are short —
+        // most under a screen — so with tight padding they flick past one
+        // heading after another. The extra air gives each one room to
+        // register before the next arrives.
+        'relative py-20 sm:py-28',
+        // Dark bands bring their own ground; everything else gets the
+        // light one, so no section is a flat fill.
+        !className?.includes('surface-dark') &&
+          !className?.includes('section-soft') &&
+          'ground-light',
+        className
+      )}
+      {...props}
+    >
       <div className="container-content">
-        <div className="border-t border-border pt-8 sm:pt-12">
-          {(eyebrow || title || subtitle) && (
-            <div className="mb-8 max-w-prose sm:mb-12">
-              {eyebrow && <p className="eyebrow mb-2">{eyebrow}</p>}
-              {title && (
-                <h2 className="text-balance text-[26px] leading-tight sm:text-[32px]">
-                  {title}
-                </h2>
-              )}
-              {subtitle && (
-                <p className="mt-3 font-serif text-[17px] leading-relaxed text-muted-foreground sm:text-lg">
-                  {subtitle}
-                </p>
-              )}
-            </div>
-          )}
-          {children}
-        </div>
+        {(eyebrow || title || subtitle) && (
+          <div className="mb-10 max-w-2xl sm:mb-14">
+            {eyebrow && (
+              <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-accent">
+                {eyebrow}
+              </p>
+            )}
+            {title && (
+              <h2 className="text-balance text-3xl font-semibold sm:text-4xl">
+                {title}
+              </h2>
+            )}
+            {subtitle && (
+              <p className="mt-4 text-base text-muted-foreground sm:text-lg">
+                {subtitle}
+              </p>
+            )}
+          </div>
+        )}
+        {children}
       </div>
     </section>
   );
