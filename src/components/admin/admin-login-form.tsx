@@ -155,7 +155,7 @@ export function AdminLoginForm({ demo }: { demo: boolean }) {
       )}
 
       {state === 'error' && (
-        <p role="alert" className="mt-3 text-sm text-red-500">
+        <p role="alert" className="mt-3 text-sm text-destructive">
           {message ?? t('error')}
         </p>
       )}

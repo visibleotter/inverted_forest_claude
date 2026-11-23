@@ -49,7 +49,7 @@ export function NewsletterForm() {
       />
       <SubmitButton label={t('newsletterButton')} />
       {(state.status === 'error' || state.status === 'rate_limited') && (
-        <p role="alert" className="text-sm text-red-500">
+        <p role="alert" className="text-sm text-destructive">
           {state.status === 'rate_limited'
             ? t('newsletterRateLimited')
             : t('newsletterError')}

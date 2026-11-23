@@ -353,7 +353,7 @@ export const contentPlaces: ContentPlace[] = [
     area: 'site',
     sections: [
       { id: 'header', title: s('Заголовок страницы', 'Page header'), keys: ['title', 'intro'] },
-      { id: 'links', title: s('Кнопки связи', 'Contact buttons'), keys: ['whatsapp', 'telegram', 'emailLabel'] },
+      { id: 'links', title: s('Способы связи', 'Ways to reach us'), hint: s('Подписи строк и кнопка «Написать» у каждой; сами адреса — в настройках', 'Row labels and the Write button on each; the addresses live in settings'), keys: ['telegram', 'whatsapp', 'emailLabel', 'write'] },
       { id: 'note', title: s('Примечание внизу', 'Closing note'), keys: ['note'] }
     ]
   },
@@ -426,6 +426,17 @@ export const contentPlaces: ContentPlace[] = [
         hint: s('Это видно, когда деньги получены, но Telegram не ответил. Человеку нужно понимать, что деньги не пропали', 'Shown when the money arrived but Telegram did not answer. The reader must understand the money is not lost'),
         keys: ['manualTitle', 'manualText', 'contact']
       }
+    ]
+  },
+  {
+    namespace: 'thanks',
+    title: s('Спасибо за оплату', 'Thank you page'),
+    where: s('Куда Allpay возвращает после оплаты по ручной ссылке. Номер записи сюда не приходит, поэтому страница общая', 'Where Allpay returns a payer after paying through a hand-made link. No enrollment number arrives, so the page is general'),
+    path: '/spasibo',
+    area: 'service',
+    sections: [
+      { id: 'main', title: s('Что произошло и что дальше', 'What happened and what next'), keys: ['title', 'next', 'start'] },
+      { id: 'help', title: s('Если не написали', 'If we have not written'), keys: ['noMessageTitle', 'noMessageText', 'refund'] }
     ]
   },
   {

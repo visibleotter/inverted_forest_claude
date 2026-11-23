@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { setRequestLocale } from 'next-intl/server';
 import { EnrollmentStatus } from '@/components/marketing/enrollment-status';
-import { siteConfig } from '@/lib/config';
 
 /**
  * Where Allpay sends the payer back to.
@@ -19,12 +18,9 @@ export default function EnrollSuccessPage({
   setRequestLocale(locale);
 
   return (
-    <div className="container-content py-20 sm:py-28">
-      <div className="mx-auto max-w-xl">
-        <EnrollmentStatus
-          enrollmentId={id}
-          contactHref={`mailto:${siteConfig.contactEmail}`}
-        />
+    <div className="container-content pb-24 pt-10 sm:pt-16">
+      <div className="max-w-prose">
+        <EnrollmentStatus enrollmentId={id} />
       </div>
     </div>
   );

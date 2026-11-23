@@ -313,10 +313,11 @@
   "contacts": {
     "title": "Contacts",
     "intro": "Have a question about a course, need help choosing a group, or simply want to say hello — write to us, we reply quickly.",
-    "whatsapp": "Message on WhatsApp",
-    "telegram": "Message on Telegram",
-    "emailLabel": "Or by email:",
-    "note": "We teach in Russian and English. Classes are online, from anywhere in the world."
+    "whatsapp": "WhatsApp",
+    "telegram": "Telegram",
+    "emailLabel": "Email",
+    "note": "We teach in Russian and English. Classes are online, from anywhere in the world.",
+    "write": "Write"
   },
   "legal": {
     "lastUpdated": "Last updated"
@@ -628,7 +629,7 @@
     "readyTitle": "Payment received",
     "readyText": "Here is your personal link to the group's private Telegram channel. It works once and expires in 7 days.",
     "join": "Open the group channel",
-    "emailedToo": "We've emailed you the same link, in case now isn't a good moment.",
+    "emailedToo": "The link is personal and works once. If it does not let you in, write to us.",
     "pendingTitle": "Payment not confirmed yet",
     "pendingText": "If you've just paid, give it a minute. If the payment failed, try again or write to us.",
     "manualTitle": "Something went wrong",
@@ -652,5 +653,13 @@
     "badCredentials": "Wrong email or password.",
     "useLink": "Forgot the password? Email me a link instead",
     "usePassword": "Sign in with a password"
+  },
+  "thanks": {
+    "title": "Thank you — payment received",
+    "next": "Within a day we will message you on Telegram with a link to the group’s private channel.",
+    "start": "The group starts once it fills. We will tell you the date of the first lesson in advance.",
+    "noMessageTitle": "If you have not heard from us",
+    "noMessageText": "If a day has passed with no message, write to us and we will look into it.",
+    "refund": "Changed your mind? Within 24 hours of the first lesson we refund your payment less the cost of one lesson. Full terms are in the <terms>Terms and Conditions</terms>."
   }
 }

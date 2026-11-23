@@ -316,7 +316,7 @@ export function GroupForm({ group, courses }: Props) {
       </div>
 
       {state.status === 'error' && (
-        <p role="alert" className="text-sm text-red-500">
+        <p role="alert" className="text-sm text-destructive">
           {state.message}
         </p>
       )}

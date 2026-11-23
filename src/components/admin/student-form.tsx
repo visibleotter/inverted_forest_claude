@@ -158,7 +158,7 @@ export function StudentForm({ student }: { student: Student }) {
           {t('cancel')}
         </Link>
         {state.status === 'error' && (
-          <p role="alert" className="text-sm text-red-500">
+          <p role="alert" className="text-sm text-destructive">
             {state.message === 'demo_mode'
               ? t('demoMode')
               : state.message === 'email_taken'

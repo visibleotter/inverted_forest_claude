@@ -1,16 +1,14 @@
 'use client';
 
-import { Check, Loader2, Send, TriangleAlert } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
+import { Link } from '@/i18n/navigation';
 import { buttonVariants } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
 
 type State = 'checking' | 'pending' | 'ready' | 'paid_no_invite' | 'demo';
 
 interface Props {
   enrollmentId: string;
-  contactHref: string;
 }
 
 /**
@@ -19,9 +17,10 @@ interface Props {
  * The webhook usually lands within a second or two, but "usually" is not
  * good enough for the one screen where someone has just handed over money.
  * So this polls, and backs off: quick at first, then slower, then it stops
- * and says something true rather than spinning forever.
+ * and says something true rather than spinning forever. An enrollment the
+ * server does not know at all is answered at once, not after two minutes.
  */
-export function EnrollmentStatus({ enrollmentId, contactHref }: Props) {
+export function EnrollmentStatus({ enrollmentId }: Props) {
   const t = useTranslations('enrollSuccess');
   const [state, setState] = useState<State>('checking');
   const [inviteLink, setInviteLink] = useState<string | null>(null);
@@ -38,6 +37,10 @@ export function EnrollmentStatus({ enrollmentId, contactHref }: Props) {
         const response = await fetch(`/api/enroll/${enrollmentId}/status`, {
           cache: 'no-store'
         });
+        if (response.status === 404) {
+          if (!cancelled) setState('pending');
+          return;
+        }
         const body = (await response.json()) as {
           state?: State;
           inviteLink?: string;
@@ -63,9 +66,7 @@ export function EnrollmentStatus({ enrollmentId, contactHref }: Props) {
 
       // ~2s for the first half-minute, then every 5s, giving up at ~2 min.
       if (attempt > 30) {
-        setState((current) =>
-          current === 'checking' ? 'pending' : current
-        );
+        setState((current) => (current === 'checking' ? 'pending' : current));
         return;
       }
       setTimeout(poll, attempt <= 15 ? 2000 : 5000);
@@ -77,70 +78,62 @@ export function EnrollmentStatus({ enrollmentId, contactHref }: Props) {
     };
   }, [enrollmentId]);
 
+  const contact = (
+    <Link href="/contacts" className={buttonVariants({ variant: 'link', className: 'mt-6' })}>
+      {t('contact')}
+    </Link>
+  );
+
   if (state === 'ready' && inviteLink) {
     return (
-      <div className="rounded-card border border-border bg-card p-8">
-        <Check className="h-7 w-7 text-accent" aria-hidden />
-        <h1 className="mt-4 text-2xl font-semibold">{t('readyTitle')}</h1>
-        <p className="mt-3 leading-relaxed text-muted-foreground">
-          {t('readyText')}
-        </p>
+      <div>
+        <h1 className="text-balance text-[34px] leading-[1.15] sm:text-[44px]">
+          {t('readyTitle')}
+        </h1>
+        <p className="text-body mt-4 text-muted-foreground">{t('readyText')}</p>
         <a
           href={inviteLink}
           target="_blank"
           rel="noopener noreferrer"
-          className={cn(buttonVariants({ variant: 'accent', size: 'lg' }), 'mt-6')}
+          className={buttonVariants({ className: 'mt-8' })}
         >
-          <Send className="mr-2 h-4 w-4" aria-hidden />
           {t('join')}
         </a>
-        <p className="mt-4 text-sm text-muted-foreground">{t('emailedToo')}</p>
+        <p className="mt-4 text-[15px] text-muted-foreground">{t('emailedToo')}</p>
       </div>
     );
   }
 
   if (state === 'paid_no_invite') {
     return (
-      <div className="rounded-card border border-border bg-card p-8">
-        <TriangleAlert className="h-7 w-7 text-accent" aria-hidden />
-        <h1 className="mt-4 text-2xl font-semibold">{t('manualTitle')}</h1>
-        <p className="mt-3 leading-relaxed text-muted-foreground">
-          {t('manualText')}
-        </p>
-        <a
-          href={contactHref}
-          className={cn(buttonVariants({ variant: 'outline' }), 'mt-6')}
-        >
-          {t('contact')}
-        </a>
+      <div>
+        <h1 className="text-balance text-[34px] leading-[1.15] sm:text-[44px]">
+          {t('manualTitle')}
+        </h1>
+        <p className="text-body mt-4 text-muted-foreground">{t('manualText')}</p>
+        {contact}
       </div>
     );
   }
 
   if (state === 'pending' || state === 'demo') {
     return (
-      <div className="rounded-card border border-border bg-card p-8">
-        <h1 className="text-2xl font-semibold">{t('pendingTitle')}</h1>
-        <p className="mt-3 leading-relaxed text-muted-foreground">
-          {t('pendingText')}
-        </p>
-        <a
-          href={contactHref}
-          className={cn(buttonVariants({ variant: 'outline' }), 'mt-6')}
-        >
-          {t('contact')}
-        </a>
+      <div>
+        <h1 className="text-balance text-[34px] leading-[1.15] sm:text-[44px]">
+          {t('pendingTitle')}
+        </h1>
+        <p className="text-body mt-4 text-muted-foreground">{t('pendingText')}</p>
+        {contact}
       </div>
     );
   }
 
   return (
-    <div className="rounded-card border border-border bg-card p-8" role="status">
-      <Loader2 className="h-7 w-7 animate-spin text-accent" aria-hidden />
-      <h1 className="mt-4 text-2xl font-semibold">{t('title')}</h1>
-      <p className="mt-3 leading-relaxed text-muted-foreground">
-        {t('waiting')}
-      </p>
+    <div role="status">
+      <h1 className="text-balance text-[34px] leading-[1.15] sm:text-[44px]">
+        {t('title')}
+      </h1>
+      <p className="text-body mt-4 text-muted-foreground">{t('waiting')}</p>
     </div>
   );
 }
