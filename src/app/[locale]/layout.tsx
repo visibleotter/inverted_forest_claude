@@ -45,7 +45,15 @@ export async function generateMetadata({
       template: `%s · ${t('siteName')}`
     },
     description: t('home.description'),
-    icons: { icon: '/favicon.svg' },
+    // SVG for browsers that take it, ICO for the ones that ask for
+    // /favicon.ico regardless (it used to 404), PNG for iOS home screens.
+    icons: {
+      icon: [
+        { url: '/favicon.svg', type: 'image/svg+xml' },
+        { url: '/favicon.ico', sizes: 'any' }
+      ],
+      apple: '/apple-touch-icon.png'
+    },
     alternates: {
       languages: Object.fromEntries(locales.map((l) => [l, `/${l}`]))
     },

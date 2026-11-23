@@ -1,6 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="12" fill="#1B2A4A"/>
-  <!-- Inverted tree shape -->
-  <polygon points="32,8 48,28 40,28 52,46 20,46 32,28 24,28" fill="#C8922A" transform="rotate(180, 32, 36)"/>
-  <rect x="29" y="46" width="6" height="10" fill="#C8922A"/>
+  <!-- An inverted fir: the trunk rises, the tiers hang below, as in the
+       name. Two palette colours only: glow on forest. -->
+  <rect width="64" height="64" rx="10" fill="#16281F"/>
+  <rect x="30.5" y="8" width="3" height="11" fill="#C7BB74"/>
+  <path d="M13 19 H51 L41 29 H47 L38 39 H43 L32 55 L21 39 H26 L17 29 H23 Z" fill="#C7BB74"/>
 </svg>
