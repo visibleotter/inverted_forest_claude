@@ -223,7 +223,7 @@
     "telegramContactHint": "No username? Give the phone number your Telegram account uses. We use it to find you if the invite link does not work.",
     "refundNote": "Changed your mind after the first lesson? Write to us within 24 hours of it and we will refund your payment minus the cost of one lesson. Other cancellation terms are in the <terms>Terms and Conditions</terms>.",
     "successNoPaymentTitle": "You are registered!",
-    "successNoPaymentText": "We have your registration and your place in the group is held. We will be in touch shortly to arrange payment, and after that we will send your invitation to the group’s private Telegram channel. Questions? Write to us:"
+    "successNoPaymentText": "We have your registration. We will be in touch shortly to arrange payment, and after that we will send your invitation to the group’s private Telegram channel. Questions? Write to us:"
   },
   "teachers": {
     "title": "Teachers",
