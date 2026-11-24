@@ -8,6 +8,7 @@ import { Link } from '@/i18n/navigation';
 import { useSavedRedirect } from '@/components/admin/save-feedback';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { AudioEditor } from '@/components/admin/audio-editor';
 import { adminSaveCourse, type CourseFormState } from '@/lib/admin-actions';
 import type {
   AgeGroup,
@@ -75,7 +76,8 @@ function emptyCourse(teacherId: string): Course {
     outcomes: { ...emptyList },
     audience: { ...emptyList },
     curriculum: [],
-    faq: []
+    faq: [],
+    audio: []
   };
 }
 
@@ -535,6 +537,13 @@ export function CourseForm({ course, teachers }: Props) {
         ))}
       </section>
 
+      {/* ── Audio fragments ────────────────────────────────────────── */}
+      <AudioEditor
+        courseId={draft.id}
+        clips={draft.audio ?? []}
+        onChange={(next) => set('audio', next)}
+      />
+
       {/* ── FAQ ────────────────────────────────────────────────────── */}
       <section className="space-y-5 border-t border-border pt-8">
         <div className="flex items-center justify-between gap-4">
@@ -621,7 +630,11 @@ export function CourseForm({ course, teachers }: Props) {
         </Link>
         {state.status === 'error' && (
           <p role="alert" className="text-sm text-red-500">
-            {state.message === 'demo_mode' ? t('demoMode') : state.message}
+            {state.message === 'demo_mode'
+              ? t('demoMode')
+              : state.message === 'audio_needs_migration'
+                ? t('audioNeedsMigration')
+                : state.message}
           </p>
         )}
         {state.status === 'saved' && (

@@ -126,7 +126,9 @@ function mapCourse(row: any): Course {
     outcomes: collectList(tr, 'outcomes'),
     audience: collectList(tr, 'audience'),
     curriculum: collectBlocks(tr, 'curriculum'),
-    faq: collectFaq(tr)
+    faq: collectFaq(tr),
+    // Absent until migration 0007 has run; a course without it has no clips.
+    audio: Array.isArray(row.audio) ? row.audio : []
   };
 }
 

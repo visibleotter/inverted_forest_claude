@@ -685,7 +685,13 @@ const courseSchema = z.object({
   durationMonths: z.number().int().min(1).max(24),
   monthlyPrice: z.number().nonnegative().finite(),
   currency: z.enum(['ILS', 'USD', 'EUR']),
-  imageUrl: z.string().trim().url().nullable(),
+  // A full URL, or a path to a file shipped with the site
+  // (/images/courses/…), which is where the course paintings now live.
+  imageUrl: z
+    .string()
+    .trim()
+    .refine((v) => v.startsWith('/') || /^https?:\/\//.test(v), 'image must be a URL or /path')
+    .nullable(),
   publicTelegramUrl: z.string().trim().url().nullable(),
   status: z.enum(['draft', 'published', 'archived']),
   featured: z.boolean(),
@@ -699,7 +705,17 @@ const courseSchema = z.object({
     .max(24),
   faq: z
     .array(z.object({ question: localizedString, answer: localizedString }))
-    .max(40)
+    .max(40),
+  audio: z
+    .array(
+      z.object({
+        url: z.string().trim().refine((v) => v.startsWith('/') || /^https:\/\//.test(v)),
+        title: localizedString,
+        durationSec: z.number().nonnegative().nullable()
+      })
+    )
+    .max(12)
+    .default([])
 });
 
 export type CourseFormState =
@@ -749,8 +765,7 @@ export async function adminSaveCourse(
   const course = parsed.data;
   const db = createSupabaseAdminClient();
 
-  const { error: courseError } = await db.from('courses').upsert(
-    {
+  const courseRow = {
       id: course.id,
       slug: course.slug,
       teacher_id: course.teacherId,
@@ -765,9 +780,17 @@ export async function adminSaveCourse(
       status: course.status,
       featured: course.featured,
       updated_at: new Date().toISOString()
-    },
-    { onConflict: 'id' }
-  );
+  };
+  const upsertCourse = (row: Record<string, unknown>) =>
+    db.from('courses').upsert(row, { onConflict: 'id' });
+
+  let { error: courseError } = await upsertCourse({ ...courseRow, audio: course.audio });
+  let audioPending = false;
+  if (isMissingColumn(courseError)) {
+    // Migration 0007 has not run: save everything else, say so if it matters.
+    ({ error: courseError } = await upsertCourse(courseRow));
+    audioPending = course.audio.length > 0;
+  }
   if (courseError) return { status: 'error', message: courseError.message };
 
   const translations = (['ru', 'en'] as const).map((locale) => ({
@@ -797,6 +820,7 @@ export async function adminSaveCourse(
 
   // Course copy appears on the home page, the catalogue and its own page.
   revalidatePath('/', 'layout');
+  if (audioPending) return { status: 'error', message: 'audio_needs_migration' };
   return { status: 'saved', id: course.id };
 }
 
@@ -996,4 +1020,60 @@ export async function adminSaveStudent(
 
   refresh();
   return { status: 'saved' };
+}
+
+/* ── Course audio ─────────────────────────────────────────────────── */
+
+const AUDIO_BUCKET = 'course-audio';
+const AUDIO_EXTENSIONS = ['mp3', 'm4a', 'aac', 'ogg', 'wav', 'webm'];
+
+export type AudioUploadTicket =
+  | { ok: true; path: string; token: string; publicUrl: string }
+  | { ok: false; message: string };
+
+/**
+ * A one-time ticket to upload one audio file straight to Storage.
+ *
+ * The file goes from the browser to Supabase, not through this server:
+ * Vercel caps a request body at about 4.5 MB, and a five-minute recording
+ * can be close to that. The ticket is minted with the service role after
+ * the admin check, so the browser can write exactly one object at exactly
+ * this path and nothing else.
+ */
+export async function adminCreateAudioUpload(
+  courseId: string,
+  fileName: string
+): Promise<AudioUploadTicket> {
+  const access = await checkAdminAccess();
+  if (!access.allowed) return { ok: false, message: 'unauthorized' };
+  if (isDemoMode()) return { ok: false, message: 'demo_mode' };
+
+  const ext = fileName.split('.').pop()?.toLowerCase() ?? '';
+  if (!AUDIO_EXTENSIONS.includes(ext)) return { ok: false, message: 'bad_type' };
+  if (!/^course_[a-z0-9_]+$/.test(courseId)) return { ok: false, message: 'bad_course' };
+
+  const path = `${courseId}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+  const db = createSupabaseAdminClient();
+  const { data, error } = await db.storage
+    .from(AUDIO_BUCKET)
+    .createSignedUploadUrl(path);
+  if (error || !data) {
+    // Most often: migration 0007, which creates the bucket, has not run.
+    return { ok: false, message: 'no_bucket' };
+  }
+  const { data: pub } = db.storage.from(AUDIO_BUCKET).getPublicUrl(path);
+  return { ok: true, path: data.path, token: data.token, publicUrl: pub.publicUrl };
+}
+
+/** Remove an uploaded file when its clip is deleted from a course. */
+export async function adminDeleteAudio(publicUrl: string): Promise<{ ok: boolean }> {
+  const access = await checkAdminAccess();
+  if (!access.allowed || isDemoMode()) return { ok: false };
+  const marker = `/object/public/${AUDIO_BUCKET}/`;
+  const at = publicUrl.indexOf(marker);
+  if (at < 0) return { ok: false };
+  const path = decodeURIComponent(publicUrl.slice(at + marker.length));
+  const db = createSupabaseAdminClient();
+  const { error } = await db.storage.from(AUDIO_BUCKET).remove([path]);
+  return { ok: !error };
 }

@@ -73,6 +73,18 @@ export interface Teacher {
   highlights: LocalizedList;
 }
 
+/**
+ * A short recorded fragment of a class — a few minutes at most — played
+ * on the course page. The file lives in Supabase Storage (bucket
+ * `course-audio`); `url` is its public address.
+ */
+export interface AudioClip {
+  url: string;
+  title: LocalizedString;
+  /** Seconds, read from the file at upload; null if it could not be. */
+  durationSec: number | null;
+}
+
 export interface CurriculumModule {
   title: LocalizedString;
   topics: LocalizedList;
@@ -104,6 +116,7 @@ export interface Course {
   audience: LocalizedList;
   curriculum: CurriculumModule[];
   faq: FaqItem[];
+  audio: AudioClip[];
 }
 
 export interface StudyGroup {

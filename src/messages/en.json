@@ -42,7 +42,9 @@
     "menu": "Menu",
     "closeMenu": "Close menu",
     "close": "Close",
-    "switchLocale": "Русский"
+    "switchLocale": "Русский",
+    "writeUs": "Message us on Telegram",
+    "writeUsShort": "Write to us"
   },
   "home": {
     "heroEyebrow": "History & philosophy courses online",
@@ -116,7 +118,14 @@
       "teens": "Teens",
       "adults": "Adults"
     },
-    "empty": "Courses are coming soon. Check back later!"
+    "empty": "Courses are coming soon. Check back later!",
+    "filterLabel": "Who it is for",
+    "filterAll": "All",
+    "filterFor": {
+      "adults": "Adults",
+      "teens": "Teens",
+      "children": "Children"
+    }
   },
   "course": {
     "aboutTitle": "About the course",
@@ -137,7 +146,17 @@
     "faqTitle": "Course FAQ",
     "registerCta": "Join",
     "backToCourses": "All courses",
-    "telegramPublic": "Public course channel"
+    "telegramPublic": "Public course channel",
+    "listenTitle": "Listen to a class",
+    "listenSubtitle": "A few minutes of a real class, to hear what it sounds like before you sign up.",
+    "listenPlay": "Play",
+    "listenPause": "Pause",
+    "listenSeek": "Seek",
+    "listenLink": "Listen to a fragment",
+    "chooseGroup": "Choose a group",
+    "groupSizeShort": "Up to {capacity} per group",
+    "onceAWeek": "Once a week, 60–90 minutes",
+    "refundShort": "Changed your mind? We refund within 24 hours of the first lesson, less the cost of one lesson."
   },
   "schedule": {
     "group": "Group",
@@ -548,7 +567,20 @@
         "published": "Published — visible to everyone",
         "draft": "Draft — hidden from the site",
         "archived": "Archived — hidden from the site"
-      }
+      },
+      "audio": "Audio fragments",
+      "audioHint": "Short class recordings, up to 5 minutes. MP3, mono, 96–128 kbps works best: 2–5 MB. The file uploads at once and appears on the site after “Save”.",
+      "audioAdd": "Add audio",
+      "audioTitle": "Title",
+      "audioUploading": "Uploading…",
+      "audioUploaded": "Uploaded. Remember to press “Save”.",
+      "audioNeedsId": "Set the course id first.",
+      "audioTooBig": "The file is over 20 MB. Export it as MP3 at 96–128 kbps.",
+      "audioBadType": "Needs an audio file: MP3, M4A, AAC, OGG, WAV or WEBM.",
+      "audioNoBucket": "Audio storage does not exist yet: run the SQL from migration 0007.",
+      "audioNeedsMigration": "Course saved, but not its audio: the database lacks the column (migration 0007).",
+      "audioUp": "Move up",
+      "audioDown": "Move down"
     },
     "teacherForm": {
       "new": "New teacher",

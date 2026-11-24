@@ -76,6 +76,12 @@ export const contentPlaces: ContentPlace[] = [
         keys: ['menu', 'closeMenu', 'close']
       },
       {
+        id: 'floating',
+        title: s('Плавающая кнопка «Написать нам»', 'Floating "Write to us" button'),
+        hint: s('Круглая кнопка в правом нижнем углу, ведёт в Telegram. Короткая подпись выдвигается при наведении', 'The round button in the bottom-right corner, opening Telegram. The short label slides out on hover'),
+        keys: ['writeUs', 'writeUsShort']
+      },
+      {
         id: 'locale',
         title: s('Переключатель языка', 'Language switch'),
         keys: ['switchLocale']
@@ -165,6 +171,12 @@ export const contentPlaces: ContentPlace[] = [
         keys: ['viewCourse', 'close', 'perMonth', 'months', 'nextCohort', 'seatsLeft', 'noSeats']
       },
       {
+        id: 'filter',
+        title: s('Вкладки «Для кого»', 'Audience chips'),
+        hint: s('Над списком курсов в каталоге. Вкладка показывается, только если есть курс для этой аудитории', 'Above the catalogue. A chip appears only if some course has that audience'),
+        keys: ['filterLabel', 'filterAll', 'filterFor.*']
+      },
+      {
         id: 'category',
         title: s('Ярлык: направление', 'Label: subject'),
         keys: ['category.*']
@@ -199,6 +211,18 @@ export const contentPlaces: ContentPlace[] = [
         keys: ['aboutTitle', 'outcomesTitle', 'audienceTitle']
       },
       {
+        id: 'listen',
+        title: s('Послушать фрагмент', 'Listen to a fragment'),
+        hint: s('Блок с плеером — виден, только если у курса есть загруженное аудио', 'The player block — shown only when the course has uploaded audio'),
+        keys: ['listenTitle', 'listenSubtitle', 'listenPlay', 'listenPause', 'listenSeek', 'listenLink']
+      },
+      {
+        id: 'priceCard',
+        title: s('Карточка цены справа', 'The travelling price card'),
+        hint: s('Едет вдоль страницы курса справа — только на широком экране', 'Travels down the right of the course page — wide screens only'),
+        keys: ['pricingTitle', 'groupSizeShort', 'onceAWeek', 'chooseGroup', 'refundShort']
+      },
+      {
         id: 'format',
         title: s('Формат обучения', 'Format block'),
         hint: s('Четыре пункта списка — одинаковые для всех курсов', 'Four bullet points — the same on every course'),
@@ -225,13 +249,6 @@ export const contentPlaces: ContentPlace[] = [
         title: s('Вопросы о курсе', 'Course FAQ'),
         keys: ['faqTitle']
       },
-      {
-        id: 'parked',
-        title: s('Заголовок «Стоимость»', 'Pricing heading'),
-        hint: s('Сейчас не выводится: у блока цены нет отдельного заголовка', 'Not rendered today: the price block has no separate heading'),
-        keys: ['pricingTitle'],
-        hidden: true
-      }
     ]
   },
   {

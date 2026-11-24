@@ -90,6 +90,7 @@ export const courses: Course[] = [
     imageUrl:
       'https://images.unsplash.com/photo-1547448415-e9f5b28e570d?w=1200&q=80',
     publicTelegramUrl: null,
+    audio: [],
     status: 'published',
     featured: true,
     title: { ru: 'Средневековая Россия', en: 'Medieval Russia' },
@@ -189,6 +190,7 @@ export const courses: Course[] = [
     imageUrl:
       'https://images.unsplash.com/photo-1555993539-1732b0258235?w=1200&q=80',
     publicTelegramUrl: null,
+    audio: [],
     status: 'published',
     featured: true,
     title: { ru: 'Древняя Греция', en: 'Ancient Greece' },
@@ -288,6 +290,15 @@ export const courses: Course[] = [
     imageUrl:
       'https://images.unsplash.com/photo-1564399579883-451a5d44ec08?w=1200&q=80',
     publicTelegramUrl: null,
+    // Demo mode only: a placeholder tone so the player can be tried
+    // without a real recording. Real clips are uploaded in the admin.
+    audio: [
+      {
+        url: '/audio/demo-fragment.wav',
+        title: { ru: 'Пример фрагмента: здесь будет запись занятия', en: 'Sample fragment: a class recording goes here' },
+        durationSec: 12
+      }
+    ],
     status: 'published',
     featured: true,
     title: { ru: 'Греческая философия', en: 'Greek Philosophy' },
@@ -387,6 +398,7 @@ export const courses: Course[] = [
     imageUrl:
       'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=1200&q=80',
     publicTelegramUrl: null,
+    audio: [],
     status: 'published',
     featured: false,
     title: { ru: 'Рассвет человечества', en: 'The Dawn of Humanity' },
@@ -486,6 +498,7 @@ export const courses: Course[] = [
     imageUrl:
       'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1200&q=80',
     publicTelegramUrl: null,
+    audio: [],
     status: 'published',
     featured: false,
     title: {
@@ -588,6 +601,7 @@ export const courses: Course[] = [
     imageUrl:
       'https://images.unsplash.com/photo-1568322445389-f64ac2515020?w=1200&q=80',
     publicTelegramUrl: null,
+    audio: [],
     status: 'published',
     featured: true,
     title: {
@@ -690,6 +704,7 @@ export const courses: Course[] = [
     imageUrl:
       'https://images.unsplash.com/photo-1520106212299-d99c443e4568?w=1200&q=80',
     publicTelegramUrl: null,
+    audio: [],
     status: 'published',
     featured: false,
     title: {
@@ -792,6 +807,7 @@ export const courses: Course[] = [
     imageUrl:
       'https://images.unsplash.com/photo-1547989453-2b26e4c85d2b?w=1200&q=80',
     publicTelegramUrl: null,
+    audio: [],
     status: 'published',
     featured: false,
     title: {
@@ -894,6 +910,7 @@ export const courses: Course[] = [
     imageUrl:
       'https://images.unsplash.com/photo-1513326738677-b964603b136d?w=1200&q=80',
     publicTelegramUrl: null,
+    audio: [],
     status: 'published',
     featured: false,
     title: {
