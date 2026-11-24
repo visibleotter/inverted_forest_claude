@@ -119,7 +119,7 @@ export function NavDrawer() {
         {/* Two stacked labels sliding on one axis. The invisible copy of the
             wider word keeps the button from resizing as they swap. */}
         <span
-          className="relative block overflow-hidden leading-none"
+          className="relative block overflow-hidden leading-none max-[374px]:hidden"
           style={{ height: '1em' }}
         >
           <span className="invisible block leading-none" aria-hidden>
@@ -226,6 +226,25 @@ export function NavDrawer() {
                 transition={{ duration: reduce ? 0 : 0.15, ease: 'easeOut' }}
                 className="pointer-events-none fixed bottom-0 right-0 top-0 z-[43] flex w-full flex-col justify-between overflow-y-auto px-8 pb-8 pt-24 sm:w-[32em] sm:px-12"
               >
+                {/* The drawer covers the header on a phone, trigger and all,
+                    so it carries its own way out. */}
+                <motion.button
+                  type="button"
+                  autoFocus
+                  onClick={() => setOpen(false)}
+                  aria-label={t('closeMenu')}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: reduce ? 0 : 0.3, delay: reduce ? 0 : 0.3 }}
+                  className="pointer-events-auto absolute right-5 top-3 flex h-10 select-none items-center gap-3 rounded-btn border border-glow/60 bg-glow/10 px-3 text-xs font-medium uppercase tracking-widest text-glow transition-colors hover:bg-glow/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-glow sm:right-12 sm:top-6"
+                >
+                  <span className="leading-none">{closeLabel}</span>
+                  <span aria-hidden className="relative block h-[13px] w-5">
+                    <span className="absolute left-0 top-1.5 block h-px w-5 rotate-45 bg-current" />
+                    <span className="absolute left-0 top-1.5 block h-px w-5 -rotate-45 bg-current" />
+                  </span>
+                </motion.button>
+
                 <nav className="pointer-events-auto" aria-label={t('menu')}>
                   <ul>
                     {navLinks.map((link, i) => {
@@ -280,7 +299,7 @@ export function NavDrawer() {
                                   isActive ? 'text-glow' : 'text-paper'
                                 )}
                                 style={{
-                                  textShadow: '0px 1em 0px rgba(200,146,42,0.35)'
+                                  textShadow: '0px 1em 0px rgb(199 187 116 / 0.35)'
                                 }}
                               >
                                 {t(link.key)}
@@ -307,7 +326,7 @@ export function NavDrawer() {
                     <Link
                       href="/courses"
                       onClick={() => setOpen(false)}
-                      className="flex w-full items-center justify-center rounded-btn bg-glow px-4 py-3 text-sm font-semibold text-forest transition-all duration-300 hover:bg-glow hover:shadow-[0_0_20px_rgba(200,146,42,0.3)]"
+                      className="flex w-full items-center justify-center rounded-btn bg-glow px-4 py-3 text-sm font-semibold text-forest transition-all duration-300 hover:bg-glow hover:shadow-[0_0_20px_rgb(199_187_116/0.3)]"
                     >
                       {t('explore')}
                     </Link>

@@ -68,6 +68,21 @@
   ::selection {
     @apply bg-glow/40;
   }
+
+  /*
+   * On a phone one long Russian word can be wider than the screen
+   * («конфиденциальности» at heading size is ~390px). Hyphenate there
+   * rather than let the page scroll sideways; wide screens never need it.
+   */
+  @media (max-width: 639px) {
+    h1,
+    h2,
+    h3 {
+      overflow-wrap: break-word;
+      -webkit-hyphens: auto;
+      hyphens: auto;
+    }
+  }
 }
 
 @layer utilities {

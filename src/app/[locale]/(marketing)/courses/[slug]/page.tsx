@@ -137,7 +137,7 @@ export default async function CoursePage({ params: { locale, slug } }: Props) {
           <FadeIn>
             <Link
               href="/courses"
-              className="mb-6 inline-flex items-center gap-1.5 text-sm text-paper/70 transition-colors hover:text-paper"
+              className="-my-2 mb-4 inline-flex items-center gap-1.5 py-2 text-sm text-paper/70 transition-colors hover:text-paper"
             >
               <ArrowLeft className="h-4 w-4" aria-hidden />
               {t('backToCourses')}

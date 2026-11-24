@@ -22,7 +22,11 @@ export function LocaleSwitcher({ label }: { label: string }) {
       className="inline-flex h-9 items-center rounded-btn px-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
       aria-label={label}
     >
-      {label}
+      {/* On a phone the full name would push the logo onto two lines. */}
+      <span className="max-sm:hidden">{label}</span>
+      <span className="hidden max-sm:inline" aria-hidden>
+        {next.toUpperCase()}
+      </span>
     </button>
   );
 }

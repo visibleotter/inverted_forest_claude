@@ -46,7 +46,7 @@ export default async function RegisterPage({
     <div className="container-content py-14 sm:py-20">
       <Link
         href={`/courses/${course.slug}`}
-        className="mb-8 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+        className="-my-2 mb-6 inline-flex items-center gap-1.5 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
       >
         <ArrowLeft className="h-4 w-4" aria-hidden />
         {t('backToCourse')}

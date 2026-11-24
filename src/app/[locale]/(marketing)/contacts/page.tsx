@@ -66,12 +66,12 @@ export default async function ContactsPage({
                   {t('telegram')}
                 </a>
               </div>
-              <div className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
+              <div className="mt-2 flex flex-wrap items-center gap-x-2 text-sm text-muted-foreground">
                 <Mail className="h-4 w-4" aria-hidden />
-                <span>{t('emailLabel')}</span>
+                <span className="whitespace-nowrap">{t('emailLabel')}</span>
                 <a
                   href={`mailto:${siteConfig.contactEmail}`}
-                  className="font-medium text-foreground hover:underline"
+                  className="-my-2 py-2 font-medium text-foreground hover:underline"
                 >
                   {siteConfig.contactEmail}
                 </a>
