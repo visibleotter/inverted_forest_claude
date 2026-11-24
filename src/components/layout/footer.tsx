@@ -15,7 +15,7 @@ export async function Footer() {
 
   return (
     <footer className="soft-dark soft-top surface-dark text-paper">
-      <div className="container-content grid gap-10 pb-14 pt-28 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="container-content grid gap-10 pb-14 pt-20 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <p className="flex items-center gap-2 font-display text-lg font-semibold">
             <TreePine className="h-5 w-5 rotate-180 text-glow" aria-hidden />

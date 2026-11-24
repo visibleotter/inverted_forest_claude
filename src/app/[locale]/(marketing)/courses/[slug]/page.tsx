@@ -133,7 +133,7 @@ export default async function CoursePage({ params: { locale, slug } }: Props) {
 
       {/* Hero */}
       <section className="soft-dark soft-bottom surface-dark text-paper">
-        <div className="container-content grid items-center gap-10 pb-28 pt-16 sm:pb-32 sm:pt-20 lg:grid-cols-2">
+        <div className="container-content grid items-center gap-10 pb-20 pt-16 sm:pb-24 sm:pt-20 lg:grid-cols-2">
           <FadeIn>
             <Link
               href="/courses"
