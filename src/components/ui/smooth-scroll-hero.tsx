@@ -119,8 +119,14 @@ export function SmoothScrollHero({
     return `${ramp('right')}, ${ramp('bottom')}`;
   });
 
-  // A whisper of settle rather than the original zoom.
-  const backgroundSize = useTransform(scrollY, [0, imageDone], ['112%', '100%']);
+  /*
+   * A whisper of settle rather than the original zoom. It is a scale over
+   * a `cover` image, not a background-size: '100%' sizes the painting to
+   * the frame's width only, so on a phone or any window taller than the
+   * painting's 5:4 it stopped short of the bottom and ended on a hard
+   * line above a band of plain forest.
+   */
+  const imageScale = useTransform(scrollY, [0, imageDone], [1.12, 1]);
 
   const contentOpacity = useTransform(scrollY, [copyFrom, copyTo], [0, 1]);
   const contentY = useTransform(scrollY, [copyFrom, copyTo], [28, 0]);
@@ -177,7 +183,8 @@ export function SmoothScrollHero({
               className="absolute inset-0 md:hidden"
               style={{
                 backgroundImage: `url(${mobile})`,
-                backgroundSize: reduce ? 'cover' : backgroundSize,
+                backgroundSize: 'cover',
+                scale: reduce ? 1 : imageScale,
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat'
               }}
@@ -187,7 +194,8 @@ export function SmoothScrollHero({
               className="absolute inset-0 hidden md:block"
               style={{
                 backgroundImage: `url(${desktopImage})`,
-                backgroundSize: reduce ? 'cover' : backgroundSize,
+                backgroundSize: 'cover',
+                scale: reduce ? 1 : imageScale,
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat'
               }}
