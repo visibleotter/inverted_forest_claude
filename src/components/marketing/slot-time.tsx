@@ -79,9 +79,12 @@ export function SlotTime({
       const viewerZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
       const tag = locale === 'ru' ? 'ru-RU' : 'en-US';
 
-      // The reference date is a date the course runs on, so the offset is
-      // the one that will actually apply — not today's.
-      const instant = instantOf(referenceDate, time, timezone);
+      // A date the course actually runs on, so the offset is the one that
+      // will apply. A start date already behind us says nothing about the
+      // coming weeks (it put "GMT+3" on winter classes), so use today then.
+      const today = new Date().toISOString().slice(0, 10);
+      const reference = referenceDate > today ? referenceDate : today;
+      const instant = instantOf(reference, time, timezone);
 
       setZoneLabel(
         new Intl.DateTimeFormat(tag, {

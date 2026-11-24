@@ -17,12 +17,41 @@ import { Badge } from '@/components/ui/badge';
 import { buttonVariants } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { FadeIn } from '@/components/ui/fade-in';
-import { Section } from '@/components/ui/section';
+import { AudioFragments } from '@/components/marketing/audio-fragments';
 import { ScheduleSlots } from '@/components/marketing/schedule-slots';
 import { siteConfig } from '@/lib/config';
 import { getData } from '@/lib/data';
 import type { Locale } from '@/lib/types';
 import { formatPrice, lt } from '@/lib/utils';
+
+/**
+ * A section inside the course page's reading column: the same rhythm and
+ * heading as the site's full-width sections, without their own container,
+ * so it can sit beside the travelling price card.
+ */
+function Block({
+  id,
+  title,
+  subtitle,
+  children
+}: {
+  id?: string;
+  title: string;
+  subtitle?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section id={id} className="scroll-mt-20 py-16 sm:py-20">
+      <div className="mb-10 max-w-2xl">
+        <h2 className="text-balance text-3xl font-semibold sm:text-4xl">{title}</h2>
+        {subtitle && (
+          <p className="mt-4 text-base text-muted-foreground sm:text-lg">{subtitle}</p>
+        )}
+      </div>
+      {children}
+    </section>
+  );
+}
 
 interface Props {
   params: { locale: string; slug: string };
@@ -63,6 +92,11 @@ export default async function CoursePage({ params: { locale, slug } }: Props) {
     getTranslations('course'),
     getTranslations('courses')
   ]);
+
+  // The largest group on offer, for the price card's "up to N".
+  const capacity = groups.length
+    ? Math.max(...groups.map((group) => group.capacity))
+    : null;
 
   const format = [
     { icon: Video, text: t('format1') },
@@ -160,167 +194,210 @@ export default async function CoursePage({ params: { locale, slug } }: Props) {
         </div>
       </section>
 
-      {/* Description + outcomes + audience */}
-      <Section title={t('aboutTitle')}>
-        <div className="grid gap-12 lg:grid-cols-[1.2fr_1fr]">
-          <FadeIn>
-            <p className="text-lg leading-relaxed text-muted-foreground">
-              {lt(course.description, l)}
-            </p>
+      {/*
+        Two columns from here down: the reading on the left, and on wide
+        screens a price card on the right that travels with it — so the
+        price and the way to a group are never more than a glance away,
+        however deep into the programme someone has read.
+      */}
+      <div className="container-content grid gap-x-12 lg:grid-cols-[minmax(0,1fr)_300px]">
+        <div className="min-w-0">
+          {/* Description + outcomes */}
+          <Block title={t('aboutTitle')}>
+            <FadeIn>
+              {/* A drop cap: the first letter set large, as in a book. */}
+              <p className="text-lg leading-relaxed text-muted-foreground first-letter:float-left first-letter:mr-3 first-letter:mt-1 first-letter:font-display first-letter:text-[4.4rem] first-letter:font-semibold first-letter:leading-[0.78] first-letter:text-accent">
+                {lt(course.description, l)}
+              </p>
 
-            <h3 className="mt-10 text-xl font-semibold">
-              {t('outcomesTitle')}
-            </h3>
-            <ul className="mt-4 space-y-3">
-              {course.outcomes[l].map((item) => (
-                <li key={item} className="flex items-start gap-3">
-                  <Check
-                    className="mt-1 h-4 w-4 shrink-0 text-accent"
-                    aria-hidden
-                  />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </FadeIn>
+              <h3 className="mt-10 text-xl font-semibold">{t('outcomesTitle')}</h3>
+              <ul className="mt-4 space-y-3">
+                {course.outcomes[l].map((item) => (
+                  <li key={item} className="flex items-start gap-3">
+                    <Check className="mt-1 h-4 w-4 shrink-0 text-accent" aria-hidden />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </FadeIn>
 
-          <FadeIn delay={0.1}>
-            <Card>
-              <CardContent>
-                <h3 className="text-lg font-semibold">{t('audienceTitle')}</h3>
-                <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
-                  {course.audience[l].map((item) => (
-                    <li key={item} className="flex items-start gap-3">
-                      <Users
-                        className="mt-0.5 h-4 w-4 shrink-0 text-accent"
-                        aria-hidden
-                      />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <h3 className="mt-8 text-lg font-semibold">
-                  {t('formatTitle')}
-                </h3>
-                <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
-                  {format.map((item) => (
-                    <li key={item.text} className="flex items-start gap-3">
-                      <item.icon
-                        className="mt-0.5 h-4 w-4 shrink-0 text-accent"
-                        aria-hidden
-                      />
-                      <span>{item.text}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                {course.publicTelegramUrl && (
-                  <a
-                    href={course.publicTelegramUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-accent hover:underline"
-                  >
-                    <Send className="h-4 w-4" aria-hidden />
-                    {t('telegramPublic')}
-                  </a>
-                )}
-              </CardContent>
-            </Card>
-          </FadeIn>
-        </div>
-      </Section>
-
-      {/* Schedule */}
-      <Section
-        id="schedule"
-        className="scroll-mt-20 section-soft"
-        title={t('scheduleTitle')}
-        subtitle={t('scheduleSubtitle')}
-      >
-        <FadeIn>
-          <ScheduleSlots groups={groups} />
-        </FadeIn>
-        <FadeIn className="mt-8">
-          <p className="text-sm text-muted-foreground">
-            {t('pricingNote', {
-              months: tCourses('months', { count: course.durationMonths })
-            })}{' '}
-            <span className="font-semibold text-foreground">
-              {formatPrice(course.monthlyPrice, course.currency, l)}
-            </span>{' '}
-            {tCourses('perMonth')}.
-          </p>
-        </FadeIn>
-      </Section>
-
-      {/* Curriculum */}
-      <Section className="section-soft" title={t('curriculumTitle')}>
-        <div className="grid gap-6 lg:grid-cols-3">
-          {course.curriculum.map((module, i) => (
-            <FadeIn key={i} delay={i * 0.08}>
-              <Card className="h-full">
-                <CardContent>
-                  <p className="text-xs font-semibold uppercase tracking-widest text-accent">
-                    {t('moduleLabel', { number: i + 1 })}
-                  </p>
-                  <h3 className="mt-2 text-lg font-semibold">
-                    {lt(module.title, l)}
-                  </h3>
-                  <ul className="mt-4 space-y-2.5 text-sm text-muted-foreground">
-                    {module.topics[l].map((topic) => (
-                      <li key={topic} className="flex items-start gap-2.5">
-                        <span
-                          className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent"
-                          aria-hidden
-                        />
-                        {topic}
-                      </li>
-                    ))}
-                  </ul>
+            <FadeIn delay={0.1} className="mt-10">
+              <Card>
+                <CardContent className="grid gap-8 md:grid-cols-2">
+                  <div>
+                    <h3 className="text-lg font-semibold">{t('audienceTitle')}</h3>
+                    <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
+                      {course.audience[l].map((item) => (
+                        <li key={item} className="flex items-start gap-3">
+                          <Users className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold">{t('formatTitle')}</h3>
+                    <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
+                      {format.map((item) => (
+                        <li key={item.text} className="flex items-start gap-3">
+                          <item.icon className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden />
+                          <span>{item.text}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    {course.publicTelegramUrl && (
+                      <a
+                        href={course.publicTelegramUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-accent hover:underline"
+                      >
+                        <Send className="h-4 w-4" aria-hidden />
+                        {t('telegramPublic')}
+                      </a>
+                    )}
+                  </div>
                 </CardContent>
               </Card>
             </FadeIn>
-          ))}
-        </div>
-      </Section>
+          </Block>
 
-      {/* Teacher */}
-      {teacher && (
-        <Section title={t('teacherTitle')}>
-          <FadeIn>
-            <Card className="max-w-3xl">
-              <CardContent className="sm:p-8">
-                <h3 className="text-2xl font-semibold">
-                  {lt(teacher.name, l)}
-                </h3>
-                <p className="mt-1 text-sm font-medium text-accent">
-                  {lt(teacher.title, l)}
-                </p>
-                <p className="mt-4 leading-relaxed text-muted-foreground">
-                  {lt(teacher.bio, l)}
+          {/* Audio fragments */}
+          {course.audio.length > 0 && (
+            <Block id="listen" title={t('listenTitle')} subtitle={t('listenSubtitle')}>
+              <FadeIn>
+                <AudioFragments
+                  clips={course.audio.map((clip) => ({
+                    url: clip.url,
+                    title: lt(clip.title, l),
+                    durationSec: clip.durationSec
+                  }))}
+                  labels={{
+                    play: t('listenPlay'),
+                    pause: t('listenPause'),
+                    seek: t('listenSeek')
+                  }}
+                />
+              </FadeIn>
+            </Block>
+          )}
+
+          {/* Schedule */}
+          <Block id="schedule" title={t('scheduleTitle')} subtitle={t('scheduleSubtitle')}>
+            <FadeIn>
+              <ScheduleSlots groups={groups} />
+            </FadeIn>
+            <FadeIn className="mt-8">
+              <p className="text-sm text-muted-foreground">
+                {t('pricingNote', {
+                  months: tCourses('months', { count: course.durationMonths })
+                })}{' '}
+                <span className="font-semibold text-foreground">
+                  {formatPrice(course.monthlyPrice, course.currency, l)}
+                </span>{' '}
+                {tCourses('perMonth')}.
+              </p>
+            </FadeIn>
+          </Block>
+
+          {/* Curriculum */}
+          <Block title={t('curriculumTitle')}>
+            <div className="grid gap-6 sm:grid-cols-2">
+              {course.curriculum.map((module, i) => (
+                <FadeIn key={i} delay={i * 0.08}>
+                  <Card className="h-full">
+                    <CardContent>
+                      <p className="text-xs font-semibold uppercase tracking-widest text-accent">
+                        {t('moduleLabel', { number: i + 1 })}
+                      </p>
+                      <h3 className="mt-2 text-lg font-semibold">{lt(module.title, l)}</h3>
+                      <ul className="mt-4 space-y-2.5 text-sm text-muted-foreground">
+                        {module.topics[l].map((topic) => (
+                          <li key={topic} className="flex items-start gap-2.5">
+                            <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent" aria-hidden />
+                            {topic}
+                          </li>
+                        ))}
+                      </ul>
+                    </CardContent>
+                  </Card>
+                </FadeIn>
+              ))}
+            </div>
+          </Block>
+
+          {/* Teacher */}
+          {teacher && (
+            <Block title={t('teacherTitle')}>
+              <FadeIn>
+                <Card>
+                  <CardContent className="sm:p-8">
+                    <h3 className="text-2xl font-semibold">{lt(teacher.name, l)}</h3>
+                    <p className="mt-1 text-sm font-medium text-accent">{lt(teacher.title, l)}</p>
+                    <p className="mt-4 leading-relaxed text-muted-foreground">{lt(teacher.bio, l)}</p>
+                  </CardContent>
+                </Card>
+              </FadeIn>
+            </Block>
+          )}
+
+          {/* Course FAQ */}
+          {course.faq.length > 0 && (
+            <Block title={t('faqTitle')}>
+              <FadeIn className="rounded-card border border-border bg-card px-6">
+                {course.faq.map((item, i) => (
+                  <AccordionItem
+                    key={i}
+                    question={lt(item.question, l)}
+                    answer={lt(item.answer, l)}
+                  />
+                ))}
+              </FadeIn>
+            </Block>
+          )}
+        </div>
+
+        {/* The travelling price card — wide screens only. */}
+        <aside className="hidden lg:block">
+          <div className="sticky top-24 pb-16 pt-16 sm:pt-20">
+            <Card>
+              <CardContent className="space-y-5">
+                <div>
+                  <p className="text-sm text-muted-foreground">{t('pricingTitle')}</p>
+                  <p className="mt-1">
+                    <span className="font-display text-3xl font-semibold">
+                      {formatPrice(course.monthlyPrice, course.currency, l)}
+                    </span>{' '}
+                    <span className="text-sm text-muted-foreground">{tCourses('perMonth')}</span>
+                  </p>
+                </div>
+                <ul className="space-y-2 border-t border-border pt-4 text-sm text-muted-foreground">
+                  <li>{tCourses('months', { count: course.durationMonths })}</li>
+                  {capacity && <li>{t('groupSizeShort', { capacity })}</li>}
+                  <li>{t('onceAWeek')}</li>
+                </ul>
+                <a
+                  href="#schedule"
+                  className={buttonVariants({ variant: 'accent', className: 'w-full' })}
+                >
+                  {t('chooseGroup')}
+                </a>
+                {course.audio.length > 0 && (
+                  <a
+                    href="#listen"
+                    className="block text-center text-sm font-medium text-accent hover:underline"
+                  >
+                    {t('listenLink')}
+                  </a>
+                )}
+                <p className="text-xs leading-relaxed text-muted-foreground">
+                  {t('refundShort')}
                 </p>
               </CardContent>
             </Card>
-          </FadeIn>
-        </Section>
-      )}
-
-      {/* Course FAQ */}
-      {course.faq.length > 0 && (
-        <Section title={t('faqTitle')}>
-          <FadeIn className="max-w-3xl rounded-card border border-border bg-card px-6">
-            {course.faq.map((item, i) => (
-              <AccordionItem
-                key={i}
-                question={lt(item.question, l)}
-                answer={lt(item.answer, l)}
-              />
-            ))}
-          </FadeIn>
-        </Section>
-      )}
+          </div>
+        </aside>
+      </div>
     </>
   );
 }
