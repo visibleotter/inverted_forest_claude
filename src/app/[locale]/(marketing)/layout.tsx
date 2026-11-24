@@ -1,4 +1,5 @@
 import { Footer } from '@/components/layout/footer';
+import { FloatingContact } from '@/components/layout/floating-contact';
 import { Header } from '@/components/layout/header';
 
 export default function MarketingLayout({
@@ -11,6 +12,7 @@ export default function MarketingLayout({
       <Header />
       <main className="flex-1">{children}</main>
       <Footer />
+      <FloatingContact />
     </div>
   );
 }
