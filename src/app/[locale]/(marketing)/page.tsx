@@ -154,7 +154,7 @@ export default async function HomePage({
 
       {/* How learning works */}
       <Section
-        className="seam-top seam-bottom surface-dark ground-dark bg-forest text-paper"
+        className="soft-dark soft-top soft-bottom surface-dark py-28 text-paper sm:py-32"
         title={t('howTitle')}
       >
         <ol className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
