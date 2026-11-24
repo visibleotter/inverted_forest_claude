@@ -12,6 +12,7 @@ import { formatDate, formatPrice, lt } from '@/lib/utils';
 export async function CourseCard({ course }: { course: Course }) {
   const locale = (await getLocale()) as Locale;
   const t = await getTranslations('courses');
+  const tSchedule = await getTranslations('schedule');
   const data = getData();
 
   const [teacher, groups] = await Promise.all([
@@ -39,6 +40,11 @@ export async function CourseCard({ course }: { course: Course }) {
               fill
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               className="object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+            {/* Tint that lifts on hover; pointer devices only. */}
+            <span
+              aria-hidden
+              className="pointer-events-none absolute inset-0 bg-forest/0 transition-colors duration-500 [@media(hover:hover)]:bg-forest/30 [@media(hover:hover)]:group-hover:bg-forest/0"
             />
           </div>
         )}
@@ -79,7 +85,12 @@ export async function CourseCard({ course }: { course: Course }) {
               <div className="flex items-center gap-2 text-muted-foreground">
                 <CalendarDays className="h-3.5 w-3.5 shrink-0" aria-hidden />
                 <span>
-                  {t('nextCohort')}: {formatDate(nextGroup.startDate, locale)}
+                  {t('nextCohort')}:{' '}
+                  {/* An unconfirmed date is a placeholder; saying it
+                      would show a start that has already passed. */}
+                  {nextGroup.startDateConfirmed
+                    ? formatDate(nextGroup.startDate, locale)
+                    : tSchedule('startsWhenFull').toLocaleLowerCase(locale)}
                 </span>
               </div>
             )}

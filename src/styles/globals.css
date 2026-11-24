@@ -203,3 +203,13 @@
   }
 
 }
+
+@layer utilities {
+  /* A horizontal lane that scrolls without showing a scrollbar. */
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+}

@@ -243,6 +243,13 @@ export function ExpandableCard({
             sizes="280px"
             className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
           />
+          {/* A forest tint that lifts on hover, so the painting comes to
+              life under the pointer. Only where hovering exists: on a
+              phone the picture is simply shown clear. */}
+          <span
+            aria-hidden
+            className="pointer-events-none absolute inset-0 bg-forest/0 transition-colors duration-500 [@media(hover:hover)]:bg-forest/30 [@media(hover:hover)]:group-hover:bg-forest/0"
+          />
         </motion.div>
 
         <div className="flex items-start justify-between gap-3 px-1 pb-1">

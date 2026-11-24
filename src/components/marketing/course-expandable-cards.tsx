@@ -21,9 +21,10 @@ export async function CourseExpandableCards({
   courses: Course[];
 }) {
   const locale = (await getLocale()) as Locale;
-  const [t, tCourses] = await Promise.all([
+  const [t, tCourses, tSchedule] = await Promise.all([
     getTranslations('course'),
-    getTranslations('courses')
+    getTranslations('courses'),
+    getTranslations('schedule')
   ]);
   const data = getData();
 
@@ -41,9 +42,15 @@ export async function CourseExpandableCards({
 
   return (
     <div className="w-full">
-      <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {/*
+        On phones a lane rather than a stack: each card takes most of the
+        width and the next one shows at the edge, so the thumb knows there
+        is more and swipes. Snap keeps every card landing square. From the
+        small breakpoint up it is the grid it always was.
+      */}
+      <ul className="scrollbar-none -mx-5 flex snap-x snap-mandatory scroll-px-5 gap-4 overflow-x-auto px-5 pb-2 sm:mx-0 sm:grid sm:snap-none sm:grid-cols-2 sm:gap-6 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-3">
         {cards.map(({ course, nextGroup, seats }) => (
-          <li key={course.id}>
+          <li key={course.id} className="w-[82%] shrink-0 snap-start sm:w-auto">
             <ExpandableCard
               className="h-full"
               title={lt(course.title, locale)}
@@ -95,7 +102,9 @@ export async function CourseExpandableCards({
                         {tCourses('nextCohort')}
                       </dt>
                       <dd className="mt-0.5 font-medium">
-                        {formatDate(nextGroup.startDate, locale)}
+                        {nextGroup.startDateConfirmed
+                          ? formatDate(nextGroup.startDate, locale)
+                          : tSchedule('startsWhenFull')}
                       </dd>
                     </div>
                   )}
