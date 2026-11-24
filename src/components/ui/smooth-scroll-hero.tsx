@@ -150,105 +150,111 @@ export function SmoothScrollHero({
   const mobile = mobileImage ?? desktopImage;
 
   return (
-    <div
-      className={cn('relative w-full', className)}
-      style={{ height: reduce ? '100vh' : `calc(${scrollHeight}px + 100vh)` }}
-    >
-      <div className="sticky top-0 h-screen w-full overflow-hidden bg-forest">
-        <motion.div
-          className="absolute inset-0"
-          style={
-            reduce
-              ? undefined
-              : {
-                  clipPath,
-                  maskImage: edgeMask,
-                  WebkitMaskImage: edgeMask,
-                  // Visible only where both ramps are: the four soft edges.
-                  maskComposite: 'intersect',
-                  WebkitMaskComposite: 'source-in',
-                  willChange: 'clip-path, mask-image'
-                }
-          }
-        >
+    <>
+      <div
+        className={cn('relative w-full', className)}
+        style={{ height: reduce ? '100vh' : `calc(${scrollHeight}px + 100vh)` }}
+      >
+        <div className="sticky top-0 h-screen w-full overflow-hidden bg-forest">
           <motion.div
-            aria-hidden
-            className="absolute inset-0 md:hidden"
-            style={{
-              backgroundImage: `url(${mobile})`,
-              backgroundSize: reduce ? 'cover' : backgroundSize,
-              backgroundPosition: 'center',
-              backgroundRepeat: 'no-repeat'
-            }}
-          />
-          <motion.div
-            aria-hidden
-            className="absolute inset-0 hidden md:block"
-            style={{
-              backgroundImage: `url(${desktopImage})`,
-              backgroundSize: reduce ? 'cover' : backgroundSize,
-              backgroundPosition: 'center',
-              backgroundRepeat: 'no-repeat'
-            }}
-          />
-
-          <motion.div
-            aria-hidden
-            className="absolute inset-0 bg-gradient-to-r from-forest/95 via-forest/60 to-forest/15"
-            style={reduce ? undefined : { opacity: veilOpacity }}
-          />
-        </motion.div>
-
-        {children && (
-          <motion.div
-            className="relative flex h-full items-center"
+            className="absolute inset-0"
             style={
               reduce
                 ? undefined
                 : {
-                    opacity: contentOpacity,
-                    y: contentY,
-                    filter: contentBlur,
-                    pointerEvents: contentPointer
+                    clipPath,
+                    maskImage: edgeMask,
+                    WebkitMaskImage: edgeMask,
+                    // Visible only where both ramps are: the four soft edges.
+                    maskComposite: 'intersect',
+                    WebkitMaskComposite: 'source-in',
+                    willChange: 'clip-path, mask-image'
                   }
             }
           >
-            {children}
-          </motion.div>
-        )}
+            <motion.div
+              aria-hidden
+              className="absolute inset-0 md:hidden"
+              style={{
+                backgroundImage: `url(${mobile})`,
+                backgroundSize: reduce ? 'cover' : backgroundSize,
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat'
+              }}
+            />
+            <motion.div
+              aria-hidden
+              className="absolute inset-0 hidden md:block"
+              style={{
+                backgroundImage: `url(${desktopImage})`,
+                backgroundSize: reduce ? 'cover' : backgroundSize,
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat'
+              }}
+            />
 
-        {scrollHint && !reduce && (
-          <motion.div
-            aria-hidden
-            style={{ opacity: hintOpacity, scale: hintScale, filter: hintBlur }}
-            className="pointer-events-none absolute inset-0 flex items-center justify-center"
-          >
-            <div className="relative flex flex-col items-center">
-              {/* The glow: a soft ellipse of warm light that slowly breathes.
-                  Centred through x/y rather than translate classes, which
-                  the breathing scale would otherwise overwrite. */}
-              <motion.span
-                className="absolute left-1/2 top-1/2 h-56 w-80 rounded-full bg-[radial-gradient(ellipse_at_center,rgb(199_187_116/0.28),rgb(199_187_116/0.08)_45%,transparent_70%)] blur-2xl"
-                style={{ x: '-50%', y: '-50%' }}
-                animate={{ opacity: [0.6, 1, 0.6], scale: [0.94, 1.06, 0.94] }}
-                transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
-              />
-              {/* pl- balances the trailing letter-spacing, so the word
-                  centres on its letters rather than on its box. */}
-              <span className="relative pl-[0.4em] text-xs font-medium uppercase tracking-[0.4em] text-glow/90 [text-shadow:0_0_16px_rgb(199_187_116/0.55)]">
-                {scrollHint}
-              </span>
-              {/* The trail: a thread of light running down from the word. */}
-              <motion.span
-                className="relative mt-4 block h-12 w-px origin-top bg-gradient-to-b from-glow/80 to-transparent"
-                animate={{ scaleY: [0.35, 1, 0.35], opacity: [0.4, 1, 0.4] }}
-                transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
-              />
-            </div>
+            <motion.div
+              aria-hidden
+              className="absolute inset-0 bg-gradient-to-r from-forest/95 via-forest/60 to-forest/15"
+              style={reduce ? undefined : { opacity: veilOpacity }}
+            />
           </motion.div>
-        )}
+
+          {children && (
+            <motion.div
+              className="relative flex h-full items-center"
+              style={
+                reduce
+                  ? undefined
+                  : {
+                      opacity: contentOpacity,
+                      y: contentY,
+                      filter: contentBlur,
+                      pointerEvents: contentPointer
+                    }
+              }
+            >
+              {children}
+            </motion.div>
+          )}
+
+          {scrollHint && !reduce && (
+            <motion.div
+              aria-hidden
+              style={{ opacity: hintOpacity, scale: hintScale, filter: hintBlur }}
+              className="pointer-events-none absolute inset-0 flex items-center justify-center"
+            >
+              <div className="relative flex flex-col items-center">
+                {/* The glow: a soft ellipse of warm light that slowly breathes.
+                    Centred through x/y rather than translate classes, which
+                    the breathing scale would otherwise overwrite. */}
+                <motion.span
+                  className="absolute left-1/2 top-1/2 h-56 w-80 rounded-full bg-[radial-gradient(ellipse_at_center,rgb(199_187_116/0.28),rgb(199_187_116/0.08)_45%,transparent_70%)] blur-2xl"
+                  style={{ x: '-50%', y: '-50%' }}
+                  animate={{ opacity: [0.6, 1, 0.6], scale: [0.94, 1.06, 0.94] }}
+                  transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
+                />
+                {/* pl- balances the trailing letter-spacing, so the word
+                    centres on its letters rather than on its box. */}
+                <span className="relative pl-[0.4em] text-xs font-medium uppercase tracking-[0.4em] text-glow/90 [text-shadow:0_0_16px_rgb(199_187_116/0.55)]">
+                  {scrollHint}
+                </span>
+                {/* The trail: a thread of light running down from the word. */}
+                <motion.span
+                  className="relative mt-4 block h-12 w-px origin-top bg-gradient-to-b from-glow/80 to-transparent"
+                  animate={{ scaleY: [0.35, 1, 0.35], opacity: [0.4, 1, 0.4] }}
+                  transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
+                />
+              </div>
+            </motion.div>
+          )}
+        </div>
       </div>
-    </div>
+      {/* The hero's lower edge, carried softly into the page: its sticky
+          frame must stay solid while it plays, so the fade is a strip
+          after it rather than a mask on it. */}
+      <div aria-hidden className="fade-from-forest h-12" />
+    </>
   );
 }
 

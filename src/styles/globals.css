@@ -12,6 +12,19 @@
     --c-fern: 42 74 58;
     --c-forest: 22 40 31;
 
+    /*
+     * The one transition used everywhere a ground starts or ends: an eased
+     * 3rem ramp — slow, then quicker, then settling — as mask stops.
+     */
+    --ramp-in: transparent 0, rgb(0 0 0 / 0.04) 0.35rem, rgb(0 0 0 / 0.12) 0.7rem,
+      rgb(0 0 0 / 0.26) 1.05rem, rgb(0 0 0 / 0.44) 1.4rem, rgb(0 0 0 / 0.62) 1.75rem,
+      rgb(0 0 0 / 0.78) 2.1rem, rgb(0 0 0 / 0.9) 2.45rem, rgb(0 0 0 / 0.97) 2.8rem, #000 3rem;
+    --ramp-out: #000 calc(100% - 3rem), rgb(0 0 0 / 0.97) calc(100% - 2.8rem),
+      rgb(0 0 0 / 0.9) calc(100% - 2.45rem), rgb(0 0 0 / 0.78) calc(100% - 2.1rem),
+      rgb(0 0 0 / 0.62) calc(100% - 1.75rem), rgb(0 0 0 / 0.44) calc(100% - 1.4rem),
+      rgb(0 0 0 / 0.26) calc(100% - 1.05rem), rgb(0 0 0 / 0.12) calc(100% - 0.7rem),
+      rgb(0 0 0 / 0.04) calc(100% - 0.35rem), transparent 100%;
+
     --background: 240 239 227;      /* paper  #F0EFE3 */
     --foreground: 22 40 31;         /* forest         13.4:1 */
     --card: 250 248 239;
@@ -92,8 +105,8 @@
     inset: 0;
     z-index: -1;
     pointer-events: none;
-    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 22%, #000 78%, transparent);
-    mask-image: linear-gradient(to bottom, transparent, #000 22%, #000 78%, transparent);
+    -webkit-mask-image: linear-gradient(to bottom, var(--ramp-in), var(--ramp-out));
+    mask-image: linear-gradient(to bottom, var(--ramp-in), var(--ramp-out));
   }
 
   .ground-light::before {
@@ -128,14 +141,6 @@
   .soft-dark {
     position: relative;
     isolation: isolate;
-    --ramp-in: transparent 0, rgb(0 0 0 / 0.04) 0.35rem, rgb(0 0 0 / 0.12) 0.7rem,
-      rgb(0 0 0 / 0.26) 1.05rem, rgb(0 0 0 / 0.44) 1.4rem, rgb(0 0 0 / 0.62) 1.75rem,
-      rgb(0 0 0 / 0.78) 2.1rem, rgb(0 0 0 / 0.9) 2.45rem, rgb(0 0 0 / 0.97) 2.8rem, #000 3rem;
-    --ramp-out: #000 calc(100% - 3rem), rgb(0 0 0 / 0.97) calc(100% - 2.8rem),
-      rgb(0 0 0 / 0.9) calc(100% - 2.45rem), rgb(0 0 0 / 0.78) calc(100% - 2.1rem),
-      rgb(0 0 0 / 0.62) calc(100% - 1.75rem), rgb(0 0 0 / 0.44) calc(100% - 1.4rem),
-      rgb(0 0 0 / 0.26) calc(100% - 1.05rem), rgb(0 0 0 / 0.12) calc(100% - 0.7rem),
-      rgb(0 0 0 / 0.04) calc(100% - 0.35rem), transparent 100%;
   }
 
   .soft-dark::before {
@@ -162,6 +167,17 @@
   .soft-dark.soft-bottom::before {
     -webkit-mask-image: linear-gradient(to bottom, #000 0, var(--ramp-out));
     mask-image: linear-gradient(to bottom, #000 0, var(--ramp-out));
+  }
+
+  /*
+   * For a dark block that cannot carry its own mask — the scroll hero,
+   * whose sticky frame must stay solid while it plays — a 3rem strip
+   * placed right after it continues the forest into the page.
+   */
+  .fade-from-forest {
+    background-color: rgb(var(--c-forest));
+    -webkit-mask-image: linear-gradient(to top, var(--ramp-in));
+    mask-image: linear-gradient(to top, var(--ramp-in));
   }
 
   .soft-dark.soft-top.soft-bottom::before {
