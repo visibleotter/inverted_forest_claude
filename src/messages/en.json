@@ -236,7 +236,7 @@
     "participantNameHint": "Filled in by the adult who pays. We send the channel invite to them on Telegram.",
     "participantBirthYear": "Year of birth",
     "telegramContact": "Telegram — username or phone number",
-    "telegramContactPlaceholder": "@username or +972 54 123 4567",
+    "telegramContactPlaceholder": "@username or phone",
     "telegramContactHint": "No username? Give the phone number your Telegram account uses. We use it to find you if the invite link does not work.",
     "refundNote": "Changed your mind after the first lesson? Write to us within 24 hours of it and we will refund your payment minus the cost of one lesson. Other cancellation terms are in the <terms>Terms and Conditions</terms>.",
     "successNoPaymentTitle": "You are registered!",

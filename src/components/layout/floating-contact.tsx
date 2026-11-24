@@ -28,11 +28,15 @@ function Mark() {
  * screen. Elsewhere it is there from the start. On wide screens hovering
  * slides out a label; on phones it stays a compact circle above the
  * bottom safe area.
+ *
+ * Not on the registration form: there it sat over the fields, and the
+ * form already offers Telegram, WhatsApp and email for help.
  */
 export function FloatingContact() {
   const t = useTranslations('nav');
   const pathname = usePathname();
   const isHome = pathname === '/';
+  const hidden = pathname.startsWith('/register');
   const [visible, setVisible] = useState(!isHome);
 
   useEffect(() => {
@@ -45,6 +49,8 @@ export function FloatingContact() {
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, [isHome]);
+
+  if (hidden) return null;
 
   return (
     <a

@@ -236,7 +236,7 @@
     "participantNameHint": "Заполняет взрослый, который оплачивает. Приглашение в канал мы пришлём ему в Telegram.",
     "participantBirthYear": "Год рождения",
     "telegramContact": "Telegram — ник или номер телефона",
-    "telegramContactPlaceholder": "@username или 054-123-4567",
+    "telegramContactPlaceholder": "@username или номер",
     "telegramContactHint": "Если ника нет, укажите номер, к которому привязан Telegram. По нему мы найдём вас, если ссылка-приглашение не сработает.",
     "refundNote": "Передумали после первого занятия? Напишите нам в течение 24 часов после него — вернём оплату за вычетом стоимости одного занятия. Остальные условия отмены — в <terms>условиях использования</terms>.",
     "successNoPaymentTitle": "Запись принята!",
